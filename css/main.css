@@ -1,5 +1,5 @@
 /* ============================================
-   TrendAccom - Accommodation Booking Platform
+   Cascade Apartment 3 — Mt Baw Baw Alpine Retreat
    Main Stylesheet & Design System
    ============================================ */
 
@@ -320,8 +320,9 @@ h6 { font-size: var(--font-size-md); }
 }
 
 .logo svg {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
 }
 
 .nav-main {

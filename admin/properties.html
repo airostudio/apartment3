@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Properties - TrendAccom Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <a href="index.html" class="sidebar-logo-link">
+          <span class="sidebar-logo-text">TrendAccom</span>
+          <span class="sidebar-logo-badge">Admin</span>
+        </a>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="sidebar-nav">
+
+        <!-- MAIN -->
+        <div class="sidebar-nav-section">
+          <span class="sidebar-nav-section-title">Main</span>
+          <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item">
+              <a href="index.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                </svg>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="sidebar-nav-item active">
+              <a href="properties.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Properties</span>
+              </a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="bookings.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                  <line x1="9" y1="10" x2="15" y2="10"></line>
+                  <line x1="9" y1="14" x2="15" y2="14"></line>
+                  <line x1="9" y1="18" x2="12" y2="18"></line>
+                </svg>
+                <span>Bookings</span>
+              </a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="calendar.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Calendar</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- MANAGEMENT -->
+        <div class="sidebar-nav-section">
+          <span class="sidebar-nav-section-title">Management</span>
+          <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item">
+              <a href="rates.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                <span>Rates &amp; Pricing</span>
+              </a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="guests.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span>Guests</span>
+              </a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="reviews.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <span>Reviews</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- INTEGRATIONS -->
+        <div class="sidebar-nav-section">
+          <span class="sidebar-nav-section-title">Integrations</span>
+          <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item">
+              <a href="ical-sync.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <polyline points="1 20 1 14 7 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                  <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+                </svg>
+                <span>iCal Sync</span>
+              </a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="stripe-connect.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                <span>Stripe Connect</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- SYSTEM -->
+        <div class="sidebar-nav-section">
+          <span class="sidebar-nav-section-title">System</span>
+          <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item">
+              <a href="settings.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1.08 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1.08z"></path>
+                </svg>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="reports.html" class="sidebar-nav-link">
+                <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                <span>Reports</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+
+      <!-- Top Bar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button class="topbar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <nav class="topbar-breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html" class="breadcrumb-item">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item breadcrumb-current">Properties</span>
+          </nav>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-search">
+            <svg class="topbar-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="topbar-search-input" placeholder="Search properties, bookings...">
+          </div>
+          <button class="topbar-notification" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="topbar-notification-dot"></span>
+          </button>
+          <div class="topbar-user">
+            <span class="topbar-user-avatar">AD</span>
+            <span class="topbar-user-name">Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <main class="admin-content">
+
+        <!-- Page Header -->
+        <div class="admin-page-header">
+          <div class="admin-page-header-text">
+            <h1 class="admin-page-title">Properties</h1>
+            <p class="admin-page-subtitle">Manage your accommodation listings</p>
+          </div>
+          <a href="property-edit.html" class="btn btn-primary admin-page-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add New Property
+          </a>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="admin-card" style="margin-bottom: var(--space-xl);">
+          <div class="admin-card-body" style="padding: var(--space-md) var(--space-xl);">
+            <div style="display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 200px;">
+                <input type="text" class="form-input" placeholder="Search properties..." style="width: 100%; height: 40px;">
+              </div>
+              <select class="form-select" style="width: 180px; height: 40px;">
+                <option>All Types</option>
+                <option>Hotel</option>
+                <option>Motel</option>
+                <option>Apartment</option>
+                <option>Pub</option>
+                <option>Caravan Park</option>
+                <option>Holiday Park</option>
+              </select>
+              <select class="form-select" style="width: 140px; height: 40px;">
+                <option>All Status</option>
+                <option>Active</option>
+                <option>Draft</option>
+                <option>Inactive</option>
+              </select>
+              <select class="form-select" style="width: 160px; height: 40px;">
+                <option>Sort: Newest</option>
+                <option>Sort: Oldest</option>
+                <option>Sort: Name A-Z</option>
+                <option>Sort: Name Z-A</option>
+                <option>Sort: Revenue</option>
+                <option>Sort: Occupancy</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Properties Table -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h2>All Properties</h2>
+            <span style="font-size: var(--font-size-sm); color: var(--color-gray);">6 properties</span>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="min-width: 280px;">Property</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Rooms</th>
+                  <th style="min-width: 160px;">Occupancy</th>
+                  <th>Revenue</th>
+                  <th style="min-width: 100px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <!-- Row 1: Hotel -->
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                      <div class="admin-property-thumb">
+                        <div class="img-placeholder" style="background: linear-gradient(135deg, #1a5276, #2980b9); width: 80px; height: 60px; border-radius: var(--radius-md);"></div>
+                      </div>
+                      <div class="admin-property-info">
+                        <h4>The Grand Harbour Hotel</h4>
+                        <p>Sydney, NSW</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--primary">Hotel</span></td>
+                  <td><span class="badge badge--success">Active</span></td>
+                  <td>42</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                      <div style="flex: 1; height: 6px; background: var(--color-light); border-radius: var(--radius-full); overflow: hidden;">
+                        <div style="width: 87%; height: 100%; background: var(--color-success); border-radius: var(--radius-full);"></div>
+                      </div>
+                      <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-success);">87%</span>
+                    </div>
+                  </td>
+                  <td style="font-weight: var(--font-weight-semibold);">$124,500</td>
+                  <td>
+                    <div style="display: flex; gap: var(--space-sm);">
+                      <a href="property-edit.html" class="btn btn--sm btn--ghost" title="Edit" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </a>
+                      <a href="../property.html" class="btn btn--sm btn--ghost" title="View" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </a>
+                      <button class="btn btn--sm btn--ghost" title="Delete" style="padding: var(--space-xs); color: var(--color-danger);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 2: Motel -->
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                      <div class="admin-property-thumb">
+                        <div class="img-placeholder" style="background: linear-gradient(135deg, #27ae60, #2ecc71); width: 80px; height: 60px; border-radius: var(--radius-md);"></div>
+                      </div>
+                      <div class="admin-property-info">
+                        <h4>Pacific Highway Motel</h4>
+                        <p>Coffs Harbour, NSW</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--info">Motel</span></td>
+                  <td><span class="badge badge--success">Active</span></td>
+                  <td>18</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                      <div style="flex: 1; height: 6px; background: var(--color-light); border-radius: var(--radius-full); overflow: hidden;">
+                        <div style="width: 62%; height: 100%; background: var(--color-warning); border-radius: var(--radius-full);"></div>
+                      </div>
+                      <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-warning);">62%</span>
+                    </div>
+                  </td>
+                  <td style="font-weight: var(--font-weight-semibold);">$38,200</td>
+                  <td>
+                    <div style="display: flex; gap: var(--space-sm);">
+                      <a href="property-edit.html" class="btn btn--sm btn--ghost" title="Edit" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </a>
+                      <a href="../property.html" class="btn btn--sm btn--ghost" title="View" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </a>
+                      <button class="btn btn--sm btn--ghost" title="Delete" style="padding: var(--space-xs); color: var(--color-danger);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 3: Apartment -->
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                      <div class="admin-property-thumb">
+                        <div class="img-placeholder" style="background: linear-gradient(135deg, #8e44ad, #9b59b6); width: 80px; height: 60px; border-radius: var(--radius-md);"></div>
+                      </div>
+                      <div class="admin-property-info">
+                        <h4>Darling Quarter Apartments</h4>
+                        <p>Melbourne, VIC</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--warning">Apartment</span></td>
+                  <td><span class="badge badge--warning">Draft</span></td>
+                  <td>12</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                      <div style="flex: 1; height: 6px; background: var(--color-light); border-radius: var(--radius-full); overflow: hidden;">
+                        <div style="width: 0%; height: 100%; background: var(--color-muted); border-radius: var(--radius-full);"></div>
+                      </div>
+                      <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-muted);">--</span>
+                    </div>
+                  </td>
+                  <td style="font-weight: var(--font-weight-semibold);">$0</td>
+                  <td>
+                    <div style="display: flex; gap: var(--space-sm);">
+                      <a href="property-edit.html" class="btn btn--sm btn--ghost" title="Edit" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </a>
+                      <a href="../property.html" class="btn btn--sm btn--ghost" title="View" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </a>
+                      <button class="btn btn--sm btn--ghost" title="Delete" style="padding: var(--space-xs); color: var(--color-danger);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 4: Pub -->
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                      <div class="admin-property-thumb">
+                        <div class="img-placeholder" style="background: linear-gradient(135deg, #d35400, #e67e22); width: 80px; height: 60px; border-radius: var(--radius-md);"></div>
+                      </div>
+                      <div class="admin-property-info">
+                        <h4>The Royal Arms Pub &amp; Rooms</h4>
+                        <p>Ballarat, VIC</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--danger">Pub</span></td>
+                  <td><span class="badge badge--success">Active</span></td>
+                  <td>8</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                      <div style="flex: 1; height: 6px; background: var(--color-light); border-radius: var(--radius-full); overflow: hidden;">
+                        <div style="width: 74%; height: 100%; background: var(--color-success); border-radius: var(--radius-full);"></div>
+                      </div>
+                      <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-success);">74%</span>
+                    </div>
+                  </td>
+                  <td style="font-weight: var(--font-weight-semibold);">$21,800</td>
+                  <td>
+                    <div style="display: flex; gap: var(--space-sm);">
+                      <a href="property-edit.html" class="btn btn--sm btn--ghost" title="Edit" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </a>
+                      <a href="../property.html" class="btn btn--sm btn--ghost" title="View" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </a>
+                      <button class="btn btn--sm btn--ghost" title="Delete" style="padding: var(--space-xs); color: var(--color-danger);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 5: Caravan Park -->
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                      <div class="admin-property-thumb">
+                        <div class="img-placeholder" style="background: linear-gradient(135deg, #16a085, #1abc9c); width: 80px; height: 60px; border-radius: var(--radius-md);"></div>
+                      </div>
+                      <div class="admin-property-info">
+                        <h4>Sunset Bay Caravan Park</h4>
+                        <p>Byron Bay, NSW</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--success">Caravan Park</span></td>
+                  <td><span class="badge badge--success">Active</span></td>
+                  <td>35</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                      <div style="flex: 1; height: 6px; background: var(--color-light); border-radius: var(--radius-full); overflow: hidden;">
+                        <div style="width: 91%; height: 100%; background: var(--color-success); border-radius: var(--radius-full);"></div>
+                      </div>
+                      <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-success);">91%</span>
+                    </div>
+                  </td>
+                  <td style="font-weight: var(--font-weight-semibold);">$67,300</td>
+                  <td>
+                    <div style="display: flex; gap: var(--space-sm);">
+                      <a href="property-edit.html" class="btn btn--sm btn--ghost" title="Edit" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </a>
+                      <a href="../property.html" class="btn btn--sm btn--ghost" title="View" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </a>
+                      <button class="btn btn--sm btn--ghost" title="Delete" style="padding: var(--space-xs); color: var(--color-danger);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 6: Holiday Park -->
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                      <div class="admin-property-thumb">
+                        <div class="img-placeholder" style="background: linear-gradient(135deg, #2c3e50, #3498db); width: 80px; height: 60px; border-radius: var(--radius-md);"></div>
+                      </div>
+                      <div class="admin-property-info">
+                        <h4>Mountain View Holiday Park</h4>
+                        <p>Blue Mountains, NSW</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge--info">Holiday Park</span></td>
+                  <td><span class="badge badge--success">Active</span></td>
+                  <td>24</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                      <div style="flex: 1; height: 6px; background: var(--color-light); border-radius: var(--radius-full); overflow: hidden;">
+                        <div style="width: 55%; height: 100%; background: var(--color-warning); border-radius: var(--radius-full);"></div>
+                      </div>
+                      <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-warning);">55%</span>
+                    </div>
+                  </td>
+                  <td style="font-weight: var(--font-weight-semibold);">$43,100</td>
+                  <td>
+                    <div style="display: flex; gap: var(--space-sm);">
+                      <a href="property-edit.html" class="btn btn--sm btn--ghost" title="Edit" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </a>
+                      <a href="../property.html" class="btn btn--sm btn--ghost" title="View" style="padding: var(--space-xs);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </a>
+                      <button class="btn btn--sm btn--ghost" title="Delete" style="padding: var(--space-xs); color: var(--color-danger);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="admin-card-footer">
+            <span style="font-size: var(--font-size-sm); color: var(--color-gray);">Showing 1-6 of 6 properties</span>
+            <div style="display: flex; gap: var(--space-sm);">
+              <button class="btn btn--sm btn--outline" disabled style="opacity: 0.5;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+                Previous
+              </button>
+              <button class="btn btn--sm btn-primary" style="min-width: 36px;">1</button>
+              <button class="btn btn--sm btn--outline" disabled style="opacity: 0.5;">
+                Next
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

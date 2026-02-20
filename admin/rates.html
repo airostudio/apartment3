@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rates &amp; Pricing - TrendAccom Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-logo">
+                <span class="logo-text">TrendAccom</span>
+                <span class="logo-badge">Admin</span>
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <!-- MAIN -->
+            <div class="nav-section">
+                <span class="nav-section-title">MAIN</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="properties.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            <span>Properties</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="bookings.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="calendar.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- MANAGEMENT -->
+            <div class="nav-section">
+                <span class="nav-section-title">MANAGEMENT</span>
+                <ul class="nav-list">
+                    <li class="nav-item active">
+                        <a href="rates.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Rates &amp; Pricing</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="guests.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Guests</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reviews.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span>Reviews</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- INTEGRATIONS -->
+            <div class="nav-section">
+                <span class="nav-section-title">INTEGRATIONS</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="ical-sync.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <span>iCal Sync</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="stripe-connect.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Stripe Connect</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM -->
+            <div class="nav-section">
+                <span class="nav-section-title">SYSTEM</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reports.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <main class="admin-main">
+
+        <!-- Top Bar -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html" class="breadcrumb-link">Dashboard</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-current">Rates &amp; Pricing</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <div class="topbar-avatar">
+                    <span class="avatar-initials">AD</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="admin-content">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-info">
+                    <h1 class="page-title">Rates &amp; Pricing</h1>
+                    <p class="page-subtitle">Set seasonal rates and pricing rules</p>
+                </div>
+                <div class="page-header-actions">
+                    <div class="select-wrapper">
+                        <select class="form-select" id="propertySelector">
+                            <option value="all">All Properties</option>
+                            <option value="sunset-villa">Sunset Villa</option>
+                            <option value="ocean-breeze">Ocean Breeze Resort</option>
+                            <option value="mountain-lodge">Mountain Lodge</option>
+                            <option value="city-center">City Center Apartments</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Rate Rule
+                    </button>
+                </div>
+            </div>
+
+            <!-- Base Rates Card -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">
+                        <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        Base Rates
+                    </h2>
+                </div>
+                <div class="admin-card-body">
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Room Type</th>
+                                    <th>Base Rate / Night</th>
+                                    <th>Weekend Rate</th>
+                                    <th>Weekly Discount</th>
+                                    <th>Monthly Discount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="room-type-cell">
+                                            <span class="room-type-dot" style="background-color: #3b82f6;"></span>
+                                            <span class="room-type-name">Standard Room</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="rate-amount">$149</span></td>
+                                    <td><span class="rate-amount">$179</span></td>
+                                    <td><span class="badge badge-success">10% off</span></td>
+                                    <td><span class="badge badge-success">20% off</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="room-type-cell">
+                                            <span class="room-type-dot" style="background-color: #8b5cf6;"></span>
+                                            <span class="room-type-name">Deluxe Suite</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="rate-amount">$289</span></td>
+                                    <td><span class="rate-amount">$329</span></td>
+                                    <td><span class="badge badge-success">10% off</span></td>
+                                    <td><span class="badge badge-success">25% off</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="room-type-cell">
+                                            <span class="room-type-dot" style="background-color: #10b981;"></span>
+                                            <span class="room-type-name">Family Room</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="rate-amount">$199</span></td>
+                                    <td><span class="rate-amount">$229</span></td>
+                                    <td><span class="badge badge-success">15% off</span></td>
+                                    <td><span class="badge badge-success">20% off</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="room-type-cell">
+                                            <span class="room-type-dot" style="background-color: #f59e0b;"></span>
+                                            <span class="room-type-name">Penthouse</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="rate-amount">$489</span></td>
+                                    <td><span class="rate-amount">$559</span></td>
+                                    <td><span class="badge badge-success">5% off</span></td>
+                                    <td><span class="badge badge-success">15% off</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seasonal Rates Card -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">
+                        <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Seasonal Rates
+                    </h2>
+                </div>
+                <div class="admin-card-body">
+                    <div class="rate-cards-grid">
+
+                        <!-- Peak Season -->
+                        <div class="rate-card rate-card--peak">
+                            <div class="rate-card-header">
+                                <div class="rate-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                                </div>
+                                <div class="rate-card-info">
+                                    <h3 class="rate-card-title">Peak Season</h3>
+                                    <span class="rate-card-dates">December &ndash; February</span>
+                                </div>
+                                <div class="rate-card-modifier rate-card-modifier--up">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                                    +30%
+                                </div>
+                            </div>
+                            <div class="rate-card-bar">
+                                <div class="rate-card-bar-fill" style="width: 100%; background: linear-gradient(90deg, #ef4444, #f97316);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Standard Season -->
+                        <div class="rate-card rate-card--standard">
+                            <div class="rate-card-header">
+                                <div class="rate-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="9" x2="12" y2="2"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="8 6 12 2 16 6"/></svg>
+                                </div>
+                                <div class="rate-card-info">
+                                    <h3 class="rate-card-title">Standard Season</h3>
+                                    <span class="rate-card-dates">Mar &ndash; May, Sep &ndash; Nov</span>
+                                </div>
+                                <div class="rate-card-modifier rate-card-modifier--base">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Base rate
+                                </div>
+                            </div>
+                            <div class="rate-card-bar">
+                                <div class="rate-card-bar-fill" style="width: 65%; background: linear-gradient(90deg, #3b82f6, #6366f1);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Off-Peak Season -->
+                        <div class="rate-card rate-card--offpeak">
+                            <div class="rate-card-header">
+                                <div class="rate-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="9" x2="12" y2="2"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="16 18 12 22 8 18"/></svg>
+                                </div>
+                                <div class="rate-card-info">
+                                    <h3 class="rate-card-title">Off-Peak</h3>
+                                    <span class="rate-card-dates">June &ndash; August</span>
+                                </div>
+                                <div class="rate-card-modifier rate-card-modifier--down">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                                    -15%
+                                </div>
+                            </div>
+                            <div class="rate-card-bar">
+                                <div class="rate-card-bar-fill" style="width: 40%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Pricing Rules Card -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">
+                        <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        Special Pricing Rules
+                    </h2>
+                </div>
+                <div class="admin-card-body">
+                    <div class="rules-list">
+
+                        <!-- Rule 1 -->
+                        <div class="rule-item">
+                            <div class="rule-icon rule-icon--discount">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </div>
+                            <div class="rule-details">
+                                <h4 class="rule-name">Minimum 7-Night Stay Discount</h4>
+                                <p class="rule-condition">When guest books 7 or more consecutive nights</p>
+                            </div>
+                            <div class="rule-value">
+                                <span class="badge badge-success">10% discount</span>
+                            </div>
+                            <div class="rule-actions">
+                                <button class="btn-icon-action" title="Edit">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </button>
+                                <button class="btn-icon-action btn-icon-action--danger" title="Delete">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Rule 2 -->
+                        <div class="rule-item">
+                            <div class="rule-icon rule-icon--earlybird">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div class="rule-details">
+                                <h4 class="rule-name">Early Bird Discount</h4>
+                                <p class="rule-condition">When booking is made 60+ days in advance</p>
+                            </div>
+                            <div class="rule-value">
+                                <span class="badge badge-success">15% discount</span>
+                            </div>
+                            <div class="rule-actions">
+                                <button class="btn-icon-action" title="Edit">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </button>
+                                <button class="btn-icon-action btn-icon-action--danger" title="Delete">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Rule 3 -->
+                        <div class="rule-item">
+                            <div class="rule-icon rule-icon--lastminute">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            </div>
+                            <div class="rule-details">
+                                <h4 class="rule-name">Last Minute Discount</h4>
+                                <p class="rule-condition">When booking is made within 3 days of check-in</p>
+                            </div>
+                            <div class="rule-value">
+                                <span class="badge badge-warning">10% discount</span>
+                            </div>
+                            <div class="rule-actions">
+                                <button class="btn-icon-action" title="Edit">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </button>
+                                <button class="btn-icon-action btn-icon-action--danger" title="Delete">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Fees Card -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">
+                        <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Additional Fees
+                    </h2>
+                </div>
+                <div class="admin-card-body">
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Fee Name</th>
+                                    <th>Amount</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="fee-name">Cleaning Fee</span></td>
+                                    <td><span class="rate-amount">$75</span></td>
+                                    <td><span class="badge badge-info">Per Stay</span></td>
+                                    <td>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fee-name">Service Fee</span></td>
+                                    <td><span class="rate-amount">5%</span></td>
+                                    <td><span class="badge badge-info">Per Stay</span></td>
+                                    <td>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fee-name">Extra Guest</span></td>
+                                    <td><span class="rate-amount">$25</span></td>
+                                    <td><span class="badge badge-secondary">Per Night</span></td>
+                                    <td>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fee-name">Pet Fee</span></td>
+                                    <td><span class="rate-amount">$50</span></td>
+                                    <td><span class="badge badge-info">Per Stay</span></td>
+                                    <td>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

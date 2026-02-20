@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - TrendAccom Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="admin-sidebar__header">
+            <a href="dashboard.html" class="admin-sidebar__logo">
+                <span class="admin-sidebar__logo-text">TrendAccom</span>
+                <span class="admin-sidebar__logo-badge">Admin</span>
+            </a>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+            <!-- MAIN Section -->
+            <div class="admin-sidebar__section">
+                <span class="admin-sidebar__section-title">MAIN</span>
+                <ul class="admin-sidebar__menu">
+                    <li class="admin-sidebar__menu-item">
+                        <a href="dashboard.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__menu-item">
+                        <a href="properties.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            <span>Properties</span>
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__menu-item">
+                        <a href="bookings.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__menu-item">
+                        <a href="calendar.html" class="admin-sidebar__menu-link admin-sidebar__menu-link--active">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- MANAGEMENT Section -->
+            <div class="admin-sidebar__section">
+                <span class="admin-sidebar__section-title">MANAGEMENT</span>
+                <ul class="admin-sidebar__menu">
+                    <li class="admin-sidebar__menu-item">
+                        <a href="rates.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Rates &amp; Pricing</span>
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__menu-item">
+                        <a href="guests.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Guests</span>
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__menu-item">
+                        <a href="reviews.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span>Reviews</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- INTEGRATIONS Section -->
+            <div class="admin-sidebar__section">
+                <span class="admin-sidebar__section-title">INTEGRATIONS</span>
+                <ul class="admin-sidebar__menu">
+                    <li class="admin-sidebar__menu-item">
+                        <a href="ical-sync.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <span>iCal Sync</span>
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__menu-item">
+                        <a href="stripe-connect.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Stripe Connect</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM Section -->
+            <div class="admin-sidebar__section">
+                <span class="admin-sidebar__section-title">SYSTEM</span>
+                <ul class="admin-sidebar__menu">
+                    <li class="admin-sidebar__menu-item">
+                        <a href="settings.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__menu-item">
+                        <a href="reports.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+        <!-- Topbar -->
+        <header class="admin-topbar">
+            <div class="admin-topbar__breadcrumb">
+                <a href="dashboard.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
+                <span class="admin-topbar__breadcrumb-separator">&rsaquo;</span>
+                <span class="admin-topbar__breadcrumb-current">Calendar</span>
+            </div>
+            <div class="admin-topbar__actions">
+                <button class="admin-topbar__notification-btn" aria-label="Notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </button>
+                <div class="admin-topbar__user">
+                    <div class="admin-topbar__user-avatar">AD</div>
+                    <span class="admin-topbar__user-name">Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="admin-content">
+
+            <!-- Page Header -->
+            <div class="admin-page-header">
+                <div class="admin-page-header__info">
+                    <h1 class="admin-page-header__title">Availability Calendar</h1>
+                    <p class="admin-page-header__description">Manage availability across all properties</p>
+                </div>
+                <div class="admin-page-header__actions">
+                    <div class="admin-select-wrapper">
+                        <select class="admin-select" id="propertySelector">
+                            <option value="all">All Properties</option>
+                            <option value="oceanfront">Oceanfront Villa Deluxe</option>
+                            <option value="mountain">Mountain Retreat Cabin</option>
+                            <option value="downtown">Downtown Luxury Apartment</option>
+                            <option value="seaside">Seaside Cottage</option>
+                            <option value="lakeside">Lakeside Bungalow</option>
+                        </select>
+                    </div>
+                    <div class="admin-btn-group">
+                        <button class="admin-btn admin-btn--outline admin-btn--sm">Today</button>
+                        <button class="admin-btn admin-btn--primary admin-btn--sm">Month</button>
+                        <button class="admin-btn admin-btn--outline admin-btn--sm">Week</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar -->
+            <div class="admin-card">
+                <div class="admin-calendar">
+
+                    <!-- Calendar Header -->
+                    <div class="admin-calendar__header">
+                        <button class="admin-calendar__nav-btn" aria-label="Previous month">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+                        </button>
+                        <h2 class="admin-calendar__month-year">March 2026</h2>
+                        <button class="admin-calendar__nav-btn" aria-label="Next month">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Weekday Headers -->
+                    <div class="admin-calendar__weekdays">
+                        <div class="admin-calendar__weekday">Mon</div>
+                        <div class="admin-calendar__weekday">Tue</div>
+                        <div class="admin-calendar__weekday">Wed</div>
+                        <div class="admin-calendar__weekday">Thu</div>
+                        <div class="admin-calendar__weekday">Fri</div>
+                        <div class="admin-calendar__weekday">Sat</div>
+                        <div class="admin-calendar__weekday">Sun</div>
+                    </div>
+
+                    <!-- Calendar Grid (March 2026 starts on Sunday, so Mon Feb 23 is first cell) -->
+                    <div class="admin-calendar__grid">
+                        <!-- Week 1: Feb 23 - Mar 1 -->
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">23</span>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">24</span>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">25</span>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">26</span>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">27</span>
+                            <div class="day-booking day-booking--pending">M. Torres</div>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">28</span>
+                            <div class="day-booking day-booking--pending">M. Torres</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">1</span>
+                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
+                        </div>
+
+                        <!-- Week 2: Mar 2 - Mar 8 -->
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">2</span>
+                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">3</span>
+                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">4</span>
+                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">5</span>
+                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">6</span>
+                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">7</span>
+                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">8</span>
+                            <div class="day-booking day-booking--pending">D. Park</div>
+                        </div>
+
+                        <!-- Week 3: Mar 9 - Mar 15 -->
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">9</span>
+                            <div class="day-booking day-booking--pending">D. Park</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">10</span>
+                            <div class="day-booking day-booking--pending">D. Park</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">11</span>
+                            <div class="day-booking day-booking--blocked">Blocked</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">12</span>
+                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">13</span>
+                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">14</span>
+                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">15</span>
+                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
+                        </div>
+
+                        <!-- Week 4: Mar 16 - Mar 22 -->
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">16</span>
+                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">17</span>
+                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">18</span>
+                            <div class="day-booking day-booking--blocked">Blocked</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">19</span>
+                            <div class="day-booking day-booking--blocked">Blocked</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">20</span>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">21</span>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">22</span>
+                        </div>
+
+                        <!-- Week 5: Mar 23 - Mar 29 -->
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">23</span>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">24</span>
+                            <div class="day-booking day-booking--pending">M. Torres</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">25</span>
+                            <div class="day-booking day-booking--pending">M. Torres</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">26</span>
+                            <div class="day-booking day-booking--pending">M. Torres</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">27</span>
+                            <div class="day-booking day-booking--pending">M. Torres</div>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">28</span>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">29</span>
+                        </div>
+
+                        <!-- Week 6: Mar 30 - Apr 5 -->
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">30</span>
+                        </div>
+                        <div class="admin-calendar__day">
+                            <span class="admin-calendar__day-number">31</span>
+                            <div class="day-booking day-booking--blocked">Blocked</div>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">1</span>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">2</span>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">3</span>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">4</span>
+                        </div>
+                        <div class="admin-calendar__day admin-calendar__day--other-month">
+                            <span class="admin-calendar__day-number">5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Legend -->
+            <div class="admin-calendar-legend">
+                <div class="admin-calendar-legend__item">
+                    <span class="admin-calendar-legend__color admin-calendar-legend__color--available"></span>
+                    <span class="admin-calendar-legend__label">Available</span>
+                </div>
+                <div class="admin-calendar-legend__item">
+                    <span class="admin-calendar-legend__color admin-calendar-legend__color--booked"></span>
+                    <span class="admin-calendar-legend__label">Booked</span>
+                </div>
+                <div class="admin-calendar-legend__item">
+                    <span class="admin-calendar-legend__color admin-calendar-legend__color--pending"></span>
+                    <span class="admin-calendar-legend__label">Pending</span>
+                </div>
+                <div class="admin-calendar-legend__item">
+                    <span class="admin-calendar-legend__color admin-calendar-legend__color--blocked"></span>
+                    <span class="admin-calendar-legend__label">Blocked</span>
+                </div>
+            </div>
+
+            <!-- Upcoming Check-ins -->
+            <div class="admin-card">
+                <div class="admin-card__header">
+                    <h2 class="admin-card__title">Upcoming Check-ins</h2>
+                </div>
+                <div class="admin-card__body">
+                    <div class="admin-checkin-list">
+                        <div class="admin-checkin-item">
+                            <div class="admin-checkin-item__date">
+                                <span class="admin-checkin-item__date-day">01</span>
+                                <span class="admin-checkin-item__date-month">Mar</span>
+                            </div>
+                            <div class="admin-checkin-item__details">
+                                <span class="admin-checkin-item__guest">James Davidson</span>
+                                <span class="admin-checkin-item__property">Oceanfront Villa Deluxe</span>
+                            </div>
+                            <div class="admin-checkin-item__stay">
+                                <span class="admin-checkin-item__nights">6 nights</span>
+                                <span class="admin-checkin-item__checkout">Check-out: Mar 7</span>
+                            </div>
+                            <div class="admin-checkin-item__status">
+                                <span class="admin-badge admin-badge--confirmed">Confirmed</span>
+                            </div>
+                            <div class="admin-checkin-item__actions">
+                                <button class="admin-btn admin-btn--outline admin-btn--sm">View Details</button>
+                            </div>
+                        </div>
+                        <div class="admin-checkin-item">
+                            <div class="admin-checkin-item__date">
+                                <span class="admin-checkin-item__date-day">05</span>
+                                <span class="admin-checkin-item__date-month">Mar</span>
+                            </div>
+                            <div class="admin-checkin-item__details">
+                                <span class="admin-checkin-item__guest">Robert Chen</span>
+                                <span class="admin-checkin-item__property">Downtown Luxury Apartment</span>
+                            </div>
+                            <div class="admin-checkin-item__stay">
+                                <span class="admin-checkin-item__nights">5 nights</span>
+                                <span class="admin-checkin-item__checkout">Check-out: Mar 10</span>
+                            </div>
+                            <div class="admin-checkin-item__status">
+                                <span class="admin-badge admin-badge--confirmed">Confirmed</span>
+                            </div>
+                            <div class="admin-checkin-item__actions">
+                                <button class="admin-btn admin-btn--outline admin-btn--sm">View Details</button>
+                            </div>
+                        </div>
+                        <div class="admin-checkin-item">
+                            <div class="admin-checkin-item__date">
+                                <span class="admin-checkin-item__date-day">08</span>
+                                <span class="admin-checkin-item__date-month">Mar</span>
+                            </div>
+                            <div class="admin-checkin-item__details">
+                                <span class="admin-checkin-item__guest">David Park</span>
+                                <span class="admin-checkin-item__property">Mountain Retreat Cabin</span>
+                            </div>
+                            <div class="admin-checkin-item__stay">
+                                <span class="admin-checkin-item__nights">3 nights</span>
+                                <span class="admin-checkin-item__checkout">Check-out: Mar 11</span>
+                            </div>
+                            <div class="admin-checkin-item__status">
+                                <span class="admin-badge admin-badge--pending">Pending</span>
+                            </div>
+                            <div class="admin-checkin-item__actions">
+                                <button class="admin-btn admin-btn--outline admin-btn--sm">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

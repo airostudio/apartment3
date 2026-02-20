@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Accommodation - TrendAccom</title>
+  <meta name="description" content="Browse and filter hotels, apartments, holiday parks and more. Find your perfect accommodation with TrendAccom.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* Search Page Layout */
+    .search-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+
+    @media (max-width: 968px) {
+      .search-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Filter Sidebar */
+    .filter-sidebar {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-section {
+      padding-bottom: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .filter-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .filter-section h4 {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-dark);
+      margin-bottom: var(--space-md);
+    }
+
+    .filter-checkbox {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-sm);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      color: var(--color-text);
+    }
+
+    .filter-checkbox:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      border-radius: var(--radius-sm);
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    .filter-checkbox span {
+      flex: 1;
+    }
+
+    .filter-checkbox .count {
+      color: var(--color-gray);
+      font-size: var(--font-size-xs);
+    }
+
+    /* Price Range */
+    .price-range-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--font-size-sm);
+      color: var(--color-gray);
+      margin-bottom: var(--space-sm);
+    }
+
+    .price-range-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--color-border);
+      outline: none;
+    }
+
+    .price-range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      cursor: pointer;
+      border: 3px solid var(--color-white);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .price-range-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      cursor: pointer;
+      border: 3px solid var(--color-white);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    /* Guest Select */
+    .filter-select {
+      width: 100%;
+      padding: var(--space-sm) var(--space-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      font-family: inherit;
+      color: var(--color-text);
+      background: var(--color-white);
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+    }
+
+    /* Search Results Header */
+    .search-results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .search-results-count {
+      font-size: var(--font-size-md);
+      color: var(--color-text);
+    }
+
+    .search-results-count strong {
+      color: var(--color-dark);
+    }
+
+    .sort-options {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .sort-options label {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray);
+      white-space: nowrap;
+    }
+
+    .sort-select {
+      padding: var(--space-xs) var(--space-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      font-family: inherit;
+      color: var(--color-text);
+      background: var(--color-white);
+      cursor: pointer;
+    }
+
+    .sort-select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    /* Search Results Grid */
+    .search-results-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+
+    @media (max-width: 768px) {
+      .search-results-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Hero Small */
+    .hero--small {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      padding: calc(80px + var(--space-3xl)) 0 var(--space-2xl);
+      text-align: center;
+      color: var(--color-white);
+    }
+
+    .hero--small h1 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-3xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero--small p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: var(--font-size-md);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-top: var(--space-2xl);
+    }
+
+    .pagination-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      height: 40px;
+      padding: 0 var(--space-sm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-white);
+      color: var(--color-text);
+      font-size: var(--font-size-sm);
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .pagination-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      background: rgba(44, 62, 80, 0.04);
+    }
+
+    .pagination-btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .pagination-btn:disabled,
+    .pagination-btn.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .pagination-ellipsis {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      color: var(--color-gray);
+      font-size: var(--font-size-sm);
+    }
+
+    /* Filter toggle for mobile */
+    .filter-toggle-btn {
+      display: none;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      font-family: inherit;
+      color: var(--color-text);
+      cursor: pointer;
+    }
+
+    @media (max-width: 968px) {
+      .filter-toggle-btn {
+        display: inline-flex;
+      }
+
+      .filter-sidebar {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        border-radius: 0;
+        overflow-y: auto;
+        padding-top: var(--space-2xl);
+      }
+
+      .filter-sidebar.is-open {
+        display: block;
+      }
+    }
+
+    .filter-clear-btn {
+      display: inline-block;
+      font-size: var(--font-size-xs);
+      color: var(--color-primary);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
+      padding: 0;
+      text-decoration: underline;
+    }
+
+    .filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .filter-header h3 {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+    }
+
+    /* Amenity grid for checkboxes */
+    .amenity-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xs) var(--space-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header site-header--transparent" id="siteHeader">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2L2 14h4v14h8v-8h4v8h8V14h4L16 2z" fill="currentColor"/>
+        </svg>
+        TrendAccom
+      </a>
+      <nav class="nav-main">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="search.html" class="nav-link nav-link--active">Browse</a>
+        <a href="search.html?type=hotel" class="nav-link">Hotels</a>
+        <a href="search.html?type=apartment" class="nav-link">Apartments</a>
+        <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="admin/index.html" class="btn btn--sm btn--outline-white">List Your Property</a>
+        <a href="admin/index.html" class="btn btn--sm btn--ghost" style="color: white;">Sign In</a>
+      </div>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="search.html" class="nav-link nav-link--active">Browse All</a>
+    <a href="search.html?type=hotel" class="nav-link">Hotels</a>
+    <a href="search.html?type=apartment" class="nav-link">Apartments</a>
+    <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
+    <a href="admin/index.html" class="btn btn--primary btn--block">List Your Property</a>
+    <a href="admin/index.html" class="btn btn--outline btn--block">Sign In</a>
+  </nav>
+
+  <!-- Hero Small -->
+  <section class="hero--small">
+    <div class="container">
+      <h1>Browse Accommodation</h1>
+      <p>Discover and filter from hundreds of properties across the country</p>
+    </div>
+  </section>
+
+  <!-- Search & Filter Section -->
+  <section class="section">
+    <div class="container">
+      <div class="search-layout">
+
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar" id="filterSidebar">
+          <div class="filter-header">
+            <h3>Filters</h3>
+            <button class="filter-clear-btn" id="clearFilters">Clear All</button>
+          </div>
+
+          <!-- Property Type -->
+          <div class="filter-section">
+            <h4>Property Type</h4>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="type" value="hotel">
+              <span>Hotel</span>
+              <span class="count">(124)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="type" value="motel">
+              <span>Motel</span>
+              <span class="count">(56)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="type" value="apartment">
+              <span>Apartment</span>
+              <span class="count">(89)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="type" value="pub-inn">
+              <span>Pub / Inn</span>
+              <span class="count">(34)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="type" value="caravan-park">
+              <span>Caravan Park</span>
+              <span class="count">(42)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="type" value="holiday-park">
+              <span>Holiday Park</span>
+              <span class="count">(67)</span>
+            </label>
+          </div>
+
+          <!-- Price Range -->
+          <div class="filter-section">
+            <h4>Price Range</h4>
+            <div class="price-range-display">
+              <span id="priceMin">$0</span>
+              <span id="priceMax">$500+</span>
+            </div>
+            <input type="range" class="price-range-slider" id="priceRange" min="0" max="500" value="500" step="10">
+          </div>
+
+          <!-- Star Rating -->
+          <div class="filter-section">
+            <h4>Star Rating</h4>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="rating" value="5">
+              <span>5 Stars</span>
+              <span class="count">(45)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="rating" value="4">
+              <span>4 Stars</span>
+              <span class="count">(78)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="rating" value="3">
+              <span>3 Stars</span>
+              <span class="count">(92)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="rating" value="2">
+              <span>2 Stars</span>
+              <span class="count">(51)</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" name="rating" value="1">
+              <span>1 Star</span>
+              <span class="count">(18)</span>
+            </label>
+          </div>
+
+          <!-- Amenities -->
+          <div class="filter-section">
+            <h4>Amenities</h4>
+            <div class="amenity-grid">
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="wifi">
+                <span>WiFi</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="pool">
+                <span>Pool</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="parking">
+                <span>Parking</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="kitchen">
+                <span>Kitchen</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="air-conditioning">
+                <span>Air Con</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="pet-friendly">
+                <span>Pet Friendly</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="gym">
+                <span>Gym</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="restaurant">
+                <span>Restaurant</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="laundry">
+                <span>Laundry</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" name="amenity" value="accessible">
+                <span>Accessible</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Guest Count -->
+          <div class="filter-section">
+            <h4>Guests</h4>
+            <select class="filter-select" id="guestFilter">
+              <option value="">Any number of guests</option>
+              <option value="1">1 Guest</option>
+              <option value="2">2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5 Guests</option>
+              <option value="6">6+ Guests</option>
+            </select>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="search-results">
+          <!-- Results Header -->
+          <div class="search-results-header">
+            <div style="display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap;">
+              <button class="filter-toggle-btn" id="filterToggle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></svg>
+                Filters
+              </button>
+              <p class="search-results-count">Showing <strong>1 - 6</strong> of <strong>412</strong> properties</p>
+            </div>
+            <div class="sort-options">
+              <label for="sortSelect">Sort by:</label>
+              <select class="sort-select" id="sortSelect">
+                <option value="recommended">Recommended</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Rating</option>
+                <option value="newest">Newest</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Results Grid -->
+          <div class="search-results-grid" id="searchResultsGrid">
+
+            <!-- Property Card 1 - Hotel -->
+            <div class="card">
+              <div class="card-img">
+                <div class="img-placeholder img-placeholder--hotel">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M3 7v14M21 7v14M6 11h4v4H6zM14 11h4v4h-4zM10 3h4v4h-4z"/></svg>
+                </div>
+                <span class="card-badge">Featured</span>
+                <button class="card-favorite" aria-label="Add to favorites">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="card-type">Hotel</div>
+                <h3 class="card-title"><a href="property.html?id=1">The Grand Harbour Hotel</a></h3>
+                <div class="card-location">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Sydney Harbour, NSW
+                </div>
+                <div class="card-amenities">
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
+                    2 Beds
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
+                    1 Bath
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                    4 Guests
+                  </span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-rating">
+                    <span class="stars">
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <span class="count">(128)</span>
+                  </div>
+                  <div class="card-price">
+                    <span class="amount">$289</span>
+                    <span class="period">/ night</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Property Card 2 - Apartment -->
+            <div class="card">
+              <div class="card-img">
+                <div class="img-placeholder img-placeholder--apartment">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h3v3H7zM14 7h3v3h-3zM7 14h3v3H7zM14 14h3v3h-3z"/></svg>
+                </div>
+                <span class="card-badge" style="background: var(--color-accent);">Popular</span>
+                <button class="card-favorite" aria-label="Add to favorites">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="card-type">Apartment</div>
+                <h3 class="card-title"><a href="property.html?id=2">Bondi Beach Luxury Apartment</a></h3>
+                <div class="card-location">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Bondi Beach, NSW
+                </div>
+                <div class="card-amenities">
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
+                    3 Beds
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
+                    2 Bath
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                    6 Guests
+                  </span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-rating">
+                    <span class="stars">
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <span class="count">(94)</span>
+                  </div>
+                  <div class="card-price">
+                    <span class="amount">$195</span>
+                    <span class="period">/ night</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Property Card 3 - Motel -->
+            <div class="card">
+              <div class="card-img">
+                <div class="img-placeholder" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/><path d="M9 9h1M9 13h1M9 17h1"/></svg>
+                </div>
+                <button class="card-favorite" aria-label="Add to favorites">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="card-type">Motel</div>
+                <h3 class="card-title"><a href="property.html?id=4">Pacific Highway Motor Inn</a></h3>
+                <div class="card-location">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Coffs Harbour, NSW
+                </div>
+                <div class="card-amenities">
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
+                    1 Bed
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
+                    1 Bath
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                    2 Guests
+                  </span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-rating">
+                    <span class="stars">
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <span class="count">(42)</span>
+                  </div>
+                  <div class="card-price">
+                    <span class="amount">$89</span>
+                    <span class="period">/ night</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Property Card 4 - Pub/Inn -->
+            <div class="card">
+              <div class="card-img">
+                <div class="img-placeholder" style="background: linear-gradient(135deg, #d35400, #e67e22);">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M9 21V10L12 3l3 7v11"/><path d="M5 21V14h4M15 21V14h4"/></svg>
+                </div>
+                <span class="card-badge" style="background: var(--color-secondary);">New</span>
+                <button class="card-favorite" aria-label="Add to favorites">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="card-type">Pub / Inn</div>
+                <h3 class="card-title"><a href="property.html?id=5">The Heritage Arms Inn</a></h3>
+                <div class="card-location">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Mudgee, NSW
+                </div>
+                <div class="card-amenities">
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
+                    1 Bed
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
+                    1 Bath
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                    2 Guests
+                  </span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-rating">
+                    <span class="stars">
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <span class="count">(36)</span>
+                  </div>
+                  <div class="card-price">
+                    <span class="amount">$135</span>
+                    <span class="period">/ night</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Property Card 5 - Caravan Park -->
+            <div class="card">
+              <div class="card-img">
+                <div class="img-placeholder" style="background: linear-gradient(135deg, #00b894, #55efc4);">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="16" height="10" rx="2"/><path d="M18 18h2a2 2 0 0 0 2-2v-4l-3-4h-3"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                </div>
+                <button class="card-favorite" aria-label="Add to favorites">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="card-type">Caravan Park</div>
+                <h3 class="card-title"><a href="property.html?id=6">Byron Bay Beachside Caravan Park</a></h3>
+                <div class="card-location">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Byron Bay, NSW
+                </div>
+                <div class="card-amenities">
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
+                    2 Beds
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
+                    1 Bath
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                    4 Guests
+                  </span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-rating">
+                    <span class="stars">
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <span class="count">(63)</span>
+                  </div>
+                  <div class="card-price">
+                    <span class="amount">$75</span>
+                    <span class="period">/ night</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Property Card 6 - Holiday Park -->
+            <div class="card">
+              <div class="card-img">
+                <div class="img-placeholder img-placeholder--cabin">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18L12 3 3 21zM9 21v-6h6v6"/></svg>
+                </div>
+                <span class="card-badge" style="background: var(--color-accent);">Popular</span>
+                <button class="card-favorite" aria-label="Add to favorites">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="card-type">Holiday Park</div>
+                <h3 class="card-title"><a href="property.html?id=7">Lake Macquarie Holiday Cabins</a></h3>
+                <div class="card-location">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Lake Macquarie, NSW
+                </div>
+                <div class="card-amenities">
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
+                    2 Beds
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
+                    1 Bath
+                  </span>
+                  <span class="card-amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                    5 Guests
+                  </span>
+                </div>
+                <div class="card-footer">
+                  <div class="card-rating">
+                    <span class="stars">
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <span class="count">(87)</span>
+                  </div>
+                  <div class="card-price">
+                    <span class="amount">$165</span>
+                    <span class="period">/ night</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Pagination -->
+          <nav class="pagination" aria-label="Search results pages">
+            <a href="#" class="pagination-btn disabled" aria-label="Previous page">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </a>
+            <a href="#" class="pagination-btn active" aria-current="page">1</a>
+            <a href="#" class="pagination-btn">2</a>
+            <a href="#" class="pagination-btn">3</a>
+            <span class="pagination-ellipsis">...</span>
+            <a href="#" class="pagination-btn">12</a>
+            <a href="#" class="pagination-btn">13</a>
+            <a href="#" class="pagination-btn" aria-label="Next page">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </nav>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2L2 14h4v14h8v-8h4v8h8V14h4L16 2z" fill="currentColor"/>
+            </svg>
+            TrendAccom
+          </a>
+          <p>Your trusted platform for finding and booking the perfect accommodation. From luxury hotels to cosy retreats, we connect travellers with unforgettable stays.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Explore</h4>
+          <div class="footer-links">
+            <a href="search.html?type=hotel">Hotels</a>
+            <a href="search.html?type=apartment">Apartments</a>
+            <a href="search.html?type=motel">Motels</a>
+            <a href="search.html?type=pub">Pubs & Inns</a>
+            <a href="search.html?type=caravan-park">Caravan Parks</a>
+            <a href="search.html?type=holiday-park">Holiday Parks</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Careers</a>
+            <a href="#">Press</a>
+            <a href="#">Blog</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Support</h4>
+          <div class="footer-links">
+            <a href="#">Help Centre</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Cancellation Policy</a>
+            <a href="admin/index.html">Property Owners</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 TrendAccom. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" aria-label="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+</body>
+</html>

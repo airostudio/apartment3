@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guests - TrendAccom Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-logo">
+                <span class="logo-text">TrendAccom</span>
+                <span class="logo-badge">Admin</span>
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <!-- MAIN -->
+            <div class="nav-section">
+                <span class="nav-section-title">MAIN</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="properties.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            <span>Properties</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="bookings.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="calendar.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- MANAGEMENT -->
+            <div class="nav-section">
+                <span class="nav-section-title">MANAGEMENT</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="rates.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Rates &amp; Pricing</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="guests.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Guests</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reviews.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span>Reviews</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- INTEGRATIONS -->
+            <div class="nav-section">
+                <span class="nav-section-title">INTEGRATIONS</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="ical-sync.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <span>iCal Sync</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="stripe-connect.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Stripe Connect</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM -->
+            <div class="nav-section">
+                <span class="nav-section-title">SYSTEM</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reports.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <main class="admin-main">
+
+        <!-- Top Bar -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html" class="breadcrumb-link">Dashboard</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-current">Guests</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <div class="topbar-avatar">
+                    <span class="avatar-initials">AD</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="admin-content">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-info">
+                    <h1 class="page-title">Guest Management</h1>
+                    <p class="page-subtitle">View and manage guest information</p>
+                </div>
+                <div class="page-header-actions">
+                    <div class="search-input-wrapper">
+                        <svg class="search-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" class="form-input search-input" placeholder="Search guests..." id="guestSearch">
+                    </div>
+                    <button class="btn btn-secondary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Guest Table Card -->
+            <div class="admin-card">
+                <div class="admin-card-body">
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Guest</th>
+                                    <th>Phone</th>
+                                    <th>Total Bookings</th>
+                                    <th>Total Spent</th>
+                                    <th>Last Stay</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Guest 1 -->
+                                <tr>
+                                    <td>
+                                        <div class="guest-cell">
+                                            <div class="guest-avatar" style="background-color: #3b82f6;">
+                                                <span class="avatar-initials">JD</span>
+                                            </div>
+                                            <div class="guest-info">
+                                                <span class="guest-name">James Davidson</span>
+                                                <span class="guest-email">james.davidson@email.com</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>+1 (555) 012-3456</td>
+                                    <td><span class="booking-count">12</span></td>
+                                    <td><span class="amount-spent">$8,420</span></td>
+                                    <td>Feb 10, 2026</td>
+                                    <td><span class="badge badge-vip">VIP</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="View">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Email">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guest 2 -->
+                                <tr>
+                                    <td>
+                                        <div class="guest-cell">
+                                            <div class="guest-avatar" style="background-color: #8b5cf6;">
+                                                <span class="avatar-initials">SM</span>
+                                            </div>
+                                            <div class="guest-info">
+                                                <span class="guest-name">Sarah Mitchell</span>
+                                                <span class="guest-email">sarah.mitchell@email.com</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>+1 (555) 234-5678</td>
+                                    <td><span class="booking-count">8</span></td>
+                                    <td><span class="amount-spent">$5,230</span></td>
+                                    <td>Jan 28, 2026</td>
+                                    <td><span class="badge badge-vip">VIP</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="View">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Email">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guest 3 -->
+                                <tr>
+                                    <td>
+                                        <div class="guest-cell">
+                                            <div class="guest-avatar" style="background-color: #10b981;">
+                                                <span class="avatar-initials">RK</span>
+                                            </div>
+                                            <div class="guest-info">
+                                                <span class="guest-name">Robert Kim</span>
+                                                <span class="guest-email">robert.kim@email.com</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>+1 (555) 345-6789</td>
+                                    <td><span class="booking-count">5</span></td>
+                                    <td><span class="amount-spent">$3,150</span></td>
+                                    <td>Jan 15, 2026</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="View">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Email">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guest 4 -->
+                                <tr>
+                                    <td>
+                                        <div class="guest-cell">
+                                            <div class="guest-avatar" style="background-color: #f59e0b;">
+                                                <span class="avatar-initials">EW</span>
+                                            </div>
+                                            <div class="guest-info">
+                                                <span class="guest-name">Emily Watson</span>
+                                                <span class="guest-email">emily.watson@email.com</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>+1 (555) 456-7890</td>
+                                    <td><span class="booking-count">3</span></td>
+                                    <td><span class="amount-spent">$1,890</span></td>
+                                    <td>Dec 22, 2025</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="View">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Email">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guest 5 -->
+                                <tr>
+                                    <td>
+                                        <div class="guest-cell">
+                                            <div class="guest-avatar" style="background-color: #ef4444;">
+                                                <span class="avatar-initials">MC</span>
+                                            </div>
+                                            <div class="guest-info">
+                                                <span class="guest-name">Michael Chen</span>
+                                                <span class="guest-email">michael.chen@email.com</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>+1 (555) 567-8901</td>
+                                    <td><span class="booking-count">7</span></td>
+                                    <td><span class="amount-spent">$4,670</span></td>
+                                    <td>Feb 05, 2026</td>
+                                    <td><span class="badge badge-vip">VIP</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="View">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Email">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guest 6 -->
+                                <tr>
+                                    <td>
+                                        <div class="guest-cell">
+                                            <div class="guest-avatar" style="background-color: #6366f1;">
+                                                <span class="avatar-initials">LP</span>
+                                            </div>
+                                            <div class="guest-info">
+                                                <span class="guest-name">Lisa Patel</span>
+                                                <span class="guest-email">lisa.patel@email.com</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>+1 (555) 678-9012</td>
+                                    <td><span class="booking-count">2</span></td>
+                                    <td><span class="amount-spent">$980</span></td>
+                                    <td>Nov 18, 2025</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon-action" title="View">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Edit">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            </button>
+                                            <button class="btn-icon-action" title="Email">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="table-pagination">
+                        <div class="pagination-info">
+                            Showing <strong>1</strong> to <strong>6</strong> of <strong>48</strong> guests
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn" disabled>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                            </button>
+                            <button class="pagination-btn pagination-btn--active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <span class="pagination-ellipsis">...</span>
+                            <button class="pagination-btn">8</button>
+                            <button class="pagination-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

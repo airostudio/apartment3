@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Stay - TrendAccom</title>
+  <meta name="description" content="Complete your accommodation booking with TrendAccom. Secure, simple and fast.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── Progress Steps ── */
+    .progress-steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      padding: var(--space-xl) 0 var(--space-lg);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-text-muted, #999);
+      position: relative;
+    }
+    .progress-step__number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-gray-200, #e5e7eb);
+      color: var(--color-text-muted, #999);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: var(--font-size-sm);
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    .progress-step--active .progress-step__number {
+      background: var(--color-primary, #2563eb);
+      color: var(--color-white, #fff);
+    }
+    .progress-step--active {
+      color: var(--color-primary, #2563eb);
+    }
+    .progress-step--completed .progress-step__number {
+      background: var(--color-success, #22c55e);
+      color: var(--color-white, #fff);
+    }
+    .progress-step--completed {
+      color: var(--color-success, #22c55e);
+    }
+    .progress-connector {
+      width: 80px;
+      height: 2px;
+      background: var(--color-gray-200, #e5e7eb);
+      margin: 0 var(--space-sm);
+      flex-shrink: 0;
+    }
+    .progress-connector--done {
+      background: var(--color-success, #22c55e);
+    }
+
+    /* ── Booking Layout ── */
+    .booking-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: var(--space-2xl);
+      align-items: start;
+      padding-bottom: var(--space-3xl);
+    }
+    @media (max-width: 1024px) {
+      .booking-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Form Sections ── */
+    .booking-form-section {
+      background: var(--color-white, #fff);
+      border: 1px solid var(--color-gray-200, #e5e7eb);
+      border-radius: var(--radius-lg, 12px);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+    .booking-form-section__title {
+      font-family: 'Playfair Display', serif;
+      font-size: var(--font-size-xl, 1.25rem);
+      font-weight: 600;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 2px solid var(--color-gray-100, #f3f4f6);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .form-group {
+      margin-bottom: var(--space-md);
+    }
+    .form-group label {
+      display: block;
+      font-size: var(--font-size-sm, 0.875rem);
+      font-weight: 500;
+      color: var(--color-text, #1f2937);
+      margin-bottom: var(--space-xs);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--color-gray-300, #d1d5db);
+      border-radius: var(--radius-md, 8px);
+      font-size: var(--font-size-base, 1rem);
+      font-family: 'Inter', sans-serif;
+      color: var(--color-text, #1f2937);
+      background: var(--color-white, #fff);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--color-primary, #2563eb);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* ── Additional Options ── */
+    .addon-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-md);
+      border: 1px solid var(--color-gray-200, #e5e7eb);
+      border-radius: var(--radius-md, 8px);
+      margin-bottom: var(--space-sm);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .addon-option:hover {
+      border-color: var(--color-primary, #2563eb);
+      background: rgba(37, 99, 235, 0.02);
+    }
+    .addon-option__left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .addon-option input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--color-primary, #2563eb);
+      cursor: pointer;
+    }
+    .addon-option__label {
+      font-weight: 500;
+      color: var(--color-text, #1f2937);
+    }
+    .addon-option__desc {
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text-muted, #6b7280);
+      margin-top: 2px;
+    }
+    .addon-option__price {
+      font-weight: 600;
+      color: var(--color-primary, #2563eb);
+      white-space: nowrap;
+    }
+
+    /* ── Summary Sidebar ── */
+    .booking-summary {
+      background: var(--color-white, #fff);
+      border: 1px solid var(--color-gray-200, #e5e7eb);
+      border-radius: var(--radius-lg, 12px);
+      padding: var(--space-xl);
+      position: sticky;
+      top: 100px;
+    }
+    .booking-summary__property {
+      font-family: 'Playfair Display', serif;
+      font-size: var(--font-size-xl, 1.25rem);
+      font-weight: 600;
+      margin-bottom: var(--space-md);
+    }
+    .booking-summary__rating {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text-muted, #6b7280);
+      margin-bottom: var(--space-lg);
+    }
+    .booking-summary__rating svg {
+      color: #f59e0b;
+    }
+    .summary-divider {
+      height: 1px;
+      background: var(--color-gray-200, #e5e7eb);
+      margin: var(--space-md) 0;
+    }
+    .summary-detail {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text, #1f2937);
+      margin-bottom: var(--space-sm);
+    }
+    .summary-detail svg {
+      color: var(--color-text-muted, #6b7280);
+      flex-shrink: 0;
+    }
+    .price-breakdown {
+      margin-top: var(--space-md);
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--font-size-sm, 0.875rem);
+      padding: var(--space-xs) 0;
+      color: var(--color-text, #1f2937);
+    }
+    .price-row--total {
+      font-size: var(--font-size-md, 1.125rem);
+      font-weight: 700;
+      padding-top: var(--space-md);
+      border-top: 2px solid var(--color-gray-800, #1f2937);
+      margin-top: var(--space-sm);
+    }
+    .summary-cta {
+      margin-top: var(--space-lg);
+    }
+    .summary-cta .btn {
+      width: 100%;
+      padding: 16px;
+      font-size: var(--font-size-md, 1.125rem);
+    }
+    .summary-note {
+      text-align: center;
+      font-size: var(--font-size-xs, 0.75rem);
+      color: var(--color-text-muted, #6b7280);
+      margin-top: var(--space-sm);
+    }
+
+    /* ── Page top offset ── */
+    .booking-page-content {
+      padding-top: 100px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2L2 14h4v14h8v-8h4v8h8V14h4L16 2z" fill="currentColor"/>
+        </svg>
+        TrendAccom
+      </a>
+      <nav class="nav-main">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="search.html" class="nav-link">Browse</a>
+        <a href="search.html?type=hotel" class="nav-link">Hotels</a>
+        <a href="search.html?type=apartment" class="nav-link">Apartments</a>
+        <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="admin/index.html" class="btn btn--sm btn--outline">List Your Property</a>
+        <a href="admin/index.html" class="btn btn--sm btn--ghost">Sign In</a>
+      </div>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="search.html" class="nav-link">Browse All</a>
+    <a href="search.html?type=hotel" class="nav-link">Hotels</a>
+    <a href="search.html?type=apartment" class="nav-link">Apartments</a>
+    <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
+    <a href="admin/index.html" class="btn btn--primary btn--block">List Your Property</a>
+    <a href="admin/index.html" class="btn btn--outline btn--block">Sign In</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="booking-page-content">
+    <div class="container">
+
+      <!-- Progress Steps -->
+      <div class="progress-steps">
+        <div class="progress-step progress-step--active">
+          <span class="progress-step__number">1</span>
+          <span class="progress-step__label">Details</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step">
+          <span class="progress-step__number">2</span>
+          <span class="progress-step__label">Payment</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step">
+          <span class="progress-step__number">3</span>
+          <span class="progress-step__label">Confirmation</span>
+        </div>
+      </div>
+
+      <!-- Two Column Layout -->
+      <div class="booking-layout">
+
+        <!-- Left Column: Booking Form -->
+        <div class="booking-form-column">
+          <form id="bookingForm" novalidate>
+
+            <!-- Guest Details -->
+            <div class="booking-form-section">
+              <h2 class="booking-form-section__title">Guest Details</h2>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">First Name *</label>
+                  <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name *</label>
+                  <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email Address *</label>
+                  <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number *</label>
+                  <input type="tel" id="phone" name="phone" placeholder="+61 4XX XXX XXX" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="specialRequests">Special Requests</label>
+                <textarea id="specialRequests" name="specialRequests" placeholder="Any special requirements? E.g. extra pillows, ground floor room, dietary needs..."></textarea>
+              </div>
+            </div>
+
+            <!-- Stay Details -->
+            <div class="booking-form-section">
+              <h2 class="booking-form-section__title">Stay Details</h2>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="checkinDate">Check-in Date *</label>
+                  <input type="date" id="checkinDate" name="checkinDate" required>
+                </div>
+                <div class="form-group">
+                  <label for="checkoutDate">Check-out Date *</label>
+                  <input type="date" id="checkoutDate" name="checkoutDate" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="numAdults">Number of Adults *</label>
+                  <select id="numAdults" name="numAdults" required>
+                    <option value="1">1 Adult</option>
+                    <option value="2" selected>2 Adults</option>
+                    <option value="3">3 Adults</option>
+                    <option value="4">4 Adults</option>
+                    <option value="5">5 Adults</option>
+                    <option value="6">6 Adults</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="numChildren">Number of Children</label>
+                  <select id="numChildren" name="numChildren">
+                    <option value="0" selected>No Children</option>
+                    <option value="1">1 Child</option>
+                    <option value="2">2 Children</option>
+                    <option value="3">3 Children</option>
+                    <option value="4">4 Children</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Options -->
+            <div class="booking-form-section">
+              <h2 class="booking-form-section__title">Additional Options</h2>
+
+              <label class="addon-option">
+                <div class="addon-option__left">
+                  <input type="checkbox" id="earlyCheckin" name="earlyCheckin" value="30">
+                  <div>
+                    <div class="addon-option__label">Early Check-in</div>
+                    <div class="addon-option__desc">Arrive from 10:00 AM instead of the standard 2:00 PM</div>
+                  </div>
+                </div>
+                <span class="addon-option__price">+ $30</span>
+              </label>
+
+              <label class="addon-option">
+                <div class="addon-option__left">
+                  <input type="checkbox" id="lateCheckout" name="lateCheckout" value="30">
+                  <div>
+                    <div class="addon-option__label">Late Checkout</div>
+                    <div class="addon-option__desc">Extend your stay until 4:00 PM instead of the standard 11:00 AM</div>
+                  </div>
+                </div>
+                <span class="addon-option__price">+ $30</span>
+              </label>
+
+              <label class="addon-option">
+                <div class="addon-option__left">
+                  <input type="checkbox" id="airportTransfer" name="airportTransfer" value="85">
+                  <div>
+                    <div class="addon-option__label">Airport Transfer</div>
+                    <div class="addon-option__desc">Private return transfer from the airport to the property</div>
+                  </div>
+                </div>
+                <span class="addon-option__price">+ $85</span>
+              </label>
+
+              <label class="addon-option">
+                <div class="addon-option__left">
+                  <input type="checkbox" id="breakfastPackage" name="breakfastPackage" value="25">
+                  <div>
+                    <div class="addon-option__label">Breakfast Package</div>
+                    <div class="addon-option__desc">Full buffet breakfast for all guests, per night</div>
+                  </div>
+                </div>
+                <span class="addon-option__price">+ $25 /night</span>
+              </label>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Right Column: Summary Sidebar -->
+        <aside class="booking-summary">
+          <div class="booking-summary__property">The Grand Harbour Hotel</div>
+          <div class="booking-summary__rating">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <strong>4.8</strong> (246 reviews) &middot; Darling Harbour, Sydney
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-detail">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span><strong>Check-in:</strong> Sat, 14 Mar 2026</span>
+          </div>
+          <div class="summary-detail">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span><strong>Check-out:</strong> Wed, 18 Mar 2026</span>
+          </div>
+          <div class="summary-detail">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span><strong>Guests:</strong> 2 Adults, 0 Children</span>
+          </div>
+          <div class="summary-detail">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>4 nights &middot; Deluxe Harbour View Room</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="price-breakdown">
+            <div class="price-row">
+              <span>$289 x 4 nights</span>
+              <span>$1,156.00</span>
+            </div>
+            <div class="price-row">
+              <span>Cleaning fee</span>
+              <span>$75.00</span>
+            </div>
+            <div class="price-row">
+              <span>Service fee</span>
+              <span>$98.00</span>
+            </div>
+            <div class="price-row">
+              <span>Taxes &amp; levies</span>
+              <span>$132.90</span>
+            </div>
+            <div class="price-row price-row--total">
+              <span>Total</span>
+              <span>$1,461.90</span>
+            </div>
+          </div>
+
+          <div class="summary-cta">
+            <a href="checkout.html" class="btn btn--primary btn--lg" id="continueToPayment">Continue to Payment</a>
+          </div>
+          <p class="summary-note">You won't be charged yet. Review payment on the next step.</p>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2L2 14h4v14h8v-8h4v8h8V14h4L16 2z" fill="currentColor"/>
+            </svg>
+            TrendAccom
+          </a>
+          <p>Your trusted platform for finding and booking the perfect accommodation. From luxury hotels to cosy retreats, we connect travellers with unforgettable stays.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Explore</h4>
+          <div class="footer-links">
+            <a href="search.html?type=hotel">Hotels</a>
+            <a href="search.html?type=apartment">Apartments</a>
+            <a href="search.html?type=motel">Motels</a>
+            <a href="search.html?type=pub">Pubs & Inns</a>
+            <a href="search.html?type=caravan-park">Caravan Parks</a>
+            <a href="search.html?type=holiday-park">Holiday Parks</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Careers</a>
+            <a href="#">Press</a>
+            <a href="#">Blog</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Support</h4>
+          <div class="footer-links">
+            <a href="#">Help Centre</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Cancellation Policy</a>
+            <a href="admin/index.html">Property Owners</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 TrendAccom. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" aria-label="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/booking-engine.js"></script>
+</body>
+</html>

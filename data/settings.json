@@ -1,0 +1,100 @@
+{
+  "site": {
+    "name": "TrendAccom",
+    "description": "Find and book the perfect accommodation",
+    "url": "https://app.trendaccom.com",
+    "contactEmail": "hello@trendaccom.com",
+    "contactPhone": "+61 2 1234 5678",
+    "timezone": "Australia/Sydney",
+    "currency": "AUD",
+    "locale": "en-AU"
+  },
+  "business": {
+    "name": "TrendAccom Properties Pty Ltd",
+    "abn": "12 345 678 901",
+    "address": "Level 10, 100 George Street, Sydney NSW 2000"
+  },
+  "bookingRules": {
+    "mode": "instant",
+    "defaultCheckIn": "14:00",
+    "defaultCheckOut": "10:00",
+    "minStay": 1,
+    "maxStay": 30,
+    "advanceBookingDays": 365,
+    "bookingCutoffHours": 24,
+    "maxGuestsPerBooking": 10
+  },
+  "cancellationPolicies": {
+    "flexible": {
+      "name": "Flexible",
+      "description": "Free cancellation up to 24 hours before check-in",
+      "refundRules": [
+        { "daysBefore": 1, "refundPercent": 100 },
+        { "daysBefore": 0, "refundPercent": 0 }
+      ]
+    },
+    "moderate": {
+      "name": "Moderate",
+      "description": "Free cancellation up to 5 days before. 50% refund within 5 days.",
+      "refundRules": [
+        { "daysBefore": 5, "refundPercent": 100 },
+        { "daysBefore": 1, "refundPercent": 50 },
+        { "daysBefore": 0, "refundPercent": 0 }
+      ]
+    },
+    "strict": {
+      "name": "Strict",
+      "description": "50% refund up to 7 days before. No refund within 7 days.",
+      "refundRules": [
+        { "daysBefore": 7, "refundPercent": 50 },
+        { "daysBefore": 0, "refundPercent": 0 }
+      ]
+    }
+  },
+  "fees": {
+    "cleaningFee": 75,
+    "serviceFeePercent": 5,
+    "taxPercent": 10,
+    "extraGuestFee": 25,
+    "petFee": 50
+  },
+  "payments": {
+    "provider": "stripe_connect",
+    "currency": "aud",
+    "depositRequired": true,
+    "depositPercent": 30,
+    "autoPayoutEnabled": true,
+    "payoutFrequency": "weekly",
+    "platformFeePercent": 5,
+    "supportedMethods": ["card", "apple_pay", "google_pay"]
+  },
+  "notifications": {
+    "admin": {
+      "newBooking": true,
+      "cancellation": true,
+      "paymentReceived": true,
+      "reviewReceived": true
+    },
+    "guest": {
+      "bookingConfirmation": true,
+      "preArrival": { "enabled": true, "daysBefore": 3 },
+      "checkInInstructions": true,
+      "postStayThankYou": true,
+      "reviewRequest": { "enabled": true, "daysAfter": 2 }
+    }
+  },
+  "icalSync": {
+    "defaultFrequency": "30min",
+    "frequencies": ["15min", "30min", "1hour", "6hours"],
+    "supportedPlatforms": ["airbnb", "booking.com", "vrbo", "google-calendar"]
+  },
+  "appearance": {
+    "primaryColor": "#0f2744",
+    "secondaryColor": "#c9a84c",
+    "backgroundColor": "#faf8f4",
+    "heroTitle": "Find Your Perfect Stay",
+    "heroSubtitle": "Discover unique hotels, cosy apartments, scenic caravan parks and charming holiday retreats",
+    "showFeaturedProperties": true,
+    "showTestimonials": true
+  }
+}

@@ -1,0 +1,393 @@
+{
+  "properties": [
+    {
+      "id": "prop-001",
+      "name": "The Grand Harbour Hotel",
+      "type": "hotel",
+      "status": "active",
+      "description": "Luxurious harbourside hotel with stunning waterfront views. Experience world-class dining, a rooftop infinity pool, and impeccable service. Each room features floor-to-ceiling windows overlooking the harbour, premium bedding, and modern amenities.",
+      "location": {
+        "address": "123 Harbour Promenade",
+        "city": "Sydney",
+        "state": "NSW",
+        "postcode": "2000",
+        "country": "AU",
+        "lat": -33.8568,
+        "lng": 151.2153
+      },
+      "contact": {
+        "email": "reservations@grandharbour.com.au",
+        "phone": "+61 2 9876 5432"
+      },
+      "rooms": [
+        {
+          "id": "room-001",
+          "name": "Standard Room",
+          "maxGuests": 2,
+          "beds": 1,
+          "bathrooms": 1,
+          "size": 28,
+          "baseRate": 149,
+          "quantity": 20
+        },
+        {
+          "id": "room-002",
+          "name": "Deluxe Suite",
+          "maxGuests": 4,
+          "beds": 2,
+          "bathrooms": 1,
+          "size": 45,
+          "baseRate": 289,
+          "quantity": 10
+        },
+        {
+          "id": "room-003",
+          "name": "Family Room",
+          "maxGuests": 6,
+          "beds": 3,
+          "bathrooms": 2,
+          "size": 55,
+          "baseRate": 199,
+          "quantity": 8
+        },
+        {
+          "id": "room-004",
+          "name": "Penthouse",
+          "maxGuests": 4,
+          "beds": 2,
+          "bathrooms": 2,
+          "size": 90,
+          "baseRate": 489,
+          "quantity": 2
+        }
+      ],
+      "amenities": ["wifi", "pool", "parking", "restaurant", "room-service", "gym", "spa", "bar", "concierge", "air-conditioning", "tv", "minibar", "laundry", "accessible"],
+      "rating": 4.7,
+      "reviewCount": 128,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "10:00",
+        "cancellation": "moderate",
+        "minStay": 1,
+        "maxStay": 30,
+        "petsAllowed": false,
+        "smokingAllowed": false,
+        "depositPercent": 30
+      },
+      "icalFeeds": [
+        {
+          "platform": "airbnb",
+          "url": "https://www.airbnb.com/calendar/ical/12345.ics",
+          "lastSync": "2026-02-19T08:30:00Z",
+          "status": "active"
+        },
+        {
+          "platform": "booking",
+          "url": "https://admin.booking.com/ical/export/67890",
+          "lastSync": "2026-02-19T08:15:00Z",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "prop-002",
+      "name": "Bondi Beach Luxury Apartment",
+      "type": "apartment",
+      "status": "active",
+      "description": "Stunning beachfront apartment just steps from the sand. This modern 3-bedroom apartment features an open-plan living area, fully equipped gourmet kitchen, and a private balcony with panoramic ocean views. Perfect for families or groups.",
+      "location": {
+        "address": "45 Campbell Parade",
+        "city": "Bondi Beach",
+        "state": "NSW",
+        "postcode": "2026",
+        "country": "AU",
+        "lat": -33.8915,
+        "lng": 151.2767
+      },
+      "contact": {
+        "email": "hello@bondiluxe.com.au",
+        "phone": "+61 2 8765 4321"
+      },
+      "rooms": [
+        {
+          "id": "room-005",
+          "name": "Entire Apartment",
+          "maxGuests": 6,
+          "beds": 3,
+          "bathrooms": 2,
+          "size": 110,
+          "baseRate": 195,
+          "quantity": 1
+        }
+      ],
+      "amenities": ["wifi", "parking", "kitchen", "air-conditioning", "tv", "laundry", "balcony", "ocean-view", "dishwasher", "washer-dryer"],
+      "rating": 4.9,
+      "reviewCount": 94,
+      "images": [],
+      "policies": {
+        "checkIn": "15:00",
+        "checkOut": "10:00",
+        "cancellation": "strict",
+        "minStay": 2,
+        "maxStay": 28,
+        "petsAllowed": false,
+        "smokingAllowed": false,
+        "depositPercent": 50
+      },
+      "icalFeeds": [
+        {
+          "platform": "airbnb",
+          "url": "https://www.airbnb.com/calendar/ical/54321.ics",
+          "lastSync": "2026-02-19T07:45:00Z",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "prop-003",
+      "name": "Blue Mountains Retreat Cabin",
+      "type": "holiday-park",
+      "status": "active",
+      "description": "Escape to the tranquility of the Blue Mountains in this charming self-contained cabin. Surrounded by native bushland, enjoy stunning valley views, a wood fireplace, and easy access to walking trails and the Three Sisters.",
+      "location": {
+        "address": "78 Cliff Drive",
+        "city": "Katoomba",
+        "state": "NSW",
+        "postcode": "2780",
+        "country": "AU",
+        "lat": -33.7320,
+        "lng": 150.3120
+      },
+      "contact": {
+        "email": "stay@bluemountainsretreat.com.au",
+        "phone": "+61 2 4782 1234"
+      },
+      "rooms": [
+        {
+          "id": "room-006",
+          "name": "Entire Cabin",
+          "maxGuests": 2,
+          "beds": 1,
+          "bathrooms": 1,
+          "size": 45,
+          "baseRate": 145,
+          "quantity": 1
+        }
+      ],
+      "amenities": ["wifi", "parking", "kitchen", "fireplace", "bbq", "garden", "mountain-view", "hiking-access"],
+      "rating": 4.6,
+      "reviewCount": 76,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "11:00",
+        "cancellation": "flexible",
+        "minStay": 2,
+        "maxStay": 14,
+        "petsAllowed": true,
+        "smokingAllowed": false,
+        "depositPercent": 30
+      },
+      "icalFeeds": []
+    },
+    {
+      "id": "prop-004",
+      "name": "The Rustic Vine Inn",
+      "type": "pub",
+      "status": "active",
+      "description": "Historic country pub with charming accommodation above. Enjoy local craft beers, hearty bistro meals, and live music on weekends. Rooms are individually styled with heritage character and modern comforts.",
+      "location": {
+        "address": "12 Main Street",
+        "city": "Mudgee",
+        "state": "NSW",
+        "postcode": "2850",
+        "country": "AU",
+        "lat": -32.5937,
+        "lng": 149.5873
+      },
+      "contact": {
+        "email": "bookings@rusticvine.com.au",
+        "phone": "+61 2 6372 4567"
+      },
+      "rooms": [
+        {
+          "id": "room-007",
+          "name": "Heritage Room",
+          "maxGuests": 2,
+          "beds": 1,
+          "bathrooms": 1,
+          "size": 22,
+          "baseRate": 89,
+          "quantity": 6
+        },
+        {
+          "id": "room-008",
+          "name": "Suite",
+          "maxGuests": 3,
+          "beds": 2,
+          "bathrooms": 1,
+          "size": 35,
+          "baseRate": 139,
+          "quantity": 2
+        }
+      ],
+      "amenities": ["wifi", "restaurant", "bar", "live-music", "air-conditioning", "tv", "parking"],
+      "rating": 4.3,
+      "reviewCount": 52,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "10:00",
+        "cancellation": "flexible",
+        "minStay": 1,
+        "maxStay": 7,
+        "petsAllowed": false,
+        "smokingAllowed": false,
+        "depositPercent": 0
+      },
+      "icalFeeds": []
+    },
+    {
+      "id": "prop-005",
+      "name": "Seaside Caravan Park",
+      "type": "caravan-park",
+      "status": "active",
+      "description": "Family-friendly caravan park right on the coast. Choose from powered sites, ensuite sites, or self-contained cabins. Enjoy direct beach access, a heated swimming pool, playground, camp kitchen, and nightly activities during school holidays.",
+      "location": {
+        "address": "200 Coast Road",
+        "city": "Coffs Harbour",
+        "state": "NSW",
+        "postcode": "2450",
+        "country": "AU",
+        "lat": -30.2963,
+        "lng": 153.1138
+      },
+      "contact": {
+        "email": "info@seasidecaravanpark.com.au",
+        "phone": "+61 2 6652 7890"
+      },
+      "rooms": [
+        {
+          "id": "room-009",
+          "name": "Powered Site",
+          "maxGuests": 6,
+          "beds": 0,
+          "bathrooms": 0,
+          "size": 0,
+          "baseRate": 45,
+          "quantity": 50
+        },
+        {
+          "id": "room-010",
+          "name": "Ensuite Site",
+          "maxGuests": 6,
+          "beds": 0,
+          "bathrooms": 1,
+          "size": 0,
+          "baseRate": 65,
+          "quantity": 20
+        },
+        {
+          "id": "room-011",
+          "name": "Standard Cabin",
+          "maxGuests": 4,
+          "beds": 2,
+          "bathrooms": 1,
+          "size": 30,
+          "baseRate": 120,
+          "quantity": 10
+        },
+        {
+          "id": "room-012",
+          "name": "Deluxe Cabin",
+          "maxGuests": 6,
+          "beds": 3,
+          "bathrooms": 1,
+          "size": 50,
+          "baseRate": 175,
+          "quantity": 5
+        }
+      ],
+      "amenities": ["wifi", "pool", "parking", "playground", "bbq", "camp-kitchen", "laundry", "beach-access", "pet-friendly"],
+      "rating": 4.4,
+      "reviewCount": 215,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "10:00",
+        "cancellation": "moderate",
+        "minStay": 1,
+        "maxStay": 28,
+        "petsAllowed": true,
+        "smokingAllowed": false,
+        "depositPercent": 20
+      },
+      "icalFeeds": [
+        {
+          "platform": "booking",
+          "url": "https://admin.booking.com/ical/export/11111",
+          "lastSync": "2026-02-19T06:00:00Z",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "prop-006",
+      "name": "Pacific Highway Motel",
+      "type": "motel",
+      "status": "active",
+      "description": "Convenient and comfortable motel located on the Pacific Highway. Ideal for road trippers and business travellers. All rooms feature kitchenettes, free WiFi, and parking right at your door.",
+      "location": {
+        "address": "456 Pacific Highway",
+        "city": "Port Macquarie",
+        "state": "NSW",
+        "postcode": "2444",
+        "country": "AU",
+        "lat": -31.4333,
+        "lng": 152.9000
+      },
+      "contact": {
+        "email": "stay@pacifichighwaymotel.com.au",
+        "phone": "+61 2 6583 2345"
+      },
+      "rooms": [
+        {
+          "id": "room-013",
+          "name": "Standard Queen",
+          "maxGuests": 2,
+          "beds": 1,
+          "bathrooms": 1,
+          "size": 25,
+          "baseRate": 99,
+          "quantity": 15
+        },
+        {
+          "id": "room-014",
+          "name": "Family Suite",
+          "maxGuests": 5,
+          "beds": 3,
+          "bathrooms": 1,
+          "size": 40,
+          "baseRate": 149,
+          "quantity": 5
+        }
+      ],
+      "amenities": ["wifi", "parking", "kitchenette", "air-conditioning", "tv", "laundry", "accessible"],
+      "rating": 4.1,
+      "reviewCount": 89,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "10:00",
+        "cancellation": "flexible",
+        "minStay": 1,
+        "maxStay": 14,
+        "petsAllowed": false,
+        "smokingAllowed": false,
+        "depositPercent": 0
+      },
+      "icalFeeds": []
+    }
+  ]
+}

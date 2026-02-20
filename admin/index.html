@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — TrendAccom Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- ======================================================
+         SIDEBAR
+    ======================================================= -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <a href="index.html" class="sidebar-logo-link">
+                <span class="sidebar-logo-text">TrendAccom</span>
+                <span class="sidebar-logo-badge">Admin</span>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+
+            <!-- MAIN -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">Main</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item active">
+                        <a href="index.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="properties.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span>Properties</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="bookings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                <line x1="9" y1="10" x2="15" y2="10"></line>
+                                <line x1="9" y1="14" x2="15" y2="14"></line>
+                                <line x1="9" y1="18" x2="12" y2="18"></line>
+                            </svg>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="calendar.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- MANAGEMENT -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">Management</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="rates.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            <span>Rates &amp; Pricing</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="guests.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span>Guests</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="reviews.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            <span>Reviews</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- INTEGRATIONS -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">Integrations</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="ical-sync.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                                <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+                            </svg>
+                            <span>iCal Sync</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="stripe-connect.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                            <span>Stripe Connect</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">System</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="settings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1.08 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1.08z"></path>
+                            </svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="reports.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </aside>
+
+
+    <!-- ======================================================
+         MAIN WRAPPER
+    ======================================================= -->
+    <div class="admin-main">
+
+        <!-- ====== TOP BAR ====== -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button class="topbar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <nav class="topbar-breadcrumb" aria-label="Breadcrumb">
+                    <span class="breadcrumb-item">Dashboard</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <div class="topbar-search">
+                    <svg class="topbar-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" class="topbar-search-input" placeholder="Search properties, bookings...">
+                </div>
+                <button class="topbar-notification" aria-label="Notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="topbar-notification-dot"></span>
+                </button>
+                <div class="topbar-user">
+                    <span class="topbar-user-avatar">AD</span>
+                    <span class="topbar-user-name">Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ====== CONTENT ====== -->
+        <main class="admin-content">
+
+            <!-- Page Header -->
+            <div class="admin-page-header">
+                <div class="admin-page-header-text">
+                    <h1 class="admin-page-title">Dashboard</h1>
+                    <p class="admin-page-subtitle">Welcome back! Here's what's happening with your properties.</p>
+                </div>
+                <a href="properties.html#add" class="btn btn-primary admin-page-action">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add Property
+                </a>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Total Bookings</span>
+                        <span class="stat-card-icon stat-card-icon--bookings">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="stat-card-value">1,247</div>
+                    <div class="stat-card-change stat-card-change--up">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                        +12%
+                        <span class="stat-card-change-period">vs last month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Revenue</span>
+                        <span class="stat-card-icon stat-card-icon--revenue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="stat-card-value">$89,432</div>
+                    <div class="stat-card-change stat-card-change--up">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                        +8%
+                        <span class="stat-card-change-period">vs last month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Occupancy Rate</span>
+                        <span class="stat-card-icon stat-card-icon--occupancy">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="stat-card-value">78%</div>
+                    <div class="stat-card-change stat-card-change--up">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                        +5%
+                        <span class="stat-card-change-period">vs last month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Active Properties</span>
+                        <span class="stat-card-icon stat-card-icon--properties">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="stat-card-value">24</div>
+                    <div class="stat-card-change stat-card-change--neutral">
+                        <span class="stat-card-change-period">Total active listings</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="dashboard-grid">
+
+                <!-- Left Column: Recent Bookings -->
+                <div class="dashboard-grid-left">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Recent Bookings</h2>
+                        </div>
+                        <div class="admin-card-body admin-card-body--table">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Guest</th>
+                                        <th>Property</th>
+                                        <th>Check-in</th>
+                                        <th>Check-out</th>
+                                        <th>Status</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="admin-table-guest">
+                                            <span class="guest-avatar">JD</span>
+                                            <span>John Doe</span>
+                                        </td>
+                                        <td>Ocean View Villa</td>
+                                        <td>Feb 20, 2026</td>
+                                        <td>Feb 25, 2026</td>
+                                        <td><span class="badge badge--confirmed">Confirmed</span></td>
+                                        <td class="admin-table-amount">$1,250</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="admin-table-guest">
+                                            <span class="guest-avatar">SM</span>
+                                            <span>Sarah Miller</span>
+                                        </td>
+                                        <td>Mountain Retreat</td>
+                                        <td>Feb 22, 2026</td>
+                                        <td>Feb 28, 2026</td>
+                                        <td><span class="badge badge--pending">Pending</span></td>
+                                        <td class="admin-table-amount">$980</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="admin-table-guest">
+                                            <span class="guest-avatar">RJ</span>
+                                            <span>Robert Johnson</span>
+                                        </td>
+                                        <td>Downtown Loft</td>
+                                        <td>Feb 18, 2026</td>
+                                        <td>Feb 21, 2026</td>
+                                        <td><span class="badge badge--checked-in">Checked In</span></td>
+                                        <td class="admin-table-amount">$540</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="admin-table-guest">
+                                            <span class="guest-avatar">EW</span>
+                                            <span>Emily Watson</span>
+                                        </td>
+                                        <td>Lakeside Cabin</td>
+                                        <td>Mar 1, 2026</td>
+                                        <td>Mar 5, 2026</td>
+                                        <td><span class="badge badge--confirmed">Confirmed</span></td>
+                                        <td class="admin-table-amount">$720</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="admin-table-guest">
+                                            <span class="guest-avatar">MC</span>
+                                            <span>Michael Chen</span>
+                                        </td>
+                                        <td>City Penthouse</td>
+                                        <td>Feb 15, 2026</td>
+                                        <td>Feb 18, 2026</td>
+                                        <td><span class="badge badge--completed">Completed</span></td>
+                                        <td class="admin-table-amount">$1,890</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="admin-card-footer">
+                            <a href="bookings.html" class="admin-card-footer-link">
+                                View All Bookings
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="admin-card-footer-icon">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="dashboard-grid-right">
+
+                    <!-- Quick Actions -->
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Quick Actions</h2>
+                        </div>
+                        <div class="admin-card-body">
+                            <div class="quick-actions">
+                                <a href="properties.html#add" class="quick-action-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <line x1="12" y1="9" x2="12" y2="17"></line>
+                                        <line x1="8" y1="13" x2="16" y2="13"></line>
+                                    </svg>
+                                    <span>Add Property</span>
+                                </a>
+                                <a href="bookings.html#create" class="quick-action-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                        <line x1="12" y1="11" x2="12" y2="17"></line>
+                                        <line x1="9" y1="14" x2="15" y2="14"></line>
+                                    </svg>
+                                    <span>Create Booking</span>
+                                </a>
+                                <a href="calendar.html" class="quick-action-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    <span>View Calendar</span>
+                                </a>
+                                <a href="ical-sync.html" class="quick-action-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="23 4 23 10 17 10"></polyline>
+                                        <polyline points="1 20 1 14 7 14"></polyline>
+                                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                                        <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+                                    </svg>
+                                    <span>Sync iCal</span>
+                                </a>
+                                <a href="reports.html#export" class="quick-action-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    <span>Export Report</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Properties Overview -->
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Properties Overview</h2>
+                        </div>
+                        <div class="admin-card-body">
+                            <ul class="property-mini-list">
+                                <li class="property-mini-item">
+                                    <div class="property-mini-thumb" aria-label="Ocean View Villa thumbnail"></div>
+                                    <div class="property-mini-info">
+                                        <span class="property-mini-name">Ocean View Villa</span>
+                                        <span class="property-mini-occupancy">92% occupancy</span>
+                                    </div>
+                                    <div class="property-mini-bar">
+                                        <div class="property-mini-bar-fill" style="width: 92%;"></div>
+                                    </div>
+                                </li>
+                                <li class="property-mini-item">
+                                    <div class="property-mini-thumb" aria-label="Mountain Retreat thumbnail"></div>
+                                    <div class="property-mini-info">
+                                        <span class="property-mini-name">Mountain Retreat</span>
+                                        <span class="property-mini-occupancy">76% occupancy</span>
+                                    </div>
+                                    <div class="property-mini-bar">
+                                        <div class="property-mini-bar-fill" style="width: 76%;"></div>
+                                    </div>
+                                </li>
+                                <li class="property-mini-item">
+                                    <div class="property-mini-thumb" aria-label="Downtown Loft thumbnail"></div>
+                                    <div class="property-mini-info">
+                                        <span class="property-mini-name">Downtown Loft</span>
+                                        <span class="property-mini-occupancy">64% occupancy</span>
+                                    </div>
+                                    <div class="property-mini-bar">
+                                        <div class="property-mini-bar-fill" style="width: 64%;"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

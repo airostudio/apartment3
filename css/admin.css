@@ -88,6 +88,148 @@
   flex-shrink: 0;
 }
 
+/* Aliases for BEM-style sidebar icons (bookings.html, calendar.html) */
+.admin-sidebar__menu-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.admin-sidebar__header {
+  padding: var(--space-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+}
+
+.admin-sidebar__logo-text {
+  color: var(--color-white);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.admin-sidebar__logo-badge {
+  font-size: var(--font-size-xs);
+  background: var(--color-secondary);
+  color: var(--color-white);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.admin-sidebar__nav {
+  flex: 1;
+  padding: var(--space-md) 0;
+}
+
+.admin-sidebar__section {
+  padding: var(--space-sm) 0;
+  margin-top: var(--space-sm);
+}
+
+.admin-sidebar__section-title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: var(--space-xs) var(--space-xl);
+  margin-bottom: var(--space-xs);
+  display: block;
+}
+
+.admin-sidebar__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-sidebar__menu-item { display: block; }
+
+.admin-sidebar__menu-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-xl);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  border-left: 3px solid transparent;
+  text-decoration: none;
+}
+
+.admin-sidebar__menu-link:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-sidebar__menu-link--active {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.08);
+  border-left-color: var(--color-secondary);
+}
+
+/* Aliases for flat nav-* sidebar icons (guests.html, rates.html, reports.html) */
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.nav-section {
+  padding: var(--space-sm) 0;
+  margin-top: var(--space-sm);
+}
+
+.nav-section-title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: var(--space-xs) var(--space-xl);
+  margin-bottom: var(--space-xs);
+  display: block;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item { display: block; }
+
+.nav-item.active .nav-link {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.08);
+  border-left-color: var(--color-secondary);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-xl);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  border-left: 3px solid transparent;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.05);
+}
+
 /* --- Topbar fixes --- */
 .topbar-toggle {
   width: 36px;

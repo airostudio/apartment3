@@ -1,5 +1,5 @@
-<svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cascade Apartment 3">
-  <title>Cascade Apartment 3</title>
+<svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cascade Apartment 6">
+  <title>Cascade Apartment 6</title>
 
   <!-- Mountain ridge: three peaks -->
   <path d="M 4 68 L 18 32 L 28 46 L 42 8 L 56 42 L 66 26 L 80 68"
@@ -29,7 +29,7 @@
         font-weight="400"
         font-size="12.5"
         letter-spacing="4"
-        fill="#5BA4C8">APARTMENT 3</text>
+        fill="#5BA4C8">APARTMENT 6</text>
 
   <!-- Divider line between icon and text -->
   <line x1="88" y1="16" x2="88" y2="68"

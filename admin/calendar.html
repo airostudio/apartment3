@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar - Cascade Apartment 6 Admin</title>
+    <title>Calendar - TrendAccom Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
-    <script src="../js/admin-auth.js"></script>
 </head>
 <body class="admin-body">
 
     <!-- Admin Sidebar -->
     <aside class="admin-sidebar">
         <div class="admin-sidebar__header">
-            <a href="index.html" class="admin-sidebar__logo">
-                <span class="admin-sidebar__logo-text">Cascade Apartment 6</span>
+            <a href="dashboard.html" class="admin-sidebar__logo">
+                <span class="admin-sidebar__logo-text">TrendAccom</span>
                 <span class="admin-sidebar__logo-badge">Admin</span>
             </a>
         </div>
@@ -28,7 +27,7 @@
                 <span class="admin-sidebar__section-title">MAIN</span>
                 <ul class="admin-sidebar__menu">
                     <li class="admin-sidebar__menu-item">
-                        <a href="index.html" class="admin-sidebar__menu-link">
+                        <a href="dashboard.html" class="admin-sidebar__menu-link">
                             <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                             <span>Dashboard</span>
                         </a>
@@ -125,7 +124,7 @@
         <!-- Topbar -->
         <header class="admin-topbar">
             <div class="admin-topbar__breadcrumb">
-                <a href="index.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
+                <a href="dashboard.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
                 <span class="admin-topbar__breadcrumb-separator">&rsaquo;</span>
                 <span class="admin-topbar__breadcrumb-current">Calendar</span>
             </div>
@@ -147,11 +146,18 @@
             <div class="admin-page-header">
                 <div class="admin-page-header__info">
                     <h1 class="admin-page-header__title">Availability Calendar</h1>
-                    <p class="admin-page-header__description">Manage availability for Cascade Apartment 6</p>
+                    <p class="admin-page-header__description">Manage availability across all properties</p>
                 </div>
                 <div class="admin-page-header__actions">
                     <div class="admin-select-wrapper">
-                        <span class="admin-property-label">Cascade Apartment 6</span>
+                        <select class="admin-select" id="propertySelector">
+                            <option value="all">All Properties</option>
+                            <option value="oceanfront">Oceanfront Villa Deluxe</option>
+                            <option value="mountain">Mountain Retreat Cabin</option>
+                            <option value="downtown">Downtown Luxury Apartment</option>
+                            <option value="seaside">Seaside Cottage</option>
+                            <option value="lakeside">Lakeside Bungalow</option>
+                        </select>
                     </div>
                     <div class="admin-btn-group">
                         <button class="admin-btn admin-btn--outline admin-btn--sm">Today</button>
@@ -390,7 +396,7 @@
                             </div>
                             <div class="admin-checkin-item__details">
                                 <span class="admin-checkin-item__guest">James Davidson</span>
-                                <span class="admin-checkin-item__property">Cascade Apartment 6</span>
+                                <span class="admin-checkin-item__property">Oceanfront Villa Deluxe</span>
                             </div>
                             <div class="admin-checkin-item__stay">
                                 <span class="admin-checkin-item__nights">6 nights</span>
@@ -410,7 +416,7 @@
                             </div>
                             <div class="admin-checkin-item__details">
                                 <span class="admin-checkin-item__guest">Robert Chen</span>
-                                <span class="admin-checkin-item__property">Cascade Apartment 6</span>
+                                <span class="admin-checkin-item__property">Downtown Luxury Apartment</span>
                             </div>
                             <div class="admin-checkin-item__stay">
                                 <span class="admin-checkin-item__nights">5 nights</span>
@@ -430,7 +436,7 @@
                             </div>
                             <div class="admin-checkin-item__details">
                                 <span class="admin-checkin-item__guest">David Park</span>
-                                <span class="admin-checkin-item__property">Cascade Apartment 6</span>
+                                <span class="admin-checkin-item__property">Mountain Retreat Cabin</span>
                             </div>
                             <div class="admin-checkin-item__stay">
                                 <span class="admin-checkin-item__nights">3 nights</span>

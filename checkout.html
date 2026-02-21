@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Cascade Apartment 6</title>
-  <meta name="description" content="Securely complete your booking payment with Cascade Apartment 6 powered by Stripe Connect.">
+  <title>Checkout - TrendAccom</title>
+  <meta name="description" content="Securely complete your booking payment with TrendAccom powered by Stripe Connect.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -329,27 +329,21 @@
   <header class="site-header" id="siteHeader">
     <div class="header-inner">
       <a href="index.html" class="logo">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M2 38 L10 18 L16 26 L22 5 L28 24 L33 14 L40 38"
-                stroke="currentColor" stroke-width="2.5"
-                stroke-linejoin="round" stroke-linecap="round"/>
-          <path d="M23 30 Q26 28.5 29 30" stroke="currentColor" stroke-width="1.5"
-                fill="none" stroke-linecap="round" opacity="0.6"/>
-          <path d="M22 34 Q25.5 32.5 29 34" stroke="currentColor" stroke-width="1.5"
-                fill="none" stroke-linecap="round" opacity="0.45"/>
-          <path d="M21 38 Q25 36.5 29 38" stroke="currentColor" stroke-width="1.5"
-                fill="none" stroke-linecap="round" opacity="0.3"/>
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2L2 14h4v14h8v-8h4v8h8V14h4L16 2z" fill="currentColor"/>
         </svg>
-        Cascade Apartment 6
+        TrendAccom
       </a>
       <nav class="nav-main">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="property.html" class="nav-link">The Apartment</a>
-        <a href="property.html#rates" class="nav-link">Rates</a>
-        <a href="property.html#location" class="nav-link">Location</a>
+        <a href="search.html" class="nav-link">Browse</a>
+        <a href="search.html?type=hotel" class="nav-link">Hotels</a>
+        <a href="search.html?type=apartment" class="nav-link">Apartments</a>
+        <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
       </nav>
       <div class="nav-actions">
-        <a href="booking.html" class="btn btn--sm btn--primary">Book Now</a>
+        <a href="admin/index.html" class="btn btn--sm btn--outline">List Your Property</a>
+        <a href="admin/index.html" class="btn btn--sm btn--ghost">Sign In</a>
       </div>
       <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -360,10 +354,12 @@
   <!-- Mobile Navigation -->
   <nav class="mobile-nav" id="mobileNav">
     <a href="index.html" class="nav-link">Home</a>
-    <a href="property.html" class="nav-link">The Apartment</a>
-    <a href="property.html#rates" class="nav-link">Rates</a>
-    <a href="property.html#location" class="nav-link">Location</a>
-    <a href="booking.html" class="btn btn--primary btn--block">Book Now</a>
+    <a href="search.html" class="nav-link">Browse All</a>
+    <a href="search.html?type=hotel" class="nav-link">Hotels</a>
+    <a href="search.html?type=apartment" class="nav-link">Apartments</a>
+    <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
+    <a href="admin/index.html" class="btn btn--primary btn--block">List Your Property</a>
+    <a href="admin/index.html" class="btn btn--outline btn--block">Sign In</a>
   </nav>
 
   <!-- Main Content -->
@@ -423,7 +419,7 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                 </svg>
-                <p>Your payment is securely processed by <strong>Stripe Connect</strong>. Cascade Apartment 6 never stores your full card details. Funds are transferred directly to the property host via Stripe's secure payment platform.</p>
+                <p>Your payment is securely processed by <strong>Stripe Connect</strong>. TrendAccom never stores your full card details. Funds are transferred directly to the property host via Stripe's secure payment platform.</p>
               </div>
             </div>
 
@@ -493,8 +489,8 @@
               <!-- Property thumbnail placeholder -->
             </div>
             <div class="order-summary__property-info">
-              <div class="order-summary__property-name">Cascade Apartment 6</div>
-              <div class="order-summary__property-location">Baw Baw Village, Mt Baw Baw VIC</div>
+              <div class="order-summary__property-name">The Grand Harbour Hotel</div>
+              <div class="order-summary__property-location">Darling Harbour, Sydney</div>
             </div>
           </div>
 
@@ -514,7 +510,7 @@
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>4 nights</span>
+            <span>4 nights &middot; Deluxe Harbour View Room</span>
           </div>
 
           <div class="summary-divider"></div>
@@ -576,52 +572,47 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="index.html" class="logo">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M2 38 L10 18 L16 26 L22 5 L28 24 L33 14 L40 38"
-                    stroke="currentColor" stroke-width="2.5"
-                    stroke-linejoin="round" stroke-linecap="round"/>
-              <path d="M23 30 Q26 28.5 29 30" stroke="currentColor" stroke-width="1.5"
-                    fill="none" stroke-linecap="round" opacity="0.6"/>
-              <path d="M22 34 Q25.5 32.5 29 34" stroke="currentColor" stroke-width="1.5"
-                    fill="none" stroke-linecap="round" opacity="0.45"/>
-              <path d="M21 38 Q25 36.5 29 38" stroke="currentColor" stroke-width="1.5"
-                    fill="none" stroke-linecap="round" opacity="0.3"/>
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2L2 14h4v14h8v-8h4v8h8V14h4L16 2z" fill="currentColor"/>
             </svg>
-            Cascade Apartment 6
+            TrendAccom
           </a>
-          <p>A self-contained alpine retreat in the heart of Baw Baw Village, Mt Baw Baw. Perfect for ski trips, summer hikes, and everything in between.</p>
+          <p>Your trusted platform for finding and booking the perfect accommodation. From luxury hotels to cosy retreats, we connect travellers with unforgettable stays.</p>
         </div>
-                <div>
-          <h4 class="footer-heading">The Apartment</h4>
+        <div>
+          <h4 class="footer-heading">Explore</h4>
           <div class="footer-links">
-            <a href="property.html">Overview</a>
-            <a href="property.html#amenities">Amenities</a>
-            <a href="property.html#rates">Rates</a>
-            <a href="property.html#reviews">Reviews</a>
+            <a href="search.html?type=hotel">Hotels</a>
+            <a href="search.html?type=apartment">Apartments</a>
+            <a href="search.html?type=motel">Motels</a>
+            <a href="search.html?type=pub">Pubs & Inns</a>
+            <a href="search.html?type=caravan-park">Caravan Parks</a>
+            <a href="search.html?type=holiday-park">Holiday Parks</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-heading">Book Direct</h4>
+          <h4 class="footer-heading">Company</h4>
           <div class="footer-links">
-            <a href="booking.html">Check Availability</a>
-            <a href="booking.html">Make a Booking</a>
-            <a href="property.html#rates">Seasonal Rates</a>
-            <a href="#">Contact Us</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Careers</a>
+            <a href="#">Press</a>
+            <a href="#">Blog</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-heading">Mt Baw Baw</h4>
+          <h4 class="footer-heading">Support</h4>
           <div class="footer-links">
-            <a href="#">Ski &amp; Snow</a>
-            <a href="#">Summer Hiking</a>
-            <a href="#">Getting There</a>
-            <a href="#">Local Area</a>
+            <a href="#">Help Centre</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Cancellation Policy</a>
+            <a href="admin/index.html">Property Owners</a>
           </div>
         </div>
-</div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 Cascade Apartment 6. All rights reserved.</p>
+        <p>&copy; 2026 TrendAccom. All rights reserved.</p>
         <div class="footer-social">
           <a href="#" aria-label="Facebook">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>

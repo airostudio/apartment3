@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iCal Sync - Cascade Apartment 6 Admin</title>
+    <title>iCal Sync - TrendAccom Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -647,7 +647,6 @@
             .export-url-wrapper { flex-direction: column; }
         }
     </style>
-    <script src="../js/admin-auth.js"></script>
 </head>
 <body>
 
@@ -656,7 +655,7 @@
          ======================================== -->
     <aside class="admin-sidebar">
         <div class="sidebar-logo">
-            <span class="logo-text">Cascade Apartment 6</span>
+            <span class="logo-text">TrendAccom</span>
             <span class="admin-badge">Admin</span>
         </div>
 
@@ -664,7 +663,7 @@
             <!-- MAIN -->
             <div class="nav-section-label">Main</div>
 
-            <a href="index.html" class="nav-link">
+            <a href="dashboard.html" class="nav-link">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7" rx="1"></rect>
                     <rect x="14" y="3" width="7" height="7" rx="1"></rect>
@@ -778,7 +777,7 @@
         <!-- Top Bar -->
         <header class="admin-topbar">
             <div class="breadcrumb">
-                <a href="index.html">Dashboard</a>
+                <a href="dashboard.html">Dashboard</a>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
@@ -812,7 +811,7 @@
                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
                 </svg>
                 <p>
-                    <strong>How iCal Sync works:</strong> iCal synchronisation allows you to import and export your property availability calendars using the industry-standard iCalendar format. By connecting your Cascade Apartment 6 calendar with external platforms like Airbnb, Booking.com, and VRBO, you can automatically keep availability in sync across all channels and prevent double bookings.
+                    <strong>How iCal Sync works:</strong> iCal synchronisation allows you to import and export your property availability calendars using the industry-standard iCalendar format. By connecting your TrendAccom calendar with external platforms like Airbnb, Booking.com, and VRBO, you can automatically keep availability in sync across all channels and prevent double bookings.
                 </p>
             </div>
 
@@ -829,12 +828,14 @@
                     <h2>Export Your Calendar</h2>
                 </div>
                 <div class="card-body">
-                    <p>Share your Cascade Apartment 6 availability calendar with external booking platforms. Copy the iCal export URL below and paste it into the external platform's calendar import settings to keep availability synchronised.</p>
+                    <p>Share your TrendAccom availability calendar with external booking platforms. Copy the iCal export URL below and paste it into the external platform's calendar import settings to keep availability synchronised.</p>
 
                     <div class="form-group">
                         <label for="export-property">Select Property</label>
                         <select id="export-property" class="form-select" style="max-width: 400px;">
-                            <option value="property-1">Cascade Apartment 6</option>
+                            <option value="property-1">Grand Harbour Hotel - Sydney</option>
+                            <option value="property-2">Bondi Beach Apartment - Sydney</option>
+                            <option value="property-3">Blue Mountains Cabin - Katoomba</option>
                         </select>
                     </div>
 
@@ -887,7 +888,9 @@
                                 <label for="import-property">Property to Sync With</label>
                                 <select id="import-property" class="form-select">
                                     <option value="">Select property...</option>
-                                    <option value="property-1">Cascade Apartment 6</option>
+                                    <option value="property-1">Grand Harbour Hotel - Sydney</option>
+                                    <option value="property-2">Bondi Beach Apartment - Sydney</option>
+                                    <option value="property-3">Blue Mountains Cabin - Katoomba</option>
                                 </select>
                             </div>
                             <div class="form-group full-width">
@@ -929,7 +932,7 @@
                 </div>
                 <div class="card-body">
 
-                    <!-- Connection 1: Airbnb - Cascade Apartment 6 -->
+                    <!-- Connection 1: Airbnb - Grand Harbour Hotel -->
                     <div class="ical-connection">
                         <div class="ical-platform-icon airbnb">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -937,7 +940,7 @@
                             </svg>
                         </div>
                         <div class="ical-connection-info">
-                            <div class="ical-connection-name">Airbnb - Cascade Apartment 6</div>
+                            <div class="ical-connection-name">Airbnb - Grand Harbour Hotel</div>
                             <div class="ical-connection-meta">
                                 <span class="ical-status active">
                                     <span class="status-dot green"></span>
@@ -973,7 +976,7 @@
                         </div>
                     </div>
 
-                    <!-- Connection 2: Booking.com - Cascade Apartment 6 -->
+                    <!-- Connection 2: Booking.com - Grand Harbour Hotel -->
                     <div class="ical-connection">
                         <div class="ical-platform-icon booking">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -981,7 +984,7 @@
                             </svg>
                         </div>
                         <div class="ical-connection-info">
-                            <div class="ical-connection-name">Booking.com - Cascade Apartment 6</div>
+                            <div class="ical-connection-name">Booking.com - Grand Harbour Hotel</div>
                             <div class="ical-connection-meta">
                                 <span class="ical-status active">
                                     <span class="status-dot green"></span>
@@ -1017,7 +1020,7 @@
                         </div>
                     </div>
 
-                    <!-- Connection 3: Airbnb - Cascade Apartment 6 (Error) -->
+                    <!-- Connection 3: Airbnb - Bondi Beach Apartment (Error) -->
                     <div class="ical-connection">
                         <div class="ical-platform-icon airbnb">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1025,7 +1028,7 @@
                             </svg>
                         </div>
                         <div class="ical-connection-info">
-                            <div class="ical-connection-name">Airbnb - Cascade Apartment 6</div>
+                            <div class="ical-connection-name">Airbnb - Bondi Beach Apartment</div>
                             <div class="ical-connection-meta">
                                 <span class="ical-status error">
                                     <span class="status-dot red"></span>
@@ -1073,7 +1076,7 @@
                             </svg>
                         </div>
                         <div class="ical-connection-info">
-                            <div class="ical-connection-name">Google Cal - Cascade Apartment 6</div>
+                            <div class="ical-connection-name">Google Cal - Blue Mountains Cabin</div>
                             <div class="ical-connection-meta">
                                 <span class="ical-status active">
                                     <span class="status-dot green"></span>
@@ -1142,7 +1145,7 @@
                             <tr>
                                 <td>Today, 14:32</td>
                                 <td>Airbnb</td>
-                                <td>Cascade Apartment 6</td>
+                                <td>Grand Harbour Hotel</td>
                                 <td><span class="direction-badge import">&#8595; Import</span></td>
                                 <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
                                 <td><span class="events-count">3</span></td>
@@ -1150,15 +1153,15 @@
                             <tr>
                                 <td>Today, 14:30</td>
                                 <td>Booking.com</td>
-                                <td>Cascade Apartment 6</td>
+                                <td>Grand Harbour Hotel</td>
                                 <td><span class="direction-badge import">&#8595; Import</span></td>
                                 <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
                                 <td><span class="events-count">1</span></td>
                             </tr>
                             <tr>
                                 <td>Today, 14:15</td>
-                                <td>Cascade Apartment 6</td>
-                                <td>Cascade Apartment 6</td>
+                                <td>TrendAccom</td>
+                                <td>Grand Harbour Hotel</td>
                                 <td><span class="direction-badge export">&#8593; Export</span></td>
                                 <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
                                 <td><span class="events-count">7</span></td>
@@ -1166,7 +1169,7 @@
                             <tr>
                                 <td>Today, 13:45</td>
                                 <td>Google Calendar</td>
-                                <td>Cascade Apartment 6</td>
+                                <td>Blue Mountains Cabin</td>
                                 <td><span class="direction-badge import">&#8595; Import</span></td>
                                 <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
                                 <td><span class="events-count">2</span></td>
@@ -1174,15 +1177,15 @@
                             <tr>
                                 <td>Today, 12:32</td>
                                 <td>Airbnb</td>
-                                <td>Cascade Apartment 6</td>
+                                <td>Bondi Beach Apartment</td>
                                 <td><span class="direction-badge import">&#8595; Import</span></td>
                                 <td><span class="status-badge failed"><span class="status-dot red"></span> Failed</span></td>
                                 <td><span class="events-count">0</span></td>
                             </tr>
                             <tr>
                                 <td>Today, 12:00</td>
-                                <td>Cascade Apartment 6</td>
-                                <td>Cascade Apartment 6</td>
+                                <td>TrendAccom</td>
+                                <td>Bondi Beach Apartment</td>
                                 <td><span class="direction-badge export">&#8593; Export</span></td>
                                 <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
                                 <td><span class="events-count">4</span></td>
@@ -1190,7 +1193,7 @@
                             <tr>
                                 <td>Today, 11:30</td>
                                 <td>Booking.com</td>
-                                <td>Cascade Apartment 6</td>
+                                <td>Grand Harbour Hotel</td>
                                 <td><span class="direction-badge import">&#8595; Import</span></td>
                                 <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
                                 <td><span class="events-count">2</span></td>
@@ -1198,7 +1201,7 @@
                             <tr>
                                 <td>Today, 10:45</td>
                                 <td>Airbnb</td>
-                                <td>Cascade Apartment 6</td>
+                                <td>Grand Harbour Hotel</td>
                                 <td><span class="direction-badge import">&#8595; Import</span></td>
                                 <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
                                 <td><span class="events-count">5</span></td>

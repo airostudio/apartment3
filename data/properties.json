@@ -1,106 +1,372 @@
 {
   "properties": [
     {
-      "id": "cascade-apt-3",
+      "id": "prop-006",
       "name": "Cascade Apartment 6",
       "type": "apartment",
       "status": "active",
-      "description": "Cascade Apartment 6 is a fully self-contained three-bedroom, two-bathroom apartment sleeping up to 10 guests, set over two levels in the heart of Mt Baw Baw Village. Recently renovated, the apartment features a fully equipped kitchen with large dining table, a comfortable lounge with flat screen TV, gas heater and a balcony with spectacular mountain views. Hydronic heating is installed throughout the lower level. Only 2 hours from Melbourne, Mt Baw Baw offers world-class skiing in winter and mountain biking, fishing, and bushwalking in summer — making Cascade Apartment 6 the perfect year-round alpine getaway.",
+      "description": "Fully self-contained, solid-brick alpine apartment set over two levels in Baw Baw Village at Mt Baw Baw. Features ski-in/ski-out access, wood fireplace, hot tub, private deck with mountain views, and a fully equipped kitchen. Perfect for ski season and summer alpine retreats.",
       "location": {
         "address": "Cascade Apartment 6, Baw Baw Village",
         "city": "Mt Baw Baw",
         "state": "VIC",
         "postcode": "3833",
         "country": "AU",
-        "lat": -37.8274,
-        "lng": 146.4637
+        "lat": -37.8506,
+        "lng": 146.4676
       },
       "contact": {
-        "email": "info@mtbawbawcascade3.com",
-        "phone": ""
+        "email": "hello@cascadeapartment6.com.au",
+        "phone": "+61 3 5165 1200"
       },
       "rooms": [
         {
-          "id": "room-001",
+          "id": "room-006a",
           "name": "Entire Apartment",
-          "maxGuests": 10,
-          "beds": 3,
+          "maxGuests": 8,
+          "beds": 2,
           "bathrooms": 2,
           "size": 120,
-          "baseRate": 350,
+          "baseRate": 285,
           "quantity": 1
         }
       ],
-      "bedrooms": [
-        {
-          "name": "Bedroom 1",
-          "level": "Downstairs",
-          "description": "Queen size bed with ensuite bathroom nearby"
-        },
-        {
-          "name": "Bedroom 2",
-          "level": "Downstairs",
-          "description": "Large room with tri-bunk (double on bottom, single on top) and a single bunk bed, sleeping up to 5. Opens onto a bathroom."
-        },
-        {
-          "name": "Bedroom 3",
-          "level": "Upstairs",
-          "description": "Sleeps 3 with 1 tri-bunk"
-        }
-      ],
-      "amenities": [
-        "wifi",
-        "parking",
-        "kitchen",
-        "dishwasher",
-        "gas-heater",
-        "hydronic-heating",
-        "tv",
-        "balcony",
-        "mountain-view",
-        "drying-room",
-        "laundry",
-        "microwave",
-        "oven",
-        "fridge-freezer",
-        "dining-table"
-      ],
+      "amenities": ["wifi", "parking", "kitchen", "fireplace", "hot-tub", "mountain-view", "deck", "ski-access", "tv", "washer-dryer", "bbq", "self-checkin"],
       "rating": 4.8,
-      "reviewCount": 47,
+      "reviewCount": 94,
       "images": [
-        "https://www.cascadeapartments.com.au/wp-content/uploads/apt3-exterior.jpg",
-        "https://www.cascadeapartments.com.au/wp-content/uploads/apt3-living.jpg",
-        "https://www.cascadeapartments.com.au/wp-content/uploads/apt3-kitchen.jpg",
-        "https://www.cascadeapartments.com.au/wp-content/uploads/apt3-bedroom1.jpg",
-        "https://www.cascadeapartments.com.au/wp-content/uploads/apt3-bedroom2.jpg",
-        "https://www.cascadeapartments.com.au/wp-content/uploads/apt3-balcony.jpg"
+        "images/cascade6-1.jpg",
+        "images/cascade6-2.jpg",
+        "images/cascade6-3.jpg",
+        "images/cascade6-4.jpg",
+        "images/cascade6-5.jpg",
+        "images/cascade6-6.jpg",
+        "images/cascade6-7.jpg",
+        "images/cascade6-8.jpg"
       ],
       "policies": {
-        "checkIn": "15:00",
-        "checkOut": "11:00",
+        "checkIn": "14:00",
+        "checkOut": "10:00",
         "cancellation": "moderate",
-        "minStay": 1,
-        "minStayWeekend": 2,
-        "maxStay": 28,
+        "minStay": 2,
+        "maxStay": 30,
         "petsAllowed": false,
         "smokingAllowed": false,
-        "depositPercent": 30,
-        "notes": "Weekend bookings (Friday and Saturday nights) require a minimum 2-night stay. Pillows and doonas/blankets supplied. Linen and towels must be brought or hired from Guest Services (pre-booking advised)."
+        "depositPercent": 30
       },
       "icalFeeds": [
         {
           "platform": "airbnb",
-          "url": "",
-          "lastSync": null,
-          "status": "inactive"
+          "url": "https://www.airbnb.com/calendar/ical/cascade6.ics",
+          "lastSync": "2026-02-19T08:30:00Z",
+          "status": "active"
         },
         {
           "platform": "booking",
-          "url": "",
-          "lastSync": null,
-          "status": "inactive"
+          "url": "https://admin.booking.com/ical/export/cascade6",
+          "lastSync": "2026-02-19T08:15:00Z",
+          "status": "active"
         }
       ]
+    },
+    {
+      "id": "prop-002",
+      "name": "Bondi Beach Luxury Apartment",
+      "type": "apartment",
+      "status": "active",
+      "description": "Stunning beachfront apartment just steps from the sand. This modern 3-bedroom apartment features an open-plan living area, fully equipped gourmet kitchen, and a private balcony with panoramic ocean views. Perfect for families or groups.",
+      "location": {
+        "address": "45 Campbell Parade",
+        "city": "Bondi Beach",
+        "state": "NSW",
+        "postcode": "2026",
+        "country": "AU",
+        "lat": -33.8915,
+        "lng": 151.2767
+      },
+      "contact": {
+        "email": "hello@bondiluxe.com.au",
+        "phone": "+61 2 8765 4321"
+      },
+      "rooms": [
+        {
+          "id": "room-005",
+          "name": "Entire Apartment",
+          "maxGuests": 6,
+          "beds": 3,
+          "bathrooms": 2,
+          "size": 110,
+          "baseRate": 195,
+          "quantity": 1
+        }
+      ],
+      "amenities": ["wifi", "parking", "kitchen", "air-conditioning", "tv", "laundry", "balcony", "ocean-view", "dishwasher", "washer-dryer"],
+      "rating": 4.9,
+      "reviewCount": 94,
+      "images": [],
+      "policies": {
+        "checkIn": "15:00",
+        "checkOut": "10:00",
+        "cancellation": "strict",
+        "minStay": 2,
+        "maxStay": 28,
+        "petsAllowed": false,
+        "smokingAllowed": false,
+        "depositPercent": 50
+      },
+      "icalFeeds": [
+        {
+          "platform": "airbnb",
+          "url": "https://www.airbnb.com/calendar/ical/54321.ics",
+          "lastSync": "2026-02-19T07:45:00Z",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "prop-003",
+      "name": "Blue Mountains Retreat Cabin",
+      "type": "holiday-park",
+      "status": "active",
+      "description": "Escape to the tranquility of the Blue Mountains in this charming self-contained cabin. Surrounded by native bushland, enjoy stunning valley views, a wood fireplace, and easy access to walking trails and the Three Sisters.",
+      "location": {
+        "address": "78 Cliff Drive",
+        "city": "Katoomba",
+        "state": "NSW",
+        "postcode": "2780",
+        "country": "AU",
+        "lat": -33.7320,
+        "lng": 150.3120
+      },
+      "contact": {
+        "email": "stay@bluemountainsretreat.com.au",
+        "phone": "+61 2 4782 1234"
+      },
+      "rooms": [
+        {
+          "id": "room-006",
+          "name": "Entire Cabin",
+          "maxGuests": 2,
+          "beds": 1,
+          "bathrooms": 1,
+          "size": 45,
+          "baseRate": 145,
+          "quantity": 1
+        }
+      ],
+      "amenities": ["wifi", "parking", "kitchen", "fireplace", "bbq", "garden", "mountain-view", "hiking-access"],
+      "rating": 4.6,
+      "reviewCount": 76,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "11:00",
+        "cancellation": "flexible",
+        "minStay": 2,
+        "maxStay": 14,
+        "petsAllowed": true,
+        "smokingAllowed": false,
+        "depositPercent": 30
+      },
+      "icalFeeds": []
+    },
+    {
+      "id": "prop-004",
+      "name": "The Rustic Vine Inn",
+      "type": "pub",
+      "status": "active",
+      "description": "Historic country pub with charming accommodation above. Enjoy local craft beers, hearty bistro meals, and live music on weekends. Rooms are individually styled with heritage character and modern comforts.",
+      "location": {
+        "address": "12 Main Street",
+        "city": "Mudgee",
+        "state": "NSW",
+        "postcode": "2850",
+        "country": "AU",
+        "lat": -32.5937,
+        "lng": 149.5873
+      },
+      "contact": {
+        "email": "bookings@rusticvine.com.au",
+        "phone": "+61 2 6372 4567"
+      },
+      "rooms": [
+        {
+          "id": "room-007",
+          "name": "Heritage Room",
+          "maxGuests": 2,
+          "beds": 1,
+          "bathrooms": 1,
+          "size": 22,
+          "baseRate": 89,
+          "quantity": 6
+        },
+        {
+          "id": "room-008",
+          "name": "Suite",
+          "maxGuests": 3,
+          "beds": 2,
+          "bathrooms": 1,
+          "size": 35,
+          "baseRate": 139,
+          "quantity": 2
+        }
+      ],
+      "amenities": ["wifi", "restaurant", "bar", "live-music", "air-conditioning", "tv", "parking"],
+      "rating": 4.3,
+      "reviewCount": 52,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "10:00",
+        "cancellation": "flexible",
+        "minStay": 1,
+        "maxStay": 7,
+        "petsAllowed": false,
+        "smokingAllowed": false,
+        "depositPercent": 0
+      },
+      "icalFeeds": []
+    },
+    {
+      "id": "prop-005",
+      "name": "Seaside Caravan Park",
+      "type": "caravan-park",
+      "status": "active",
+      "description": "Family-friendly caravan park right on the coast. Choose from powered sites, ensuite sites, or self-contained cabins. Enjoy direct beach access, a heated swimming pool, playground, camp kitchen, and nightly activities during school holidays.",
+      "location": {
+        "address": "200 Coast Road",
+        "city": "Coffs Harbour",
+        "state": "NSW",
+        "postcode": "2450",
+        "country": "AU",
+        "lat": -30.2963,
+        "lng": 153.1138
+      },
+      "contact": {
+        "email": "info@seasidecaravanpark.com.au",
+        "phone": "+61 2 6652 7890"
+      },
+      "rooms": [
+        {
+          "id": "room-009",
+          "name": "Powered Site",
+          "maxGuests": 6,
+          "beds": 0,
+          "bathrooms": 0,
+          "size": 0,
+          "baseRate": 45,
+          "quantity": 50
+        },
+        {
+          "id": "room-010",
+          "name": "Ensuite Site",
+          "maxGuests": 6,
+          "beds": 0,
+          "bathrooms": 1,
+          "size": 0,
+          "baseRate": 65,
+          "quantity": 20
+        },
+        {
+          "id": "room-011",
+          "name": "Standard Cabin",
+          "maxGuests": 4,
+          "beds": 2,
+          "bathrooms": 1,
+          "size": 30,
+          "baseRate": 120,
+          "quantity": 10
+        },
+        {
+          "id": "room-012",
+          "name": "Deluxe Cabin",
+          "maxGuests": 6,
+          "beds": 3,
+          "bathrooms": 1,
+          "size": 50,
+          "baseRate": 175,
+          "quantity": 5
+        }
+      ],
+      "amenities": ["wifi", "pool", "parking", "playground", "bbq", "camp-kitchen", "laundry", "beach-access", "pet-friendly"],
+      "rating": 4.4,
+      "reviewCount": 215,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "10:00",
+        "cancellation": "moderate",
+        "minStay": 1,
+        "maxStay": 28,
+        "petsAllowed": true,
+        "smokingAllowed": false,
+        "depositPercent": 20
+      },
+      "icalFeeds": [
+        {
+          "platform": "booking",
+          "url": "https://admin.booking.com/ical/export/11111",
+          "lastSync": "2026-02-19T06:00:00Z",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "prop-006",
+      "name": "Pacific Highway Motel",
+      "type": "motel",
+      "status": "active",
+      "description": "Convenient and comfortable motel located on the Pacific Highway. Ideal for road trippers and business travellers. All rooms feature kitchenettes, free WiFi, and parking right at your door.",
+      "location": {
+        "address": "456 Pacific Highway",
+        "city": "Port Macquarie",
+        "state": "NSW",
+        "postcode": "2444",
+        "country": "AU",
+        "lat": -31.4333,
+        "lng": 152.9000
+      },
+      "contact": {
+        "email": "stay@pacifichighwaymotel.com.au",
+        "phone": "+61 2 6583 2345"
+      },
+      "rooms": [
+        {
+          "id": "room-013",
+          "name": "Standard Queen",
+          "maxGuests": 2,
+          "beds": 1,
+          "bathrooms": 1,
+          "size": 25,
+          "baseRate": 99,
+          "quantity": 15
+        },
+        {
+          "id": "room-014",
+          "name": "Family Suite",
+          "maxGuests": 5,
+          "beds": 3,
+          "bathrooms": 1,
+          "size": 40,
+          "baseRate": 149,
+          "quantity": 5
+        }
+      ],
+      "amenities": ["wifi", "parking", "kitchenette", "air-conditioning", "tv", "laundry", "accessible"],
+      "rating": 4.1,
+      "reviewCount": 89,
+      "images": [],
+      "policies": {
+        "checkIn": "14:00",
+        "checkOut": "10:00",
+        "cancellation": "flexible",
+        "minStay": 1,
+        "maxStay": 14,
+        "petsAllowed": false,
+        "smokingAllowed": false,
+        "depositPercent": 0
+      },
+      "icalFeeds": []
     }
   ]
 }

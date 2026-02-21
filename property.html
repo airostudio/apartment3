@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Grand Harbour Hotel - TrendAccom</title>
-  <meta name="description" content="Book The Grand Harbour Hotel - a stunning waterfront property with panoramic harbour views, luxury amenities, and exceptional service.">
+  <title>Cascade Apartment 6 - Mt Baw Baw Alpine Retreat</title>
+  <meta name="description" content="Book Cascade Apartment 6 at Mt Baw Baw — a self-contained alpine retreat with ski-in/ski-out access, wood fireplace, hot tub, and stunning mountain views.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -758,6 +758,107 @@
       .similar-grid { grid-template-columns: 1fr; }
       .location-details { grid-template-columns: 1fr; }
     }
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.94);
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox-img-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 4px;
+      display: block;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.28); }
+    .lightbox-close svg { width: 22px; height: 22px; }
+    .lightbox-prev,
+    .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+    .lightbox-prev:hover,
+    .lightbox-next:hover { background: rgba(255,255,255,0.28); }
+    .lightbox-prev svg,
+    .lightbox-next svg { width: 28px; height: 28px; }
+    .lightbox-counter {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.65);
+      font-size: 0.875rem;
+      letter-spacing: 0.5px;
+    }
+    .gallery-item img { cursor: pointer; }
+
+    /* Winter Season rate card */
+    .rate-card.winter {
+      border: 1.5px solid #cdd6df;
+      background: linear-gradient(to bottom, #ffffff 0%, #e4ebf0 100%);
+      box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+    }
+    .rate-card.winter:hover {
+      border-color: #a8b8c8;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.11);
+    }
+    .rate-card.winter::before {
+      content: 'White Season';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #5b8fa8;
+      color: #fff;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .rate-card.winter .rate-season { color: #4a7a96; }
   </style>
 </head>
 <body>
@@ -905,8 +1006,8 @@
           <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:600;color:#1a1a2e;margin-bottom:20px;">What this place offers</h3>
           <div class="amenities-grid">
             <div class="amenity-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-              Free Wi-Fi
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><line x1="12" y1="16" x2="12" y2="16.01"/></svg>
+              Ski &amp; Board Storage
             </div>
             <div class="amenity-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
@@ -959,8 +1060,8 @@
         <div class="tab-content" id="tab-rates">
           <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:600;color:#1a1a2e;margin-bottom:20px;">Seasonal Pricing</h3>
           <div class="rates-grid">
-            <div class="rate-card">
-              <div class="rate-season">Peak Season</div>
+            <div class="rate-card winter">
+              <div class="rate-season">Winter Season</div>
               <div class="rate-dates">Jun - Aug (Ski Season)</div>
               <div class="rate-price">$385 <span>/ night</span></div>
               <div class="rate-note">Minimum 2 nights</div>
@@ -1102,7 +1203,7 @@
       <!-- Booking Sidebar -->
       <aside class="booking-sidebar">
         <div class="booking-price-header">
-          <span class="price">&euro;179</span>
+          <span class="price">$285</span>
           <span class="per-night">/ night</span>
         </div>
 
@@ -1133,24 +1234,24 @@
 
         <div class="price-breakdown">
           <div class="price-row">
-            <span class="label" title="Nightly rate multiplied by number of nights">&euro;179 x 5 nights</span>
-            <span>&euro;895</span>
+            <span class="label" title="Nightly rate multiplied by number of nights">$285 x 5 nights</span>
+            <span>$1,425</span>
           </div>
           <div class="price-row">
             <span class="label" title="One-time cleaning fee">Cleaning fee</span>
-            <span>&euro;45</span>
+            <span>$150</span>
           </div>
           <div class="price-row">
             <span class="label" title="Service charge for booking platform">Service fee</span>
-            <span>&euro;65</span>
+            <span>$95</span>
           </div>
           <div class="price-row">
-            <span class="label" title="Local accommodation tax">Taxes &amp; levies</span>
-            <span>&euro;52</span>
+            <span class="label" title="Local accommodation levy">Taxes &amp; levies</span>
+            <span>$72</span>
           </div>
           <div class="price-row total">
             <span>Total</span>
-            <span>&euro;1,057</span>
+            <span>$1,742</span>
           </div>
         </div>
 
@@ -1248,22 +1349,22 @@
           </div>
         </div>
         <div>
-          <h4 class="footer-heading">Company</h4>
+          <h4 class="footer-heading">Property</h4>
           <div class="footer-links">
-            <a href="#">About Us</a>
-            <a href="#">Contact</a>
-            <a href="#">Careers</a>
-            <a href="#">Press</a>
-            <a href="#">Blog</a>
+            <a href="#tab-overview" onclick="document.querySelector('[data-tab=overview]').click();window.scrollTo({top:document.querySelector('.property-tabs').offsetTop-80,behavior:'smooth'});return false;">About</a>
+            <a href="#tab-amenities" onclick="document.querySelector('[data-tab=amenities]').click();window.scrollTo({top:document.querySelector('.property-tabs').offsetTop-80,behavior:'smooth'});return false;">Amenities</a>
+            <a href="#tab-rates" onclick="document.querySelector('[data-tab=rates]').click();window.scrollTo({top:document.querySelector('.property-tabs').offsetTop-80,behavior:'smooth'});return false;">Rates &amp; Pricing</a>
+            <a href="#tab-reviews" onclick="document.querySelector('[data-tab=reviews]').click();window.scrollTo({top:document.querySelector('.property-tabs').offsetTop-80,behavior:'smooth'});return false;">Reviews</a>
+            <a href="#tab-location" onclick="document.querySelector('[data-tab=location]').click();window.scrollTo({top:document.querySelector('.property-tabs').offsetTop-80,behavior:'smooth'});return false;">Location</a>
           </div>
         </div>
         <div>
           <h4 class="footer-heading">Support</h4>
           <div class="footer-links">
-            <a href="#">Help Centre</a>
+            <a href="booking.html">Book Now</a>
+            <a href="#tab-rates" onclick="document.querySelector('[data-tab=rates]').click();window.scrollTo({top:document.querySelector('.property-tabs').offsetTop-80,behavior:'smooth'});return false;">Cancellation Policy</a>
             <a href="#">Terms of Service</a>
             <a href="#">Privacy Policy</a>
-            <a href="#">Cancellation Policy</a>
             <a href="admin/index.html">Property Owners</a>
           </div>
         </div>
@@ -1285,21 +1386,86 @@
     </div>
   </footer>
 
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close gallery">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="lightbox-next" id="lightboxNext" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="lightbox-img-wrap">
+      <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    </div>
+    <div class="lightbox-counter" id="lightboxCounter">1 / 8</div>
+  </div>
+
   <script src="js/app.js"></script>
   <script>
     // Property page tab switching
     document.querySelectorAll('.property-tab').forEach(tab => {
       tab.addEventListener('click', () => {
-        // Remove active from all tabs and content
         document.querySelectorAll('.property-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-        // Activate clicked tab and its content
         tab.classList.add('active');
         const targetId = 'tab-' + tab.getAttribute('data-tab');
         document.getElementById(targetId).classList.add('active');
       });
     });
+
+    // Lightbox
+    const lightboxImages = [
+      { src: 'images/cascade6-1.jpg', alt: 'Cascade Apartment 6' },
+      { src: 'images/cascade6-2.jpg', alt: 'Cascade Apartment 6 interior' },
+      { src: 'images/cascade6-3.jpg', alt: 'Cascade Apartment 6 living area' },
+      { src: 'images/cascade6-4.jpg', alt: 'Cascade Apartment 6 bedroom' },
+      { src: 'images/cascade6-5.jpg', alt: 'Cascade Apartment 6 views' },
+      { src: 'images/cascade6-6.jpg', alt: 'Cascade Apartment 6 deck' },
+      { src: 'images/cascade6-7.jpg', alt: 'Cascade Apartment 6 kitchen' },
+      { src: 'images/cascade6-8.jpg', alt: 'Cascade Apartment 6 bathroom' }
+    ];
+    let lbIndex = 0;
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbCounter = document.getElementById('lightboxCounter');
+
+    function lbShow(index) {
+      lbIndex = (index + lightboxImages.length) % lightboxImages.length;
+      lbImg.src = lightboxImages[lbIndex].src;
+      lbImg.alt = lightboxImages[lbIndex].alt;
+      lbCounter.textContent = (lbIndex + 1) + ' / ' + lightboxImages.length;
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function lbClose() {
+      lb.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('lightboxClose').addEventListener('click', lbClose);
+    document.getElementById('lightboxPrev').addEventListener('click', () => lbShow(lbIndex - 1));
+    document.getElementById('lightboxNext').addEventListener('click', () => lbShow(lbIndex + 1));
+    lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('active')) return;
+      if (e.key === 'Escape') lbClose();
+      if (e.key === 'ArrowLeft') lbShow(lbIndex - 1);
+      if (e.key === 'ArrowRight') lbShow(lbIndex + 1);
+    });
+
+    // Wire gallery images to lightbox
+    document.querySelectorAll('.gallery-item img').forEach((img, i) => {
+      img.addEventListener('click', () => lbShow(i));
+    });
+
+    // "Show all photos" button opens lightbox at image 0
+    const galleryBtn = document.querySelector('.gallery-btn');
+    if (galleryBtn) {
+      galleryBtn.addEventListener('click', e => { e.stopPropagation(); lbShow(0); });
+    }
   </script>
 </body>
 </html>

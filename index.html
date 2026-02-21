@@ -3,26 +3,296 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrendAccom - Find Your Perfect Stay</title>
-  <meta name="description" content="Book hotels, apartments, cabins, caravan parks and more. Find your perfect accommodation with TrendAccom.">
+  <title>Cascade Apartment 3 — Alpine Retreat at Mt Baw Baw</title>
+  <meta name="description" content="Cascade Apartment 3 is a premium self-contained alpine retreat at Mt Baw Baw, VIC. Ski-in/ski-out access, wood fireplace, hot tub, mountain views. Sleeps up to 8 guests.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ---- Quick Facts ---- */
+    .quick-facts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--color-light);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .quick-fact {
+      padding: var(--space-2xl) var(--space-xl);
+      text-align: center;
+      border-right: 1px solid var(--color-light);
+    }
+    .quick-fact:last-child { border-right: none; }
+    .quick-fact-value {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: var(--space-xs);
+    }
+    .quick-fact-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    @media (max-width: 640px) {
+      .quick-facts { grid-template-columns: repeat(2, 1fr); }
+      .quick-fact:nth-child(2) { border-right: none; }
+      .quick-fact:nth-child(1),
+      .quick-fact:nth-child(2) { border-bottom: 1px solid var(--color-light); }
+    }
+
+    /* ---- Season Cards ---- */
+    .season-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+    .season-card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      align-items: flex-end;
+    }
+    .season-card-bg {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+    .season-card-overlay {
+      position: absolute;
+      inset: 0;
+    }
+    .season-card-content {
+      position: relative;
+      z-index: 1;
+      padding: var(--space-2xl);
+      width: 100%;
+    }
+    .season-card-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: var(--space-md);
+    }
+    .season-card--winter .season-card-tag {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #fff;
+    }
+    .season-card--summer .season-card-tag {
+      background: rgba(201,168,76,0.25);
+      border: 1px solid rgba(201,168,76,0.5);
+      color: #e8d5a0;
+    }
+    .season-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: var(--space-sm);
+      line-height: 1.2;
+    }
+    .season-card p {
+      color: rgba(255,255,255,0.82);
+      font-size: var(--font-size-sm);
+      line-height: var(--line-height-relaxed);
+      margin-bottom: var(--space-lg);
+    }
+    /* Winter card: pure white → slightly off-white gradient with border */
+    .season-card--winter {
+      border: 1.5px solid #cdd6df;
+    }
+    .season-card--winter .season-card-overlay {
+      background: linear-gradient(to top, rgba(15,39,68,0.88) 0%, rgba(15,39,68,0.3) 60%, transparent 100%);
+    }
+    .season-card--summer .season-card-overlay {
+      background: linear-gradient(to top, rgba(15,39,68,0.85) 0%, rgba(15,39,68,0.25) 60%, transparent 100%);
+    }
+    @media (max-width: 700px) {
+      .season-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ---- Gallery Preview ---- */
+    .gallery-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 260px 220px;
+      gap: var(--space-sm);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .gallery-preview-item {
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-preview-item:first-child {
+      grid-row: 1 / 3;
+    }
+    .gallery-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+      cursor: pointer;
+    }
+    .gallery-preview-item:hover img { transform: scale(1.03); }
+    @media (max-width: 640px) {
+      .gallery-preview {
+        grid-template-columns: 1fr;
+        grid-template-rows: 240px 200px 200px;
+      }
+      .gallery-preview-item:first-child { grid-row: auto; }
+    }
+
+    /* ---- Amenities Grid ---- */
+    .amenities-highlight {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+    .amenity-highlight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      background: var(--color-off-white);
+      border-radius: var(--radius-lg);
+    }
+    .amenity-highlight-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: rgba(15,39,68,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .amenity-highlight-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--color-primary);
+    }
+    .amenity-highlight-text strong {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 2px;
+    }
+    .amenity-highlight-text span {
+      font-size: 0.8rem;
+      color: var(--color-gray);
+    }
+    @media (max-width: 700px) {
+      .amenities-highlight { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .amenities-highlight { grid-template-columns: 1fr; }
+    }
+
+    /* ---- About section ---- */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3xl);
+      align-items: center;
+    }
+    .about-layout img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: var(--radius-xl);
+    }
+    .about-text h2 { margin-bottom: var(--space-lg); }
+    .about-text p {
+      color: var(--color-gray);
+      line-height: var(--line-height-relaxed);
+      margin-bottom: var(--space-lg);
+    }
+    @media (max-width: 768px) {
+      .about-layout { grid-template-columns: 1fr; }
+      .about-layout img { height: 280px; }
+    }
+
+    /* ---- Hero booking bar ---- */
+    .hero-book-bar {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xs);
+      gap: var(--space-xs);
+      margin-top: var(--space-2xl);
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-book-field {
+      flex: 1;
+      padding: var(--space-sm) var(--space-md);
+      border-right: 1px solid rgba(255,255,255,0.2);
+    }
+    .hero-book-field:last-of-type { border-right: none; }
+    .hero-book-field label {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 2px;
+    }
+    .hero-book-field input,
+    .hero-book-field select {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      width: 100%;
+      outline: none;
+      cursor: pointer;
+    }
+    .hero-book-field input::-webkit-calendar-picker-indicator { filter: invert(1); }
+    .hero-book-field select option { color: var(--color-dark); background: #fff; }
+    @media (max-width: 600px) {
+      .hero-book-bar {
+        flex-direction: column;
+        padding: var(--space-md);
+        gap: var(--space-sm);
+      }
+      .hero-book-field { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); width: 100%; padding: var(--space-sm) 0; }
+      .hero-book-field:last-of-type { border-bottom: none; }
+    }
+  </style>
 </head>
 <body>
+
   <!-- Header -->
   <header class="site-header site-header--transparent" id="siteHeader">
     <div class="header-inner">
       <a href="index.html" class="logo">
         <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <!-- Back peak -->
           <path d="M3 36 L15 9 L27 36Z" fill="currentColor" fill-opacity="0.42"/>
-          <!-- Front peak -->
           <path d="M17 36 L30 3 L43 36Z" fill="currentColor"/>
-          <!-- Snow cap -->
           <path d="M30 3 L36.5 17 L23.5 17Z" fill="currentColor" fill-opacity="0.22"/>
-          <!-- Cascade wave -->
           <path d="M1 40 Q5.5 37.2 10 40 Q14.5 42.8 19 40 Q23.5 37.2 28 40 Q32.5 42.8 37 40 Q39.5 38.5 43 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
         </svg>
         <span class="logo-wordmark">
@@ -32,14 +302,12 @@
       </a>
       <nav class="nav-main">
         <a href="index.html" class="nav-link nav-link--active">Home</a>
-        <a href="search.html" class="nav-link">Browse</a>
-        <a href="search.html?type=hotel" class="nav-link">Hotels</a>
-        <a href="search.html?type=apartment" class="nav-link">Apartments</a>
-        <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
+        <a href="property.html" class="nav-link">The Apartment</a>
+        <a href="search.html" class="nav-link">Gallery</a>
+        <a href="property.html#tab-rates" class="nav-link">Rates</a>
       </nav>
       <div class="nav-actions">
-        <a href="admin/index.html" class="btn btn--sm btn--outline-white">List Your Property</a>
-        <a href="admin/index.html" class="btn btn--sm btn--ghost" style="color: white;">Sign In</a>
+        <a href="booking.html" class="btn btn--sm btn--primary">Book Now</a>
       </div>
       <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -50,19 +318,17 @@
   <!-- Mobile Navigation -->
   <nav class="mobile-nav" id="mobileNav">
     <a href="index.html" class="nav-link nav-link--active">Home</a>
-    <a href="search.html" class="nav-link">Browse All</a>
-    <a href="search.html?type=hotel" class="nav-link">Hotels</a>
-    <a href="search.html?type=apartment" class="nav-link">Apartments</a>
-    <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
-    <a href="admin/index.html" class="btn btn--primary btn--block">List Your Property</a>
-    <a href="admin/index.html" class="btn btn--outline btn--block">Sign In</a>
+    <a href="property.html" class="nav-link">The Apartment</a>
+    <a href="search.html" class="nav-link">Gallery</a>
+    <a href="property.html#tab-rates" class="nav-link">Rates</a>
+    <a href="booking.html" class="btn btn--primary btn--block">Book Now</a>
   </nav>
 
-  <!-- Hero Section with Slideshow -->
+  <!-- Hero -->
   <section class="hero">
     <div class="hero-slideshow" id="heroSlideshow">
       <div class="hero-slide active">
-        <img src="images/cascade.webp" alt="Cascade Apartment 3" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/cascade.webp" alt="Cascade Apartment 3 — Mt Baw Baw" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="hero-slide">
         <img src="images/20240425_111536.jpg" alt="Cascade Apartment 3 interior" style="width:100%;height:100%;object-fit:cover;">
@@ -71,442 +337,296 @@
         <img src="images/20240331_085622.jpg" alt="Cascade Apartment 3 living area" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="hero-slide">
-        <img src="images/20220423_171724.jpg" alt="Cascade Apartment 3 views" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/20220423_171724.jpg" alt="Cascade Apartment 3 mountain views" style="width:100%;height:100%;object-fit:cover;">
       </div>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Find Your Perfect Stay</h1>
-      <p class="hero-subtitle">Discover unique hotels, cosy apartments, scenic caravan parks and charming holiday retreats across the country</p>
-
-      <!-- Search Bar -->
-      <div class="search-bar" id="mainSearchBar">
-        <div class="search-field">
-          <label for="searchLocation">Location</label>
-          <input type="text" id="searchLocation" placeholder="Where are you going?" autocomplete="off">
+      <h1 class="hero-title">Cascade Apartment 3</h1>
+      <p class="hero-subtitle">A premium alpine retreat at Mt Baw Baw — ski-in/ski-out, wood fireplace, hot tub and stunning mountain views for up to 8 guests</p>
+      <div class="hero-book-bar">
+        <div class="hero-book-field">
+          <label for="heroCheckin">Check In</label>
+          <input type="date" id="heroCheckin">
         </div>
-        <div class="search-field">
-          <label for="searchCheckin">Check In</label>
-          <input type="date" id="searchCheckin">
+        <div class="hero-book-field">
+          <label for="heroCheckout">Check Out</label>
+          <input type="date" id="heroCheckout">
         </div>
-        <div class="search-field">
-          <label for="searchCheckout">Check Out</label>
-          <input type="date" id="searchCheckout">
-        </div>
-        <div class="search-field">
-          <label for="searchGuests">Guests</label>
-          <select id="searchGuests">
+        <div class="hero-book-field">
+          <label for="heroGuests">Guests</label>
+          <select id="heroGuests">
             <option value="1">1 Guest</option>
             <option value="2" selected>2 Guests</option>
             <option value="3">3 Guests</option>
             <option value="4">4 Guests</option>
             <option value="5">5 Guests</option>
-            <option value="6">6+ Guests</option>
+            <option value="6">6 Guests</option>
+            <option value="7">7 Guests</option>
+            <option value="8">8 Guests</option>
           </select>
         </div>
-        <button class="btn btn--primary" onclick="performSearch()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          Search
-        </button>
+        <a href="booking.html" class="btn btn--primary" style="white-space:nowrap;flex-shrink:0;">Check Availability</a>
       </div>
     </div>
   </section>
 
-  <!-- Property Types Section -->
+  <!-- Quick Facts -->
+  <section class="section">
+    <div class="container">
+      <div class="quick-facts">
+        <div class="quick-fact">
+          <div class="quick-fact-value">2</div>
+          <div class="quick-fact-label">Bedrooms</div>
+        </div>
+        <div class="quick-fact">
+          <div class="quick-fact-value">2</div>
+          <div class="quick-fact-label">Bathrooms</div>
+        </div>
+        <div class="quick-fact">
+          <div class="quick-fact-value">8</div>
+          <div class="quick-fact-label">Max Guests</div>
+        </div>
+        <div class="quick-fact">
+          <div class="quick-fact-value">120<span style="font-size:1.2rem;">m²</span></div>
+          <div class="quick-fact-label">Two Levels</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About the Space -->
+  <section class="section section--light">
+    <div class="container">
+      <div class="about-layout">
+        <div>
+          <img src="images/20230218_132555.jpg" alt="Cascade Apartment 3 — living area" loading="lazy">
+        </div>
+        <div class="about-text">
+          <h2>Your Alpine Base at Mt Baw Baw</h2>
+          <p>Cascade Apartment 3 is a fully self-contained, solid-brick apartment set over two levels in the heart of Baw Baw Village. Nestled among snowgums with direct ski-in/ski-out access to the slopes, it's the perfect base for all seasons.</p>
+          <p>The apartment features a spacious open-plan living and dining area with a wood fireplace, a fully equipped kitchen, two generous bedrooms, and two bathrooms. The upper-level loft provides extra sleeping space — ideal for families and groups of up to 8.</p>
+          <p>Step onto the private deck to take in sweeping mountain views, warm up in the outdoor hot tub, or head straight to the ski lifts just steps away. Whether it's winter skiing or summer hiking, Cascade 3 delivers.</p>
+          <div class="btn-group" style="margin-top: var(--space-xl);">
+            <a href="property.html" class="btn btn--primary">View Full Details</a>
+            <a href="booking.html" class="btn btn--outline">Book Your Stay</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Season Highlights -->
   <section class="section">
     <div class="container">
       <div class="text-center" style="margin-bottom: var(--space-2xl);">
-        <h2>Browse by Property Type</h2>
-        <p style="color: var(--color-gray); margin-top: var(--space-sm); font-size: var(--font-size-md);">
-          From luxury hotels to countryside retreats, find the perfect stay for every occasion
-        </p>
+        <h2>Every Season Has Its Magic</h2>
+        <p style="color: var(--color-gray); margin-top: var(--space-sm); font-size: var(--font-size-md);">Mt Baw Baw is Victoria's closest ski resort to Melbourne — and a stunning alpine escape year-round</p>
       </div>
-      <div class="property-types">
-        <a href="search.html?type=hotel" class="property-type-card">
-          <div class="img-placeholder img-placeholder--hotel">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M3 7v14M21 7v14M6 11h4v4H6zM14 11h4v4h-4zM10 3h4v4h-4z"/></svg>
+      <div class="season-cards">
+        <div class="season-card season-card--winter">
+          <img src="images/cascade.webp" alt="Mt Baw Baw winter ski season" class="season-card-bg" loading="lazy">
+          <div class="season-card-overlay"></div>
+          <div class="season-card-content">
+            <span class="season-card-tag">Jun – Aug</span>
+            <h3>White Season</h3>
+            <p>Ski and snowboard directly from the apartment. Warm up by the wood fireplace, soak in the hot tub under the stars, and wake up to fresh powder on the mountain.</p>
+            <a href="booking.html" class="btn btn--outline-white">Book Winter &rarr;</a>
           </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Hotels</div>
-              <div class="type-count">124 properties</div>
-            </div>
+        </div>
+        <div class="season-card season-card--summer">
+          <img src="images/20240331_085622.jpg" alt="Mt Baw Baw summer alpine" class="season-card-bg" loading="lazy">
+          <div class="season-card-overlay"></div>
+          <div class="season-card-content">
+            <span class="season-card-tag">Sep – May</span>
+            <h3>Alpine Summer</h3>
+            <p>Hike through wildflower meadows, mountain bike the trails, and enjoy long evenings on the deck with cool mountain air and clear starry skies. No crowds, just nature.</p>
+            <a href="booking.html" class="btn btn--outline-white">Book Summer &rarr;</a>
           </div>
-        </a>
-        <a href="search.html?type=motel" class="property-type-card">
-          <div class="img-placeholder" style="background: linear-gradient(135deg, #2c3e50, #34495e);">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
-          </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Motels</div>
-              <div class="type-count">56 properties</div>
-            </div>
-          </div>
-        </a>
-        <a href="search.html?type=apartment" class="property-type-card">
-          <div class="img-placeholder img-placeholder--apartment">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h3v3H7zM14 7h3v3h-3zM7 14h3v3H7zM14 14h3v3h-3z"/></svg>
-          </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Apartments</div>
-              <div class="type-count">89 properties</div>
-            </div>
-          </div>
-        </a>
-        <a href="search.html?type=pub" class="property-type-card">
-          <div class="img-placeholder img-placeholder--pub">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 11h1a3 3 0 0 1 0 6h-1M3 11h14v7a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-7zM6 7l1-4h6l1 4"/></svg>
-          </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Pubs & Inns</div>
-              <div class="type-count">42 properties</div>
-            </div>
-          </div>
-        </a>
-        <a href="search.html?type=caravan-park" class="property-type-card">
-          <div class="img-placeholder img-placeholder--caravan">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="16" height="10" rx="2"/><circle cx="7" cy="18" r="2"/><circle cx="13" cy="18" r="2"/><path d="M18 12h4l-2-6h-2M2 12h16"/></svg>
-          </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Caravan Parks</div>
-              <div class="type-count">38 properties</div>
-            </div>
-          </div>
-        </a>
-        <a href="search.html?type=holiday-park" class="property-type-card">
-          <div class="img-placeholder img-placeholder--cabin">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18L12 3 3 21zM9 21v-6h6v6"/></svg>
-          </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Holiday Parks</div>
-              <div class="type-count">67 properties</div>
-            </div>
-          </div>
-        </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Properties -->
+  <!-- Gallery Preview -->
   <section class="section section--light">
     <div class="container">
       <div class="flex justify-between items-center" style="margin-bottom: var(--space-2xl);">
         <div>
-          <h2>Featured Properties</h2>
-          <p style="color: var(--color-gray); margin-top: var(--space-sm);">Handpicked stays loved by our guests</p>
+          <h2>Inside the Apartment</h2>
+          <p style="color: var(--color-gray); margin-top: var(--space-sm);">A comfortable, well-equipped retreat with everything you need</p>
         </div>
-        <a href="search.html" class="btn btn--outline">View All</a>
+        <a href="search.html" class="btn btn--outline">View All Photos</a>
       </div>
-      <div class="grid grid-3 gap-xl" id="featuredProperties">
-        <!-- Property Card 1 -->
-        <div class="card">
-          <div class="card-img">
-            <img src="images/20240425_111536.jpg" alt="Cascade Apartment 3" style="width:100%;height:100%;object-fit:cover;">
-            <span class="card-badge">Featured</span>
-            <button class="card-favorite" aria-label="Add to favorites">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="card-body">
-            <div class="card-type">Apartment</div>
-            <h3 class="card-title"><a href="property.html">Cascade Apartment 6</a></h3>
-            <div class="card-location">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Baw Baw Village, Mt Baw Baw, VIC
-            </div>
-            <div class="card-amenities">
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
-                2 Beds
-              </span>
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
-                2 Bath
-              </span>
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
-                8 Guests
-              </span>
-            </div>
-            <div class="card-footer">
-              <div class="card-rating">
-                <span class="stars">
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </span>
-                <span class="count">(94)</span>
-              </div>
-              <div class="card-price">
-                <span class="amount">$285</span>
-                <span class="period">/ night</span>
-              </div>
-            </div>
-          </div>
+      <div class="gallery-preview">
+        <div class="gallery-preview-item">
+          <img src="images/20240425_111536.jpg" alt="Cascade Apartment 3" loading="lazy">
         </div>
-
-        <!-- Property Card 2 -->
-        <div class="card">
-          <div class="card-img">
-            <div class="img-placeholder img-placeholder--apartment">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h3v3H7zM14 7h3v3h-3zM7 14h3v3H7zM14 14h3v3h-3z"/></svg>
-            </div>
-            <span class="card-badge" style="background: var(--color-accent);">Popular</span>
-            <button class="card-favorite" aria-label="Add to favorites">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="card-body">
-            <div class="card-type">Apartment</div>
-            <h3 class="card-title"><a href="property.html?id=2">Bondi Beach Luxury Apartment</a></h3>
-            <div class="card-location">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Bondi Beach, NSW
-            </div>
-            <div class="card-amenities">
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
-                3 Beds
-              </span>
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
-                2 Bath
-              </span>
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
-                6 Guests
-              </span>
-            </div>
-            <div class="card-footer">
-              <div class="card-rating">
-                <span class="stars">
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </span>
-                <span class="count">(94)</span>
-              </div>
-              <div class="card-price">
-                <span class="amount">$195</span>
-                <span class="period">/ night</span>
-              </div>
-            </div>
-          </div>
+        <div class="gallery-preview-item">
+          <img src="images/20240515_094048.jpg" alt="Cascade Apartment 3 interior" loading="lazy">
         </div>
-
-        <!-- Property Card 3 -->
-        <div class="card">
-          <div class="card-img">
-            <div class="img-placeholder img-placeholder--cabin">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18L12 3 3 21zM9 21v-6h6v6"/></svg>
-            </div>
-            <button class="card-favorite" aria-label="Add to favorites">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="card-body">
-            <div class="card-type">Holiday Park</div>
-            <h3 class="card-title"><a href="property.html?id=3">Blue Mountains Retreat Cabin</a></h3>
-            <div class="card-location">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Katoomba, NSW
-            </div>
-            <div class="card-amenities">
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2M6 8V4M18 8V4"/></svg>
-                1 Bed
-              </span>
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12a2 2 0 0 0-2 2v4h20v-4a2 2 0 0 0-2-2M4 12V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/></svg>
-                1 Bath
-              </span>
-              <span class="card-amenity">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
-                2 Guests
-              </span>
-            </div>
-            <div class="card-footer">
-              <div class="card-rating">
-                <span class="stars">
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </span>
-                <span class="count">(76)</span>
-              </div>
-              <div class="card-price">
-                <span class="amount">$145</span>
-                <span class="period">/ night</span>
-              </div>
-            </div>
-          </div>
+        <div class="gallery-preview-item">
+          <img src="images/20220224_110708.jpg" alt="Cascade Apartment 3 bedroom" loading="lazy">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- How It Works -->
+  <!-- Amenities -->
   <section class="section">
-    <div class="container">
-      <div class="text-center" style="margin-bottom: var(--space-3xl);">
-        <h2>How It Works</h2>
-        <p style="color: var(--color-gray); margin-top: var(--space-sm); font-size: var(--font-size-md);">Book your perfect stay in three simple steps</p>
-      </div>
-      <div class="grid grid-3 gap-2xl">
-        <div class="text-center">
-          <div style="width: 80px; height: 80px; border-radius: var(--radius-full); background: rgba(41, 128, 185, 0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          </div>
-          <h4 style="margin-bottom: var(--space-sm);">Search & Discover</h4>
-          <p style="color: var(--color-gray); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed);">
-            Browse through hundreds of properties. Filter by type, location, amenities, and price to find your perfect match.
-          </p>
-        </div>
-        <div class="text-center">
-          <div style="width: 80px; height: 80px; border-radius: var(--radius-full); background: rgba(230, 126, 34, 0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          </div>
-          <h4 style="margin-bottom: var(--space-sm);">Choose Your Dates</h4>
-          <p style="color: var(--color-gray); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed);">
-            Check real-time availability, compare seasonal rates, and pick the dates that work best for you.
-          </p>
-        </div>
-        <div class="text-center">
-          <div style="width: 80px; height: 80px; border-radius: var(--radius-full); background: rgba(39, 174, 96, 0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <h4 style="margin-bottom: var(--space-sm);">Book & Enjoy</h4>
-          <p style="color: var(--color-gray); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed);">
-            Securely pay through Stripe, receive instant confirmation, and get ready for an unforgettable stay.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Popular Destinations -->
-  <section class="section section--light">
     <div class="container">
       <div class="text-center" style="margin-bottom: var(--space-2xl);">
-        <h2>Popular Destinations</h2>
-        <p style="color: var(--color-gray); margin-top: var(--space-sm); font-size: var(--font-size-md);">Explore trending locations with the best accommodation options</p>
+        <h2>Everything You Need</h2>
+        <p style="color: var(--color-gray); margin-top: var(--space-sm);">Fully equipped for a comfortable alpine stay</p>
       </div>
-      <div class="grid grid-4 gap-lg">
-        <a href="search.html?location=sydney" class="property-type-card" style="aspect-ratio: 4/3;">
-          <div class="img-placeholder" style="background: linear-gradient(135deg, #1a5276, #3498db);">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div class="amenities-highlight">
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Sydney</div>
-              <div class="type-count">245 properties</div>
-            </div>
+          <div class="amenity-highlight-text">
+            <strong>Ski-in / Ski-out</strong>
+            <span>Direct slope access from the door</span>
           </div>
-        </a>
-        <a href="search.html?location=melbourne" class="property-type-card" style="aspect-ratio: 4/3;">
-          <div class="img-placeholder" style="background: linear-gradient(135deg, #2c3e50, #8e44ad);">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
           </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Melbourne</div>
-              <div class="type-count">198 properties</div>
-            </div>
+          <div class="amenity-highlight-text">
+            <strong>Hot Tub / Spa</strong>
+            <span>Outdoor spa with mountain views</span>
           </div>
-        </a>
-        <a href="search.html?location=gold-coast" class="property-type-card" style="aspect-ratio: 4/3;">
-          <div class="img-placeholder" style="background: linear-gradient(135deg, #e67e22, #f39c12);">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 0 0-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 0 1 5.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0"/></svg>
           </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Gold Coast</div>
-              <div class="type-count">156 properties</div>
-            </div>
+          <div class="amenity-highlight-text">
+            <strong>Sleeps up to 8</strong>
+            <span>2 beds + loft sleeping area</span>
           </div>
-        </a>
-        <a href="search.html?location=byron-bay" class="property-type-card" style="aspect-ratio: 4/3;">
-          <div class="img-placeholder" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
           </div>
-          <div class="overlay">
-            <div>
-              <div class="type-name">Byron Bay</div>
-              <div class="type-count">87 properties</div>
-            </div>
+          <div class="amenity-highlight-text">
+            <strong>Full Kitchen</strong>
+            <span>Fully equipped gourmet kitchen</span>
           </div>
-        </a>
+        </div>
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 L4 7 L4 20 L20 20 L20 7 Z"/><path d="M8 20 L8 14 L16 14 L16 20"/><path d="M4 7 Q12 2 20 7"/></svg>
+          </div>
+          <div class="amenity-highlight-text">
+            <strong>Wood Fireplace</strong>
+            <span>Cosy log fire in the living area</span>
+          </div>
+        </div>
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div class="amenity-highlight-text">
+            <strong>Free Parking</strong>
+            <span>Dedicated on-site parking</span>
+          </div>
+        </div>
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/></svg>
+          </div>
+          <div class="amenity-highlight-text">
+            <strong>Smart TV</strong>
+            <span>Netflix-ready smart television</span>
+          </div>
+        </div>
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          </div>
+          <div class="amenity-highlight-text">
+            <strong>Private Deck</strong>
+            <span>Outdoor deck with mountain views</span>
+          </div>
+        </div>
+        <div class="amenity-highlight-item">
+          <div class="amenity-highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><line x1="12" y1="16" x2="12" y2="16.01"/></svg>
+          </div>
+          <div class="amenity-highlight-text">
+            <strong>Ski &amp; Board Storage</strong>
+            <span>Secure drying and storage room</span>
+          </div>
+        </div>
+      </div>
+      <div class="text-center" style="margin-top: var(--space-2xl);">
+        <a href="property.html" class="btn btn--outline">View All Amenities</a>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="section">
+  <!-- Guest Reviews -->
+  <section class="section section--light">
     <div class="container container--narrow">
       <div class="text-center" style="margin-bottom: var(--space-2xl);">
-        <h2>What Our Guests Say</h2>
-        <p style="color: var(--color-gray); margin-top: var(--space-sm);">Real reviews from real travellers</p>
+        <h2>What Guests Say</h2>
+        <p style="color: var(--color-gray); margin-top: var(--space-sm);">Real reviews from guests who've stayed at Cascade Apartment 3</p>
       </div>
       <div class="grid grid-2 gap-xl">
-        <div class="review-card" style="background: var(--color-off-white); border-radius: var(--radius-lg); padding: var(--space-xl);">
+        <div class="review-card" style="background: var(--color-white); border-radius: var(--radius-lg); padding: var(--space-xl); box-shadow: var(--shadow-sm);">
           <div class="review-header">
-            <div class="review-avatar">JD</div>
+            <div class="review-avatar" style="background: linear-gradient(135deg, #1a73a7,#2196F3);">SM</div>
             <div class="review-meta">
-              <div class="review-author">Jane Davidson</div>
-              <div class="review-date">Stayed at The Grand Harbour Hotel</div>
+              <div class="review-author">Sarah Mitchell</div>
+              <div class="review-date">January 2026 — Ski Season</div>
             </div>
           </div>
-          <div class="stars" style="margin-bottom: var(--space-md);">
+          <div class="stars" style="margin: var(--space-md) 0;">
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
-          <p class="review-text">"Absolutely stunning views and impeccable service. The booking process was seamless and the room exceeded our expectations. Will definitely be coming back!"</p>
+          <p class="review-text">"Absolutely perfect for our family ski trip. Ski-in/ski-out access is incredible — we were on the slopes in minutes. The fireplace and hot tub made evenings magical. Can't wait to go back!"</p>
         </div>
-        <div class="review-card" style="background: var(--color-off-white); border-radius: var(--radius-lg); padding: var(--space-xl);">
+        <div class="review-card" style="background: var(--color-white); border-radius: var(--radius-lg); padding: var(--space-xl); box-shadow: var(--shadow-sm);">
           <div class="review-header">
-            <div class="review-avatar" style="background: var(--color-secondary);">MT</div>
+            <div class="review-avatar" style="background: linear-gradient(135deg, #2e7d32, #43a047);">JW</div>
             <div class="review-meta">
-              <div class="review-author">Michael Torres</div>
-              <div class="review-date">Stayed at Blue Mountains Retreat</div>
+              <div class="review-author">James &amp; Wei</div>
+              <div class="review-date">October 2025 — School Holidays</div>
             </div>
           </div>
-          <div class="stars" style="margin-bottom: var(--space-md);">
+          <div class="stars" style="margin: var(--space-md) 0;">
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" class="filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
-          <p class="review-text">"The perfect getaway! The cabin was cosy and well-equipped, surrounded by nature. The flexible check-in was a real bonus for us. Highly recommended!"</p>
+          <p class="review-text">"Stunning apartment with everything you could need. The kids loved it and we all appreciated the space. The deck views are breathtaking and the hot tub is a real highlight. Immaculate presentation."</p>
         </div>
+      </div>
+      <div class="text-center" style="margin-top: var(--space-2xl);">
+        <a href="property.html" class="btn btn--outline" onclick="setTimeout(()=>document.querySelector('[data-tab=reviews]').click(),200);">Read More Reviews</a>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="section section--dark" style="background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary)); text-align: center;">
+  <!-- Book CTA -->
+  <section class="section" style="background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary)); text-align: center;">
     <div class="container container--narrow">
-      <h2 style="color: var(--color-white); margin-bottom: var(--space-md);">List Your Property with Us</h2>
+      <h2 style="color: var(--color-white); margin-bottom: var(--space-md); font-family: var(--font-heading);">Ready to Book Your Alpine Escape?</h2>
       <p style="color: rgba(255,255,255,0.8); margin-bottom: var(--space-xl); font-size: var(--font-size-md); line-height: var(--line-height-relaxed);">
-        Reach thousands of travellers. Manage bookings with ease, sync with Airbnb & Booking.com, and accept payments through Stripe Connect.
+        Check availability and reserve your dates. From $220/night — ski season from $385/night.
       </p>
       <div class="btn-group justify-center">
-        <a href="admin/index.html" class="btn btn--primary btn--lg">Get Started Free</a>
-        <a href="#" class="btn btn--outline-white btn--lg">Learn More</a>
+        <a href="booking.html" class="btn btn--primary btn--lg">Book Now</a>
+        <a href="property.html" class="btn btn--outline-white btn--lg">View Details</a>
       </div>
     </div>
   </section>
@@ -517,41 +637,45 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="index.html" class="logo">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16 2L2 14h4v14h8v-8h4v8h8V14h4L16 2z" fill="currentColor"/>
+            <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 36 L15 9 L27 36Z" fill="currentColor" fill-opacity="0.42"/>
+              <path d="M17 36 L30 3 L43 36Z" fill="currentColor"/>
+              <path d="M30 3 L36.5 17 L23.5 17Z" fill="currentColor" fill-opacity="0.22"/>
+              <path d="M1 40 Q5.5 37.2 10 40 Q14.5 42.8 19 40 Q23.5 37.2 28 40 Q32.5 42.8 37 40 Q39.5 38.5 43 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
             </svg>
-            TrendAccom
+            <span class="logo-wordmark">
+              <span class="logo-wordmark-main">Cascade</span>
+              <span class="logo-wordmark-sub">Apartment 3</span>
+            </span>
           </a>
-          <p>A premium self-contained alpine retreat at Mt Baw Baw. Ski-in/ski-out access, mountain views, wood fireplace and hot tub — year-round escapes for families and groups.</p>
+          <p>A premium self-contained alpine retreat at Mt Baw Baw, VIC. Ski-in/ski-out access, mountain views, wood fireplace and hot tub — year-round escapes for up to 8 guests.</p>
         </div>
         <div>
-          <h4 class="footer-heading">Explore</h4>
+          <h4 class="footer-heading">The Apartment</h4>
           <div class="footer-links">
-            <a href="search.html?type=hotel">Hotels</a>
-            <a href="search.html?type=apartment">Apartments</a>
-            <a href="search.html?type=motel">Motels</a>
-            <a href="search.html?type=pub">Pubs & Inns</a>
-            <a href="search.html?type=caravan-park">Caravan Parks</a>
-            <a href="search.html?type=holiday-park">Holiday Parks</a>
+            <a href="property.html">About &amp; Overview</a>
+            <a href="property.html" onclick="setTimeout(()=>document.querySelector('[data-tab=amenities]')?.click(),200);">Amenities</a>
+            <a href="property.html" onclick="setTimeout(()=>document.querySelector('[data-tab=rates]')?.click(),200);">Rates &amp; Pricing</a>
+            <a href="property.html" onclick="setTimeout(()=>document.querySelector('[data-tab=reviews]')?.click(),200);">Guest Reviews</a>
+            <a href="search.html">Photo Gallery</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-heading">Property</h4>
+          <h4 class="footer-heading">Booking</h4>
           <div class="footer-links">
-            <a href="property.html">About the Property</a>
-            <a href="property.html#amenities" onclick="location.href='property.html';return false;">Amenities</a>
-            <a href="property.html#rates" onclick="location.href='property.html';return false;">Rates &amp; Pricing</a>
+            <a href="booking.html">Check Availability</a>
             <a href="booking.html">Book Now</a>
+            <a href="property.html" onclick="setTimeout(()=>document.querySelector('[data-tab=rates]')?.click(),200);">Cancellation Policy</a>
+            <a href="confirmation.html">Booking Confirmed?</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-heading">Support</h4>
+          <h4 class="footer-heading">Info</h4>
           <div class="footer-links">
-            <a href="booking.html">Contact / Enquiries</a>
-            <a href="property.html">Cancellation Policy</a>
+            <a href="property.html" onclick="setTimeout(()=>document.querySelector('[data-tab=location]')?.click(),200);">Getting There</a>
             <a href="#">Terms of Service</a>
             <a href="#">Privacy Policy</a>
-            <a href="admin/index.html">Property Owners</a>
+            <a href="admin/index.html">Owner Login</a>
           </div>
         </div>
       </div>
@@ -560,9 +684,6 @@
         <div class="footer-social">
           <a href="#" aria-label="Facebook">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          </a>
-          <a href="#" aria-label="Twitter">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
           </a>
           <a href="#" aria-label="Instagram">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>

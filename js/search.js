@@ -1,5 +1,5 @@
 /**
- * TrendAccom - Search & Filter
+ * Cascade Apartment 3 - Search & Filter
  * Handles: Property search, filtering, sorting, and results display
  */
 
@@ -256,6 +256,6 @@
     Search.init();
   }
 
-  window.TrendAccom = window.TrendAccom || {};
-  window.TrendAccom.Search = Search;
+  window.CascadeApp = window.CascadeApp || {};
+  window.CascadeApp.Search = Search;
 })();

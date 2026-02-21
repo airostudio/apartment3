@@ -1,5 +1,5 @@
 /**
- * TrendAccom - Booking Engine
+ * Cascade Apartment 3 - Booking Engine
  * Handles: Price calculations, booking form validation, availability checks,
  * rate rules, seasonal pricing, and booking flow management
  */
@@ -260,7 +260,7 @@
      * Update the booking summary UI
      */
     updateSummaryUI(pricing) {
-      const formatCurrency = window.TrendAccom?.formatCurrency ||
+      const formatCurrency = window.CascadeApp?.formatCurrency ||
         (amount => `$${amount.toFixed(2)}`);
 
       const summaryEl = document.querySelector('.booking-summary');
@@ -367,7 +367,7 @@
           }
         });
 
-        window.TrendAccom?.showToast('Please correct the errors in the form', 'error');
+        window.CascadeApp?.showToast('Please correct the errors in the form', 'error');
         return;
       }
 
@@ -412,6 +412,6 @@
   }
 
   // Expose BookingEngine globally
-  window.TrendAccom = window.TrendAccom || {};
-  window.TrendAccom.BookingEngine = BookingEngine;
+  window.CascadeApp = window.CascadeApp || {};
+  window.CascadeApp.BookingEngine = BookingEngine;
 })();

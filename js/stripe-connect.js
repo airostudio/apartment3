@@ -1,5 +1,5 @@
 /**
- * TrendAccom - Stripe Connect Integration
+ * Cascade Apartment 3 - Stripe Connect Integration
  * Handles: Stripe Connect onboarding, payment processing,
  * payment intents, and checkout flow
  *
@@ -177,7 +177,7 @@
       // Simulated redirect URL
       const onboardingUrl = 'https://connect.stripe.com/setup/s/demo';
 
-      window.TrendAccom?.showToast('Redirecting to Stripe Connect...', 'info');
+      window.CascadeApp?.showToast('Redirecting to Stripe Connect...', 'info');
 
       // In production: window.location.href = onboardingUrl;
       return { url: onboardingUrl };
@@ -249,12 +249,12 @@
         });
 
         if (result.success) {
-          window.TrendAccom?.showToast('Payment successful!', 'success');
+          window.CascadeApp?.showToast('Payment successful!', 'success');
           window.location.href = 'confirmation.html?ref=' +
-            (window.TrendAccom?.BookingEngine?.generateReference() || 'TRA-2026-00001');
+            (window.CascadeApp?.BookingEngine?.generateReference() || 'TRA-2026-00001');
         }
       } catch (error) {
-        window.TrendAccom?.showToast(error.message || 'Payment failed. Please try again.', 'error');
+        window.CascadeApp?.showToast(error.message || 'Payment failed. Please try again.', 'error');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -279,7 +279,7 @@
     if (disconnectBtn) {
       disconnectBtn.addEventListener('click', () => {
         if (confirm('Are you sure you want to disconnect your Stripe account?')) {
-          window.TrendAccom?.showToast('Stripe account disconnected', 'warning');
+          window.CascadeApp?.showToast('Stripe account disconnected', 'warning');
         }
       });
     }
@@ -300,6 +300,6 @@
     init();
   }
 
-  window.TrendAccom = window.TrendAccom || {};
-  window.TrendAccom.StripeConnect = StripeConnect;
+  window.CascadeApp = window.CascadeApp || {};
+  window.CascadeApp.StripeConnect = StripeConnect;
 })();

@@ -844,6 +844,376 @@
                 gap: 0.5rem;
             }
         }
+
+        /* ===== Two-Account Stripe Connect ===== */
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .account-card {
+            background: #fff;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .account-card-header {
+            padding: 0.875rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .account-card-header.platform {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+        }
+
+        .account-card-header.owner {
+            background: linear-gradient(135deg, #635bff 0%, #7c3aed 100%);
+        }
+
+        .account-type-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .account-type-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .account-type-icon svg { width: 16px; height: 16px; }
+
+        .account-card-body { padding: 1.25rem; }
+
+        .account-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin: 0 0 0.125rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .account-email {
+            font-size: 0.8125rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        .account-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+            margin-bottom: 1rem;
+        }
+
+        .account-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8125rem;
+        }
+
+        .account-meta-label { color: #94a3b8; }
+
+        .account-meta-value {
+            font-weight: 500;
+            color: #334155;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            background: #f1f5f9;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        .account-capabilities {
+            display: flex;
+            gap: 0.375rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .cap-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .cap-badge svg { width: 11px; height: 11px; }
+
+        .account-card-footer {
+            padding: 0.875rem 1.25rem;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* ===== Payment Flow Diagram ===== */
+        .payment-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 1.75rem 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            row-gap: 1rem;
+        }
+
+        .flow-node { text-align: center; flex-shrink: 0; }
+
+        .flow-node-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+        }
+
+        .flow-node-icon svg { width: 24px; height: 24px; }
+        .flow-node-icon.guest  { background: #dbeafe; color: #2563eb; }
+        .flow-node-icon.platform { background: #0f172a; color: #fff; }
+        .flow-node-icon.owner  { background: #635bff; color: #fff; }
+        .flow-node-icon.admin-earn { background: #dcfce7; color: #16a34a; }
+
+        .flow-node-label {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .flow-node-sublabel {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin-top: 0.125rem;
+        }
+
+        .flow-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 0.75rem;
+            padding-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .flow-arrow-line {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .flow-arrow-line::before {
+            content: '';
+            display: block;
+            width: 36px;
+            height: 2px;
+            background: #cbd5e1;
+        }
+
+        .flow-arrow-line::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 7px solid #cbd5e1;
+        }
+
+        .flow-arrow-label {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            white-space: nowrap;
+        }
+
+        .flow-split-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-bottom: 0;
+        }
+
+        .flow-split-arrow {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .flow-split-arrow::before {
+            content: '';
+            display: block;
+            width: 28px;
+            height: 2px;
+            background: #cbd5e1;
+        }
+
+        .flow-split-arrow::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-left: 6px solid #cbd5e1;
+        }
+
+        /* ===== Payment Split Configuration ===== */
+        .split-config {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .split-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .split-input-group input {
+            width: 88px;
+            padding: 0.5rem 0.75rem;
+            border: 2px solid #635bff;
+            border-radius: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: #0f172a;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .split-input-group input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12);
+        }
+
+        .split-input-suffix {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        .split-bar {
+            height: 28px;
+            border-radius: 99px;
+            overflow: hidden;
+            display: flex;
+            background: #f1f5f9;
+        }
+
+        .split-bar-admin {
+            background: linear-gradient(90deg, #635bff, #8b5cf6);
+            transition: width 0.35s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fff;
+            min-width: 32px;
+        }
+
+        .split-bar-owner {
+            background: linear-gradient(90deg, #16a34a, #22c55e);
+            transition: width 0.35s ease;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .split-bar-legend {
+            display: flex;
+            gap: 1.25rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #475569;
+        }
+
+        .split-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.25rem;
+        }
+
+        .split-preview-example {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem 1.25rem;
+        }
+
+        .split-preview-title {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 0.75rem;
+        }
+
+        .split-preview-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8125rem;
+            padding: 0.375rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .split-preview-row:last-child {
+            border-bottom: none;
+            padding-top: 0.5rem;
+            margin-top: 0.125rem;
+            border-top: 2px solid #e2e8f0;
+            font-weight: 700;
+        }
+
+        .split-preview-row .spr-label { color: #64748b; }
+        .split-preview-row .spr-value { font-weight: 600; color: #0f172a; }
+        .split-preview-row .spr-value.admin-val { color: #635bff; }
+        .split-preview-row .spr-value.owner-val { color: #16a34a; }
+
+        @media (max-width: 1000px) {
+            .accounts-grid { grid-template-columns: 1fr; }
+            .split-config { grid-template-columns: 1fr; }
+            .payment-flow { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; }
+        }
     </style>
 </head>
 <body class="admin-body">
@@ -977,40 +1347,238 @@
                     </div>
                 </div>
 
-                <!-- Stripe Connect Status -->
-                <div class="card stripe-status">
+                <!-- Payment Flow Diagram -->
+                <div class="card" style="margin-bottom:1.5rem;">
                     <div class="card-header">
-                        <h2>Stripe Connect Status</h2>
+                        <h2>How Payments Work</h2>
+                        <span class="badge badge-info">Stripe Connect</span>
                     </div>
                     <div class="card-body">
-                        <div class="stripe-info">
-                            <div class="stripe-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="1" y="4" width="22" height="16" rx="2"/>
-                                    <line x1="1" y1="10" x2="23" y2="10"/>
-                                </svg>
+                        <div class="payment-flow">
+                            <!-- Guest -->
+                            <div class="flow-node">
+                                <div class="flow-node-icon guest">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="flow-node-label">Guest</div>
+                                <div class="flow-node-sublabel">Full payment</div>
                             </div>
-                            <div class="stripe-details">
-                                <h3>
-                                    Connected
-                                    <span class="badge badge-success">Connected</span>
-                                </h3>
-                                <div class="stripe-meta">
-                                    <span><strong>Business:</strong> Cascade Apartment 3</span>
-                                    <span><strong>Account ID:</strong> acct_1234567890</span>
-                                    <span><strong>Connected since:</strong> 15 Jan 2026</span>
+                            <!-- Arrow 1 -->
+                            <div class="flow-arrow">
+                                <div class="flow-arrow-line"></div>
+                                <div class="flow-arrow-label">pays</div>
+                            </div>
+                            <!-- Platform -->
+                            <div class="flow-node">
+                                <div class="flow-node-icon platform">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                </div>
+                                <div class="flow-node-label">Stripe Platform</div>
+                                <div class="flow-node-sublabel">Admin account</div>
+                            </div>
+                            <!-- Arrow + split -->
+                            <div class="flow-arrow">
+                                <div class="flow-arrow-line"></div>
+                                <div class="flow-arrow-label">auto-splits</div>
+                            </div>
+                            <!-- Split destinations -->
+                            <div class="flow-split-col">
+                                <div style="display:flex;align-items:center;gap:0.5rem;">
+                                    <div class="flow-split-arrow"></div>
+                                    <div class="flow-node">
+                                        <div class="flow-node-icon owner">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                        </div>
+                                        <div class="flow-node-label">Owner Account</div>
+                                        <div class="flow-node-sublabel" style="color:#635bff;font-weight:600;">85% → typhoon.tall69</div>
+                                    </div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:0.5rem;">
+                                    <div class="flow-split-arrow"></div>
+                                    <div class="flow-node">
+                                        <div class="flow-node-icon admin-earn">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                        </div>
+                                        <div class="flow-node-label">Admin Earnings</div>
+                                        <div class="flow-node-sublabel" style="color:#16a34a;font-weight:600;">15% management fee</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="stripe-actions">
-                            <a href="https://dashboard.stripe.com" target="_blank" class="btn btn-primary">
+                        <p style="font-size:0.8125rem;color:#64748b;margin:0;text-align:center;">
+                            Stripe automatically transfers the owner's share to their connected account on every payment — no manual payouts needed.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stripe Accounts -->
+                <div class="accounts-grid">
+
+                    <!-- Admin Platform Account -->
+                    <div class="account-card">
+                        <div class="account-card-header platform">
+                            <span class="account-type-label">Platform Account (Admin)</span>
+                            <div class="account-type-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            </div>
+                        </div>
+                        <div class="account-card-body">
+                            <div class="account-name">
+                                Cascade Admin Services
+                                <span class="badge badge-success">Connected</span>
+                            </div>
+                            <div class="account-email">admin@cascadeapartment3.com.au</div>
+                            <div class="account-meta">
+                                <div class="account-meta-row">
+                                    <span class="account-meta-label">Account ID</span>
+                                    <span class="account-meta-value">acct_plat_1AbCdEfGhIj</span>
+                                </div>
+                                <div class="account-meta-row">
+                                    <span class="account-meta-label">Account Type</span>
+                                    <span class="account-meta-value">Platform (Connect)</span>
+                                </div>
+                                <div class="account-meta-row">
+                                    <span class="account-meta-label">Connected</span>
+                                    <span class="account-meta-value">15 Jan 2026</span>
+                                </div>
+                            </div>
+                            <div class="account-capabilities">
+                                <span class="cap-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Charges Enabled
+                                </span>
+                                <span class="cap-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Payouts Active
+                                </span>
+                                <span class="cap-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Connect Enabled
+                                </span>
+                            </div>
+                        </div>
+                        <div class="account-card-footer">
+                            <a href="https://dashboard.stripe.com" target="_blank" class="btn btn-primary" style="font-size:0.8125rem;padding:0.5rem 1rem;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                View Stripe Dashboard
+                                Stripe Dashboard
                             </a>
-                            <button class="btn btn-danger-outline" onclick="disconnectStripe()">
+                            <button class="btn btn-danger-outline" onclick="disconnectPlatform()" style="font-size:0.8125rem;padding:0.5rem 1rem;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
                                 Disconnect
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- Owner Connected Account -->
+                    <div class="account-card">
+                        <div class="account-card-header owner">
+                            <span class="account-type-label">Property Owner (Connected Account)</span>
+                            <div class="account-type-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                            </div>
+                        </div>
+                        <div class="account-card-body">
+                            <div class="account-name">
+                                Cascade Apartment 3 Owner
+                                <span class="badge badge-success">Connected</span>
+                            </div>
+                            <div class="account-email">typhoon.tall69@gmail.com</div>
+                            <div class="account-meta">
+                                <div class="account-meta-row">
+                                    <span class="account-meta-label">Account ID</span>
+                                    <span class="account-meta-value">acct_conn_9ZyXwVuTsRq</span>
+                                </div>
+                                <div class="account-meta-row">
+                                    <span class="account-meta-label">Account Type</span>
+                                    <span class="account-meta-value">Express (Connected)</span>
+                                </div>
+                                <div class="account-meta-row">
+                                    <span class="account-meta-label">Connected</span>
+                                    <span class="account-meta-value">15 Jan 2026</span>
+                                </div>
+                            </div>
+                            <div class="account-capabilities">
+                                <span class="cap-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Transfers Active
+                                </span>
+                                <span class="cap-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Payouts Enabled
+                                </span>
+                                <span class="cap-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Details Submitted
+                                </span>
+                            </div>
+                        </div>
+                        <div class="account-card-footer">
+                            <button class="btn btn-primary" onclick="connectOwnerAccount()" style="font-size:0.8125rem;padding:0.5rem 1rem;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                Owner Dashboard
+                            </button>
+                            <button class="btn btn-danger-outline" onclick="disconnectOwner()" style="font-size:0.8125rem;padding:0.5rem 1rem;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Payment Split Configuration -->
+                <div class="card" style="margin-bottom:1.5rem;border-left:4px solid #635bff;">
+                    <div class="card-header">
+                        <h2>Payment Split Configuration</h2>
+                        <span class="badge badge-info">Auto-transfer on payment</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="split-config">
+                            <div>
+                                <h3 style="font-size:0.9375rem;font-weight:600;color:#0f172a;margin:0 0 0.375rem;">Management Fee</h3>
+                                <p style="font-size:0.8125rem;color:#64748b;margin:0;line-height:1.6;">Set the percentage kept by the admin account. The remainder is automatically transferred to the owner's Stripe account on every booking payment.</p>
+                                <div class="split-input-group">
+                                    <input type="number" id="mgmt-fee" value="15" min="1" max="50" oninput="updateSplitPreview()">
+                                    <span class="split-input-suffix">%</span>
+                                </div>
+                                <div class="split-bar">
+                                    <div class="split-bar-admin" id="split-bar-admin" style="width:15%;">15%</div>
+                                    <div class="split-bar-owner" id="split-bar-owner">85%</div>
+                                </div>
+                                <div class="split-bar-legend">
+                                    <span><span class="split-legend-dot" style="background:#635bff;"></span>Admin keeps <strong id="admin-pct-label">15%</strong></span>
+                                    <span><span class="split-legend-dot" style="background:#16a34a;"></span>Owner receives <strong id="owner-pct-label">85%</strong></span>
+                                </div>
+                                <button class="btn btn-primary" onclick="saveSplitConfig()" style="margin-top:1.25rem;font-size:0.875rem;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                    Save Configuration
+                                </button>
+                            </div>
+                            <div>
+                                <div class="split-preview-example">
+                                    <div class="split-preview-title">Example — based on $1,000 guest payment</div>
+                                    <div class="split-preview-row">
+                                        <span class="spr-label">Guest pays</span>
+                                        <span class="spr-value">$1,000.00</span>
+                                    </div>
+                                    <div class="split-preview-row">
+                                        <span class="spr-label">Stripe processing fee (~2.9% + 30¢)</span>
+                                        <span class="spr-value">−$29.30</span>
+                                    </div>
+                                    <div class="split-preview-row">
+                                        <span class="spr-label">Admin management fee (<span id="ex-fee-pct">15</span>%)</span>
+                                        <span class="spr-value admin-val" id="ex-admin-fee">$150.00</span>
+                                    </div>
+                                    <div class="split-preview-row">
+                                        <span class="spr-label" style="font-weight:600;">Owner receives</span>
+                                        <span class="spr-value owner-val" id="ex-owner">$850.00</span>
+                                    </div>
+                                </div>
+                                <div class="info-box" style="margin-top:1rem;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                    <span>Stripe processing fees (~2.9% + 30¢) are deducted from the admin's share, not the owner's. The owner always receives their exact percentage of the gross payment.</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1021,29 +1589,33 @@
                         <div class="stat-icon green">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                         </div>
-                        <div class="stat-label">Total Revenue</div>
+                        <div class="stat-label">Total Collected</div>
                         <div class="stat-value">$89,432</div>
+                        <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">All guest payments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                        </div>
+                        <div class="stat-label">Owner Transfers</div>
+                        <div class="stat-value">$75,917</div>
+                        <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">85% → typhoon.tall69</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <div class="stat-label">Admin Fees Earned</div>
+                        <div class="stat-value">$13,415</div>
+                        <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">15% management fee</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon amber">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         </div>
-                        <div class="stat-label">Pending Payouts</div>
+                        <div class="stat-label">Pending Transfer</div>
                         <div class="stat-value">$3,245</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon blue">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        </div>
-                        <div class="stat-label">This Month</div>
-                        <div class="stat-value">$12,890</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon purple">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                        </div>
-                        <div class="stat-label">Processing Fees</div>
-                        <div class="stat-value">$2,145</div>
+                        <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">Awaiting next payout</div>
                     </div>
                 </div>
 
@@ -1169,20 +1741,44 @@
                 <!-- Stripe Setup Instructions -->
                 <div class="card" id="stripe-setup-info" style="border-left: 4px solid #635bff;">
                     <div class="card-header">
-                        <h2>Stripe Setup Instructions</h2>
+                        <h2>Stripe Connect Setup Guide</h2>
+                        <span class="badge badge-warning">One-time setup</span>
                     </div>
                     <div class="card-body">
-                        <div class="info-box" style="margin-bottom:1rem;">
+                        <div class="info-box" style="margin-bottom:1.25rem;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                            <span>To enable live payments, complete these one-time steps. This is a static demo — a server-side backend is required to process real transactions.</span>
+                            <span>Two Stripe accounts are required: the <strong>Admin Platform account</strong> (with Connect enabled) and the <strong>Owner's connected account</strong> (typhoon.tall69@gmail.com). This is a static demo — a server-side backend is required for real transactions.</span>
                         </div>
-                        <ol style="font-size:0.875rem;color:#334155;line-height:2;padding-left:1.25rem;margin:0;">
-                            <li>Create a free account at <strong>stripe.com</strong> and complete business verification.</li>
-                            <li>In the Stripe Dashboard → Developers → API Keys, copy your <strong>Publishable Key</strong> (starts with <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">pk_live_...</code>).</li>
-                            <li>In <strong>Settings → Connect</strong>, create a Connect application and copy the <strong>Client ID</strong> (starts with <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">ca_...</code>).</li>
-                            <li>Replace <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">ca_xxx</code> in <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">js/stripe-connect.js</code> and in the <code>connectStripe()</code> function of this page with your actual Client ID.</li>
-                            <li>Set up webhook endpoints in the Stripe Dashboard to handle payment events (payment_intent.succeeded, checkout.session.completed).</li>
-                            <li>Update your bank account details in Stripe Dashboard → Settings → Bank Accounts to receive payouts.</li>
+
+                        <h3 style="font-size:0.875rem;font-weight:700;color:#0f172a;margin:0 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Step 1 — Admin Platform Account</h3>
+                        <ol style="font-size:0.875rem;color:#334155;line-height:2;padding-left:1.25rem;margin:0 0 1.25rem;">
+                            <li>Create a Stripe account at <strong>stripe.com</strong> for the admin/management business and complete business verification.</li>
+                            <li>Go to <strong>Settings → Connect settings</strong> and enable Stripe Connect. Choose <em>Express accounts</em> for the owner onboarding.</li>
+                            <li>Copy your <strong>Publishable Key</strong> (<code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">pk_live_...</code>) and <strong>Connect Client ID</strong> (<code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">ca_...</code>) into <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">js/stripe-connect.js</code>.</li>
+                            <li>Add your bank account in Stripe Dashboard → <strong>Settings → Bank Accounts</strong> to receive admin management fees.</li>
+                        </ol>
+
+                        <h3 style="font-size:0.875rem;font-weight:700;color:#0f172a;margin:0 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Step 2 — Connect Owner Account (typhoon.tall69@gmail.com)</h3>
+                        <ol style="font-size:0.875rem;color:#334155;line-height:2;padding-left:1.25rem;margin:0 0 1.25rem;">
+                            <li>On your server, call <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">stripe.accounts.create&#123;type: 'express'&#125;</code> to create an Express connected account for the owner.</li>
+                            <li>Generate an Account Link and send it to typhoon.tall69@gmail.com so they can complete Stripe's onboarding (identity + bank details).</li>
+                            <li>Once completed, store the owner's <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">acct_...</code> account ID in your database.</li>
+                        </ol>
+
+                        <h3 style="font-size:0.875rem;font-weight:700;color:#0f172a;margin:0 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Step 3 — Process Payments with Destination Charges</h3>
+                        <ol style="font-size:0.875rem;color:#334155;line-height:2;padding-left:1.25rem;margin:0 0 1rem;">
+                            <li>On your server, create PaymentIntents using <strong>Destination Charges</strong>:
+                                <pre style="background:#f1f5f9;border-radius:6px;padding:0.75rem;font-size:0.75rem;margin:0.25rem 0;overflow-x:auto;border:1px solid #e2e8f0;">stripe.paymentIntents.create(&#123;
+  amount: 100000,             <span style="color:#64748b;">// $1,000.00 in cents</span>
+  currency: 'aud',
+  application_fee_amount: 15000, <span style="color:#64748b;">// 15% admin fee = $150</span>
+  transfer_data: &#123;
+    destination: 'acct_conn_9ZyXwVuTsRq', <span style="color:#64748b;">// owner's acct_id</span>
+  &#125;,
+&#125;);</pre>
+                            </li>
+                            <li>Stripe automatically transfers $850.00 to the owner's account and $150.00 (minus Stripe fees) stays in the platform account.</li>
+                            <li>Set up webhook endpoints for <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">payment_intent.succeeded</code> and <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">transfer.created</code> to update booking records.</li>
                         </ol>
                     </div>
                 </div>
@@ -1201,9 +1797,9 @@
                                     <tr>
                                         <th>Date</th>
                                         <th>Guest</th>
-                                        <th>Property</th>
-                                        <th>Type</th>
-                                        <th>Amount</th>
+                                        <th>Guest Paid</th>
+                                        <th>To Owner (85%)</th>
+                                        <th>Admin Fee (15%)</th>
                                         <th>Status</th>
                                         <th>Stripe ID</th>
                                     </tr>
@@ -1221,46 +1817,49 @@
                     <!-- Payout Schedule -->
                     <div class="card">
                         <div class="card-header">
-                            <h2>Payout Schedule</h2>
+                            <h2>Transfer History</h2>
                         </div>
                         <div class="card-body">
                             <div class="next-payout">
-                                <div class="next-label">Next Payout</div>
-                                <div class="next-amount">$3,245.00</div>
-                                <div class="next-date">Scheduled for 21 Feb 2026</div>
+                                <div class="next-label">Next Owner Transfer</div>
+                                <div class="next-amount">$2,758.25</div>
+                                <div class="next-date">Scheduled for 21 Feb 2026 → typhoon.tall69</div>
                             </div>
 
-                            <h3 style="font-size: 0.875rem; font-weight: 600; color: #0f172a; margin: 0 0 0.75rem;">Payout History</h3>
-                            <ul class="payout-history-list">
+                            <h3 style="font-size: 0.8125rem; font-weight: 600; color: #64748b; margin: 0 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Owner Transfers (85%)</h3>
+                            <ul class="payout-history-list" style="margin-bottom:1rem;">
                                 <li>
                                     <span class="payout-date">14 Feb 2026</span>
-                                    <span class="payout-amount">$8,540.00</span>
-                                    <span class="badge badge-success">Completed</span>
-                                    <span class="payout-bank">****4827</span>
+                                    <span class="payout-amount" style="color:#635bff;">$7,259.00</span>
+                                    <span class="badge badge-success">Transferred</span>
                                 </li>
                                 <li>
                                     <span class="payout-date">7 Feb 2026</span>
-                                    <span class="payout-amount">$6,320.00</span>
-                                    <span class="badge badge-success">Completed</span>
-                                    <span class="payout-bank">****4827</span>
+                                    <span class="payout-amount" style="color:#635bff;">$5,372.00</span>
+                                    <span class="badge badge-success">Transferred</span>
                                 </li>
                                 <li>
                                     <span class="payout-date">31 Jan 2026</span>
-                                    <span class="payout-amount">$9,875.00</span>
-                                    <span class="badge badge-success">Completed</span>
-                                    <span class="payout-bank">****4827</span>
+                                    <span class="payout-amount" style="color:#635bff;">$8,394.00</span>
+                                    <span class="badge badge-success">Transferred</span>
+                                </li>
+                            </ul>
+                            <h3 style="font-size: 0.8125rem; font-weight: 600; color: #64748b; margin: 0 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Admin Fees Collected (15%)</h3>
+                            <ul class="payout-history-list">
+                                <li>
+                                    <span class="payout-date">14 Feb 2026</span>
+                                    <span class="payout-amount" style="color:#16a34a;">$1,281.00</span>
+                                    <span class="badge badge-success">Settled</span>
                                 </li>
                                 <li>
-                                    <span class="payout-date">24 Jan 2026</span>
-                                    <span class="payout-amount">$5,210.00</span>
-                                    <span class="badge badge-success">Completed</span>
-                                    <span class="payout-bank">****4827</span>
+                                    <span class="payout-date">7 Feb 2026</span>
+                                    <span class="payout-amount" style="color:#16a34a;">$948.00</span>
+                                    <span class="badge badge-success">Settled</span>
                                 </li>
                                 <li>
-                                    <span class="payout-date">17 Jan 2026</span>
-                                    <span class="payout-amount">$7,690.00</span>
-                                    <span class="badge badge-success">Completed</span>
-                                    <span class="payout-bank">****4827</span>
+                                    <span class="payout-date">31 Jan 2026</span>
+                                    <span class="payout-amount" style="color:#16a34a;">$1,481.00</span>
+                                    <span class="badge badge-success">Settled</span>
                                 </li>
                             </ul>
                         </div>
@@ -1317,24 +1916,72 @@
     <script>
         /* ── Payments page JS ── */
 
-        function disconnectStripe() {
-            if (confirm('Are you sure you want to disconnect your Stripe account? This will disable payment processing.')) {
-                alert('Stripe account disconnected. Please reconnect via the Stripe dashboard.');
+        var MGMT_FEE_PCT = 15; // default management fee %
+
+        function disconnectPlatform() {
+            if (confirm('Are you sure you want to disconnect the admin platform account? This will disable all payment processing.')) {
+                window.CascadeApp && window.CascadeApp.showToast('Platform account disconnected. Reconnect via Stripe Dashboard.', 'warning');
             }
         }
 
-        function connectStripe() {
-            /* Replace ca_xxx with your actual Stripe Connect client_id from https://dashboard.stripe.com/settings/connect */
-            window.location.href = 'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_xxx&scope=read_write';
+        function disconnectOwner() {
+            if (confirm('Are you sure you want to remove the owner\'s connected account? The owner will no longer receive automatic transfers.')) {
+                window.CascadeApp && window.CascadeApp.showToast('Owner account removed. Use "Connect Owner Account" to re-link.', 'warning');
+            }
+        }
+
+        function connectOwnerAccount() {
+            /* In production: generate an Account Link on server and redirect owner */
+            window.CascadeApp && window.CascadeApp.showToast('Generating owner onboarding link...', 'info');
+            window.open('https://connect.stripe.com/setup/s/demo', '_blank');
+        }
+
+        /* ── Payment Split Configuration ── */
+        function updateSplitPreview() {
+            var fee = parseInt(document.getElementById('mgmt-fee').value) || 15;
+            fee = Math.max(1, Math.min(50, fee));
+            var ownerPct = 100 - fee;
+
+            // Update bar
+            document.getElementById('split-bar-admin').style.width = fee + '%';
+            document.getElementById('split-bar-admin').textContent = fee + '%';
+            document.getElementById('split-bar-owner').textContent = ownerPct + '%';
+
+            // Update labels
+            document.getElementById('admin-pct-label').textContent = fee + '%';
+            document.getElementById('owner-pct-label').textContent = ownerPct + '%';
+
+            // Update example
+            var gross = 1000;
+            var stripeFee = Math.round(gross * 0.029 * 100 + 30) / 100;
+            var adminFee = gross * fee / 100;
+            var ownerAmt = gross - adminFee;
+
+            document.getElementById('ex-fee-pct').textContent = fee;
+            document.getElementById('ex-admin-fee').textContent = '$' + adminFee.toFixed(2);
+            document.getElementById('ex-owner').textContent = '$' + ownerAmt.toFixed(2);
+
+            // Update flow diagram sublabels
+            var ownerSublabel = document.querySelector('.flow-node-sublabel[style*="635bff"]');
+            if (ownerSublabel) ownerSublabel.textContent = ownerPct + '% \u2192 typhoon.tall69';
+            var adminSublabel = document.querySelector('.flow-node-sublabel[style*="16a34a"]');
+            if (adminSublabel) adminSublabel.textContent = fee + '% management fee';
+
+            MGMT_FEE_PCT = fee;
+        }
+
+        function saveSplitConfig() {
+            var fee = parseInt(document.getElementById('mgmt-fee').value) || 15;
+            window.CascadeApp && window.CascadeApp.showToast('Payment split saved: Admin ' + fee + '% / Owner ' + (100 - fee) + '%', 'success');
         }
 
         /* ── Build transaction rows from CA3Data bookings ── */
         function renderTransactions() {
-            const tbody = document.getElementById('transactions-tbody');
+            var tbody = document.getElementById('transactions-tbody');
             if (!tbody) return;
 
-            const bookings = window.CA3Data ? CA3Data.getBookings() : [];
-            const rows = [];
+            var bookings = window.CA3Data ? CA3Data.getBookings() : [];
+            var rows = [];
 
             bookings.forEach(function(b) {
                 if (b.status === 'cancelled') return;
@@ -1342,18 +1989,16 @@
                     rows.push({
                         date: b.checkIn,
                         guest: b.guestName,
-                        type: 'payment',
                         amount: b.paid,
                         status: b.status === 'confirmed' ? 'completed' : 'pending',
                         stripeId: 'pi_' + b.id.toLowerCase().replace('-','')
                     });
                 }
-                const balance = b.total - b.paid;
+                var balance = b.total - b.paid;
                 if (balance > 0 && b.status === 'confirmed') {
                     rows.push({
                         date: b.checkOut,
                         guest: b.guestName,
-                        type: 'payment',
                         amount: balance,
                         status: 'pending',
                         stripeId: 'pi_' + b.id.toLowerCase().replace('-','') + 'b'
@@ -1362,7 +2007,7 @@
             });
 
             /* Sort newest first */
-            rows.sort(function(a,b) { return new Date(b.date) - new Date(a.date); });
+            rows.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
 
             if (rows.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="7" style="color:#94a3b8;padding:20px;text-align:center;">No transactions yet.</td></tr>';
@@ -1370,31 +2015,34 @@
             }
 
             tbody.innerHTML = rows.map(function(r) {
-                const d = new Date(r.date + 'T00:00:00');
-                const dateStr = d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
-                const typeClass = r.type === 'refund' ? 'type-refund' : (r.type === 'payout' ? 'type-payout' : 'type-payment');
-                const typeLabel = r.type.charAt(0).toUpperCase() + r.type.slice(1);
-                const amtClass = r.amount < 0 ? 'amount-negative' : 'amount-positive';
-                const amtStr = (r.amount < 0 ? '-' : '') + '$' + Math.abs(r.amount).toFixed(2);
-                let statusBadge;
+                var d = new Date(r.date + 'T00:00:00');
+                var dateStr = d.toLocaleDateString('en-AU', {day: 'numeric', month: 'short', year: 'numeric'});
+                var gross = r.amount;
+                var adminFee = Math.round(gross * MGMT_FEE_PCT) / 100;
+                var ownerAmt = gross - adminFee;
+                var grossStr = '$' + Math.abs(gross).toFixed(2);
+                var ownerStr = '<span style="color:#635bff;font-weight:600;">$' + ownerAmt.toFixed(2) + '</span>';
+                var adminStr = '<span style="color:#16a34a;font-weight:600;">$' + adminFee.toFixed(2) + '</span>';
+                var statusBadge;
                 if (r.status === 'completed')    statusBadge = '<span class="badge badge-success">Completed</span>';
                 else if (r.status === 'pending') statusBadge = '<span class="badge badge-warning">Pending</span>';
                 else                             statusBadge = '<span class="badge badge-danger">Refunded</span>';
-                return `<tr>
-                    <td>${dateStr}</td>
-                    <td>${r.guest}</td>
-                    <td>Cascade Apartment 3</td>
-                    <td class="${typeClass}">${typeLabel}</td>
-                    <td class="${amtClass}">${amtStr}</td>
-                    <td>${statusBadge}</td>
-                    <td><span class="stripe-id">${r.stripeId}...</span></td>
-                </tr>`;
+                return '<tr>' +
+                    '<td>' + dateStr + '</td>' +
+                    '<td>' + r.guest + '</td>' +
+                    '<td class="amount-positive">' + grossStr + '</td>' +
+                    '<td>' + ownerStr + '</td>' +
+                    '<td>' + adminStr + '</td>' +
+                    '<td>' + statusBadge + '</td>' +
+                    '<td><span class="stripe-id">' + r.stripeId + '...</span></td>' +
+                    '</tr>';
             }).join('');
         }
 
         /* ── Init ── */
         document.addEventListener('DOMContentLoaded', function() {
             renderTransactions();
+            updateSplitPreview();
         });
     </script>
 </body>

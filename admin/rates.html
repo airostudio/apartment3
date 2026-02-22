@@ -179,6 +179,113 @@
 
         /* ---- Additional fees ---- */
         .fee-name { font-weight: 500; color: #1e293b; }
+
+        /* ---- Rate Edit Modals ---- */
+        .rate-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.55);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .rate-modal-overlay.open { display: flex; }
+        .rate-modal {
+            background: #fff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .rate-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .rate-modal-title { font-size: 1.0625rem; font-weight: 700; color: #0f172a; }
+        .rate-modal-close {
+            width: 32px; height: 32px;
+            border: none; background: none; cursor: pointer;
+            color: #64748b; display: flex; align-items: center;
+            justify-content: center; border-radius: 6px;
+            transition: background 0.15s;
+        }
+        .rate-modal-close:hover { background: #f1f5f9; color: #0f172a; }
+        .rate-modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+        .rate-modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .rate-modal-field { display: flex; flex-direction: column; gap: 6px; }
+        .rate-modal-label { font-size: 0.8125rem; font-weight: 600; color: #374151; }
+        .rate-modal-input, .rate-modal-select, .rate-modal-textarea {
+            height: 40px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 0.9375rem;
+            color: #0f172a;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            font-family: inherit;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .rate-modal-textarea { height: 72px; padding: 10px 12px; resize: none; }
+        .rate-modal-input:focus, .rate-modal-select:focus, .rate-modal-textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+        }
+        .rate-modal-hint { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
+        .rate-modal-footer {
+            display: flex; align-items: center; justify-content: flex-end;
+            gap: 10px; padding: 16px 24px;
+            border-top: 1px solid #e2e8f0; background: #f8fafc;
+        }
+        .rate-modal-cancel {
+            height: 38px; padding: 0 16px;
+            border: 1.5px solid #e2e8f0; border-radius: 8px;
+            background: #fff; color: #64748b;
+            font-size: 0.875rem; font-weight: 500;
+            cursor: pointer; transition: all 0.15s;
+            font-family: inherit;
+        }
+        .rate-modal-cancel:hover { border-color: #94a3b8; color: #374151; }
+        .rate-modal-save {
+            height: 38px; padding: 0 20px;
+            border: none; border-radius: 8px;
+            background: #6366f1; color: #fff;
+            font-size: 0.875rem; font-weight: 600;
+            cursor: pointer; transition: background 0.15s;
+            font-family: inherit;
+        }
+        .rate-modal-save:hover { background: #4f46e5; }
+
+        /* Seasonal card edit button */
+        .rate-card-edit-btn {
+            width: 28px; height: 28px;
+            border: 1.5px solid #e2e8f0; border-radius: 6px;
+            background: #fff; color: #64748b;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+        }
+        .rate-card-edit-btn:hover { background: #f1f5f9; color: #6366f1; border-color: #6366f1; }
+        .rate-card-edit-btn svg { width: 13px; height: 13px; }
+
+        /* Toast */
+        .rates-toast {
+            position: fixed; bottom: 28px; right: 28px;
+            background: #0f172a; color: #fff;
+            padding: 12px 20px; border-radius: 10px;
+            font-size: 0.875rem; font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            opacity: 0; transform: translateY(8px);
+            transition: opacity 0.25s, transform 0.25s;
+            z-index: 2000; pointer-events: none;
+        }
+        .rates-toast.show { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body class="admin-body">
@@ -349,13 +456,13 @@
                                     <td>
                                         <span class="unit-cell">Cascade Apartment 3</span>
                                     </td>
-                                    <td><span class="rate-amount">$185</span></td>
-                                    <td><span class="rate-amount">$215</span></td>
-                                    <td><span class="badge-success">10% off</span></td>
-                                    <td><span class="badge-success">20% off</span></td>
+                                    <td><span class="rate-amount" id="base-nightly-display">$185</span></td>
+                                    <td><span class="rate-amount" id="base-weekend-display">$215</span></td>
+                                    <td><span class="badge-success" id="base-weekly-display">10% off</span></td>
+                                    <td><span class="badge-success" id="base-monthly-display">20% off</span></td>
                                     <td>
                                         <div class="table-actions">
-                                            <button class="btn-icon-action" title="Edit">
+                                            <button class="btn-icon-action" title="Edit Base Rates" onclick="openBaseRatesModal()">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
                                         </div>
@@ -379,7 +486,7 @@
                     <div class="rate-cards-grid">
 
                         <!-- Ski Season (Peak) -->
-                        <div class="rate-card rate-card--peak">
+                        <div class="rate-card rate-card--peak" id="season-card-ski">
                             <div class="rate-card-header">
                                 <div class="rate-card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18l4-4 4 4 4-8 4 4"/><path d="M22 22H2"/><circle cx="6" cy="6" r="2"/><path d="M6 8v4"/></svg>
@@ -392,6 +499,9 @@
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
                                     +50%
                                 </div>
+                                <button class="rate-card-edit-btn" title="Edit Ski Season" onclick="openSeasonalModal('ski')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </button>
                             </div>
                             <div class="rate-card-bar">
                                 <div class="rate-card-bar-fill" style="width: 100%; background: linear-gradient(90deg, #3b82f6, #06b6d4);"></div>
@@ -399,7 +509,7 @@
                         </div>
 
                         <!-- Christmas / Summer Holidays -->
-                        <div class="rate-card rate-card--standard">
+                        <div class="rate-card rate-card--standard" id="season-card-xmas">
                             <div class="rate-card-header">
                                 <div class="rate-card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
@@ -412,6 +522,9 @@
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
                                     +20%
                                 </div>
+                                <button class="rate-card-edit-btn" title="Edit Christmas & New Year" onclick="openSeasonalModal('xmas')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </button>
                             </div>
                             <div class="rate-card-bar">
                                 <div class="rate-card-bar-fill" style="width: 65%; background: linear-gradient(90deg, #f59e0b, #f97316);"></div>
@@ -419,7 +532,7 @@
                         </div>
 
                         <!-- Shoulder / Off-Peak -->
-                        <div class="rate-card rate-card--offpeak">
+                        <div class="rate-card rate-card--offpeak" id="season-card-shoulder">
                             <div class="rate-card-header">
                                 <div class="rate-card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="9" x2="12" y2="2"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/></svg>
@@ -432,6 +545,9 @@
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                     Base rate
                                 </div>
+                                <button class="rate-card-edit-btn" title="Edit Shoulder Season" onclick="openSeasonalModal('shoulder')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </button>
                             </div>
                             <div class="rate-card-bar">
                                 <div class="rate-card-bar-fill" style="width: 40%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
@@ -453,7 +569,7 @@
                 <div class="admin-card-body">
                     <div class="rules-list">
 
-                        <div class="rule-item">
+                        <div class="rule-item" id="rule-item-7night">
                             <div class="rule-icon rule-icon--discount">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             </div>
@@ -465,16 +581,16 @@
                                 <span class="badge-success">10% discount</span>
                             </div>
                             <div class="rule-actions">
-                                <button class="btn-icon-action" title="Edit">
+                                <button class="btn-icon-action" title="Edit" onclick="openRuleModal('7night')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                 </button>
-                                <button class="btn-icon-action btn-icon-action--danger" title="Delete">
+                                <button class="btn-icon-action btn-icon-action--danger" title="Delete" onclick="deleteRule('7night')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                 </button>
                             </div>
                         </div>
 
-                        <div class="rule-item">
+                        <div class="rule-item" id="rule-item-earlybird">
                             <div class="rule-icon rule-icon--earlybird">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                             </div>
@@ -486,16 +602,16 @@
                                 <span class="badge-success">15% discount</span>
                             </div>
                             <div class="rule-actions">
-                                <button class="btn-icon-action" title="Edit">
+                                <button class="btn-icon-action" title="Edit" onclick="openRuleModal('earlybird')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                 </button>
-                                <button class="btn-icon-action btn-icon-action--danger" title="Delete">
+                                <button class="btn-icon-action btn-icon-action--danger" title="Delete" onclick="deleteRule('earlybird')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                 </button>
                             </div>
                         </div>
 
-                        <div class="rule-item">
+                        <div class="rule-item" id="rule-item-lastminute">
                             <div class="rule-icon rule-icon--lastminute">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                             </div>
@@ -507,10 +623,10 @@
                                 <span class="badge-warning">10% discount</span>
                             </div>
                             <div class="rule-actions">
-                                <button class="btn-icon-action" title="Edit">
+                                <button class="btn-icon-action" title="Edit" onclick="openRuleModal('lastminute')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                 </button>
-                                <button class="btn-icon-action btn-icon-action--danger" title="Delete">
+                                <button class="btn-icon-action btn-icon-action--danger" title="Delete" onclick="deleteRule('lastminute')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                 </button>
                             </div>
@@ -541,7 +657,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr id="fee-row-cleaning">
                                     <td><span class="fee-name">Cleaning Fee</span></td>
                                     <td><span class="rate-amount">$75</span></td>
                                     <td><span class="badge-info">Per Stay</span></td>
@@ -553,13 +669,13 @@
                                     </td>
                                     <td>
                                         <div class="table-actions">
-                                            <button class="btn-icon-action" title="Edit">
+                                            <button class="btn-icon-action" title="Edit" onclick="openFeeModal('cleaning')">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="fee-row-service">
                                     <td><span class="fee-name">Service Fee</span></td>
                                     <td><span class="rate-amount">5%</span></td>
                                     <td><span class="badge-info">Per Stay</span></td>
@@ -571,13 +687,13 @@
                                     </td>
                                     <td>
                                         <div class="table-actions">
-                                            <button class="btn-icon-action" title="Edit">
+                                            <button class="btn-icon-action" title="Edit" onclick="openFeeModal('service')">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="fee-row-extraguest">
                                     <td><span class="fee-name">Extra Guest</span></td>
                                     <td><span class="rate-amount">$25</span></td>
                                     <td><span class="badge-secondary">Per Night</span></td>
@@ -589,13 +705,13 @@
                                     </td>
                                     <td>
                                         <div class="table-actions">
-                                            <button class="btn-icon-action" title="Edit">
+                                            <button class="btn-icon-action" title="Edit" onclick="openFeeModal('extraguest')">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="fee-row-pet">
                                     <td><span class="fee-name">Pet Fee</span></td>
                                     <td><span class="rate-amount">$50</span></td>
                                     <td><span class="badge-info">Per Stay</span></td>
@@ -607,7 +723,7 @@
                                     </td>
                                     <td>
                                         <div class="table-actions">
-                                            <button class="btn-icon-action" title="Edit">
+                                            <button class="btn-icon-action" title="Edit" onclick="openFeeModal('pet')">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
                                         </div>
@@ -622,8 +738,349 @@
         </div>
     </main>
 
+    <!-- ================================================
+         MODALS
+    ================================================ -->
+
+    <!-- Base Rates Modal -->
+    <div class="rate-modal-overlay" id="base-rates-modal">
+        <div class="rate-modal">
+            <div class="rate-modal-header">
+                <h3 class="rate-modal-title">Edit Base Rates</h3>
+                <button class="rate-modal-close" onclick="closeModal('base-rates-modal')" aria-label="Close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="rate-modal-body">
+                <div class="rate-modal-row">
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="bm-nightly">Base Nightly Rate ($)</label>
+                        <input type="number" id="bm-nightly" class="rate-modal-input" min="0" step="5" placeholder="185">
+                        <span class="rate-modal-hint">Standard nightly rate (shoulder season)</span>
+                    </div>
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="bm-weekend">Weekend Rate ($)</label>
+                        <input type="number" id="bm-weekend" class="rate-modal-input" min="0" step="5" placeholder="215">
+                        <span class="rate-modal-hint">Friday &amp; Saturday nights</span>
+                    </div>
+                </div>
+                <div class="rate-modal-row">
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="bm-weekly">Weekly Discount (%)</label>
+                        <input type="number" id="bm-weekly" class="rate-modal-input" min="0" max="100" step="1" placeholder="10">
+                        <span class="rate-modal-hint">Applied for 7+ night bookings</span>
+                    </div>
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="bm-monthly">Monthly Discount (%)</label>
+                        <input type="number" id="bm-monthly" class="rate-modal-input" min="0" max="100" step="1" placeholder="20">
+                        <span class="rate-modal-hint">Applied for 28+ night bookings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="rate-modal-footer">
+                <button class="rate-modal-cancel" onclick="closeModal('base-rates-modal')">Cancel</button>
+                <button class="rate-modal-save" onclick="saveBaseRates()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seasonal Rate Modal -->
+    <div class="rate-modal-overlay" id="seasonal-modal">
+        <div class="rate-modal">
+            <div class="rate-modal-header">
+                <h3 class="rate-modal-title" id="seasonal-modal-title">Edit Seasonal Rate</h3>
+                <button class="rate-modal-close" onclick="closeModal('seasonal-modal')" aria-label="Close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="rate-modal-body">
+                <div class="rate-modal-field">
+                    <label class="rate-modal-label" for="sm-name">Season Name</label>
+                    <input type="text" id="sm-name" class="rate-modal-input" placeholder="e.g. Ski Season">
+                </div>
+                <div class="rate-modal-field">
+                    <label class="rate-modal-label" for="sm-dates">Date Range</label>
+                    <input type="text" id="sm-dates" class="rate-modal-input" placeholder="e.g. June – September">
+                    <span class="rate-modal-hint">Describe when this season applies</span>
+                </div>
+                <div class="rate-modal-row">
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="sm-type">Adjustment Type</label>
+                        <select id="sm-type" class="rate-modal-select">
+                            <option value="up">Increase (+%)</option>
+                            <option value="down">Decrease (−%)</option>
+                            <option value="base">Base rate (no change)</option>
+                        </select>
+                    </div>
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="sm-modifier">Percentage (%)</label>
+                        <input type="number" id="sm-modifier" class="rate-modal-input" min="0" max="200" step="5" placeholder="50">
+                        <span class="rate-modal-hint">Ignored when type is "Base rate"</span>
+                    </div>
+                </div>
+            </div>
+            <div class="rate-modal-footer">
+                <button class="rate-modal-cancel" onclick="closeModal('seasonal-modal')">Cancel</button>
+                <button class="rate-modal-save" onclick="saveSeasonalRate()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Rule Modal -->
+    <div class="rate-modal-overlay" id="rule-modal">
+        <div class="rate-modal">
+            <div class="rate-modal-header">
+                <h3 class="rate-modal-title" id="rule-modal-title">Edit Pricing Rule</h3>
+                <button class="rate-modal-close" onclick="closeModal('rule-modal')" aria-label="Close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="rate-modal-body">
+                <div class="rate-modal-field">
+                    <label class="rate-modal-label" for="rm-name">Rule Name</label>
+                    <input type="text" id="rm-name" class="rate-modal-input" placeholder="e.g. Early Bird Discount">
+                </div>
+                <div class="rate-modal-field">
+                    <label class="rate-modal-label" for="rm-condition">Condition</label>
+                    <textarea id="rm-condition" class="rate-modal-textarea" placeholder="e.g. When booking is made 60+ days in advance"></textarea>
+                </div>
+                <div class="rate-modal-field">
+                    <label class="rate-modal-label" for="rm-discount">Discount (%)</label>
+                    <input type="number" id="rm-discount" class="rate-modal-input" min="0" max="100" step="1" placeholder="10">
+                    <span class="rate-modal-hint">Percentage discount applied to the nightly rate</span>
+                </div>
+            </div>
+            <div class="rate-modal-footer">
+                <button class="rate-modal-cancel" onclick="closeModal('rule-modal')">Cancel</button>
+                <button class="rate-modal-save" onclick="saveRule()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Fee Modal -->
+    <div class="rate-modal-overlay" id="fee-modal">
+        <div class="rate-modal">
+            <div class="rate-modal-header">
+                <h3 class="rate-modal-title" id="fee-modal-title">Edit Fee</h3>
+                <button class="rate-modal-close" onclick="closeModal('fee-modal')" aria-label="Close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="rate-modal-body">
+                <div class="rate-modal-field">
+                    <label class="rate-modal-label" for="fm-name">Fee Name</label>
+                    <input type="text" id="fm-name" class="rate-modal-input" placeholder="e.g. Cleaning Fee">
+                </div>
+                <div class="rate-modal-row">
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="fm-amount">Amount</label>
+                        <input type="number" id="fm-amount" class="rate-modal-input" min="0" step="1" placeholder="75">
+                        <span class="rate-modal-hint" id="fm-amount-hint">Dollar amount or percentage</span>
+                    </div>
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="fm-type">Charge Type</label>
+                        <select id="fm-type" class="rate-modal-select">
+                            <option value="Per Stay">Per Stay</option>
+                            <option value="Per Night">Per Night</option>
+                            <option value="Per Person">Per Person</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="rate-modal-footer">
+                <button class="rate-modal-cancel" onclick="closeModal('fee-modal')">Cancel</button>
+                <button class="rate-modal-save" onclick="saveFee()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Toast -->
+    <div class="rates-toast" id="save-toast"></div>
+
     <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
+    <script>
+        /* ===================================================
+           RATES PAGE — in-memory state + modal logic
+        =================================================== */
+        var ratesData = {
+            base: { nightly: 185, weekend: 215, weeklyDiscount: 10, monthlyDiscount: 20 },
+            seasons: {
+                ski:      { name: 'Ski Season',           dates: 'June \u2013 September',    modifier: 50, type: 'up'   },
+                xmas:     { name: 'Christmas & New Year', dates: 'Dec 20 \u2013 Jan 14',     modifier: 20, type: 'up'   },
+                shoulder: { name: 'Shoulder Season',      dates: 'Jan \u2013 May, Oct \u2013 Nov', modifier: 0, type: 'base' }
+            },
+            rules: {
+                '7night':     { name: 'Minimum 7-Night Stay Discount', condition: 'When guest books 7 or more consecutive nights', discount: 10 },
+                'earlybird':  { name: 'Early Bird Discount',           condition: 'When booking is made 60+ days in advance',      discount: 15 },
+                'lastminute': { name: 'Last Minute Discount',          condition: 'When booking is made within 3 days of check-in', discount: 10 }
+            },
+            fees: {
+                'cleaning':   { name: 'Cleaning Fee', amount: 75,  type: 'Per Stay',  isPercent: false },
+                'service':    { name: 'Service Fee',  amount: 5,   type: 'Per Stay',  isPercent: true  },
+                'extraguest': { name: 'Extra Guest',  amount: 25,  type: 'Per Night', isPercent: false },
+                'pet':        { name: 'Pet Fee',      amount: 50,  type: 'Per Stay',  isPercent: false }
+            }
+        };
+
+        /* ---------- Generic modal helpers ---------- */
+        function openModal(id)  { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+        document.querySelectorAll('.rate-modal-overlay').forEach(function(overlay) {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) closeModal(this.id);
+            });
+        });
+
+        /* ---------- Toast ---------- */
+        function showSaveToast(msg) {
+            var t = document.getElementById('save-toast');
+            t.textContent = msg + ' \u2713';
+            t.classList.add('show');
+            setTimeout(function() { t.classList.remove('show'); }, 2500);
+        }
+
+        /* ---------- Base Rates ---------- */
+        function openBaseRatesModal() {
+            var d = ratesData.base;
+            document.getElementById('bm-nightly').value = d.nightly;
+            document.getElementById('bm-weekend').value = d.weekend;
+            document.getElementById('bm-weekly').value  = d.weeklyDiscount;
+            document.getElementById('bm-monthly').value = d.monthlyDiscount;
+            openModal('base-rates-modal');
+        }
+
+        function saveBaseRates() {
+            var nightly  = parseFloat(document.getElementById('bm-nightly').value) || 0;
+            var weekend  = parseFloat(document.getElementById('bm-weekend').value) || 0;
+            var weekly   = parseFloat(document.getElementById('bm-weekly').value)  || 0;
+            var monthly  = parseFloat(document.getElementById('bm-monthly').value) || 0;
+            ratesData.base = { nightly: nightly, weekend: weekend, weeklyDiscount: weekly, monthlyDiscount: monthly };
+
+            document.getElementById('base-nightly-display').textContent = '$' + nightly;
+            document.getElementById('base-weekend-display').textContent = '$' + weekend;
+            document.getElementById('base-weekly-display').textContent  = weekly  + '% off';
+            document.getElementById('base-monthly-display').textContent = monthly + '% off';
+
+            closeModal('base-rates-modal');
+            showSaveToast('Base rates updated');
+        }
+
+        /* ---------- Seasonal Rates ---------- */
+        var currentSeason = null;
+
+        function openSeasonalModal(key) {
+            currentSeason = key;
+            var d = ratesData.seasons[key];
+            document.getElementById('sm-name').value     = d.name;
+            document.getElementById('sm-dates').value    = d.dates;
+            document.getElementById('sm-modifier').value = d.modifier;
+            document.getElementById('sm-type').value     = d.type;
+            document.getElementById('seasonal-modal-title').textContent = 'Edit ' + d.name;
+            openModal('seasonal-modal');
+        }
+
+        function saveSeasonalRate() {
+            var name     = document.getElementById('sm-name').value.trim();
+            var dates    = document.getElementById('sm-dates').value.trim();
+            var modifier = parseFloat(document.getElementById('sm-modifier').value) || 0;
+            var type     = document.getElementById('sm-type').value;
+
+            ratesData.seasons[currentSeason] = { name: name, dates: dates, modifier: modifier, type: type };
+
+            var card    = document.getElementById('season-card-' + currentSeason);
+            card.querySelector('.rate-card-title').textContent = name;
+            card.querySelector('.rate-card-dates').textContent = dates;
+
+            var modEl = card.querySelector('.rate-card-modifier');
+            modEl.className = 'rate-card-modifier rate-card-modifier--' + type;
+
+            /* rebuild the SVG arrow + text */
+            var arrowUp   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+            var arrowDown = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+            var dash      = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+
+            if (type === 'up')   { modEl.innerHTML = arrowUp   + '+' + modifier + '%'; }
+            else if (type === 'down') { modEl.innerHTML = arrowDown + '-' + modifier + '%'; }
+            else                 { modEl.innerHTML = dash + 'Base rate'; }
+
+            closeModal('seasonal-modal');
+            showSaveToast('Seasonal rate updated');
+        }
+
+        /* ---------- Pricing Rules ---------- */
+        var currentRule = null;
+
+        function openRuleModal(key) {
+            currentRule = key;
+            var d = ratesData.rules[key];
+            document.getElementById('rm-name').value      = d.name;
+            document.getElementById('rm-condition').value = d.condition;
+            document.getElementById('rm-discount').value  = d.discount;
+            openModal('rule-modal');
+        }
+
+        function saveRule() {
+            var name      = document.getElementById('rm-name').value.trim();
+            var condition = document.getElementById('rm-condition').value.trim();
+            var discount  = parseFloat(document.getElementById('rm-discount').value) || 0;
+
+            ratesData.rules[currentRule] = { name: name, condition: condition, discount: discount };
+
+            var ruleEl = document.getElementById('rule-item-' + currentRule);
+            ruleEl.querySelector('.rule-name').textContent      = name;
+            ruleEl.querySelector('.rule-condition').textContent = condition;
+            ruleEl.querySelector('.rule-value span').textContent = discount + '% discount';
+
+            closeModal('rule-modal');
+            showSaveToast('Pricing rule updated');
+        }
+
+        function deleteRule(key) {
+            if (!confirm('Delete this pricing rule?')) return;
+            var el = document.getElementById('rule-item-' + key);
+            if (el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(20px)';
+                el.style.transition = 'opacity 0.3s, transform 0.3s';
+                setTimeout(function() { el.remove(); }, 300);
+            }
+            delete ratesData.rules[key];
+            showSaveToast('Rule deleted');
+        }
+
+        /* ---------- Additional Fees ---------- */
+        var currentFee = null;
+
+        function openFeeModal(key) {
+            currentFee = key;
+            var d = ratesData.fees[key];
+            document.getElementById('fm-name').value   = d.name;
+            document.getElementById('fm-amount').value = d.amount;
+            document.getElementById('fm-type').value   = d.type;
+            document.getElementById('fee-modal-title').textContent = 'Edit ' + d.name;
+            document.getElementById('fm-amount-hint').textContent  = d.isPercent ? 'Percentage value (e.g. 5 for 5%)' : 'Dollar amount';
+            openModal('fee-modal');
+        }
+
+        function saveFee() {
+            var name   = document.getElementById('fm-name').value.trim();
+            var amount = parseFloat(document.getElementById('fm-amount').value) || 0;
+            var type   = document.getElementById('fm-type').value;
+
+            var isPercent = ratesData.fees[currentFee].isPercent;
+            ratesData.fees[currentFee] = { name: name, amount: amount, type: type, isPercent: isPercent };
+
+            var row = document.getElementById('fee-row-' + currentFee);
+            row.querySelector('.fee-name').textContent          = name;
+            row.querySelector('.rate-amount').textContent       = isPercent ? amount + '%' : '$' + amount;
+            row.querySelector('td:nth-child(3) span').textContent = type;
+
+            closeModal('fee-modal');
+            showSaveToast('Fee updated');
+        }
+    </script>
 </body>
 </html>

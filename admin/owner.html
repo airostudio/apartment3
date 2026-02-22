@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Portal — Cascade Apartment 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script src="../js/auth.js"></script>
+    <script>(function(){var s=sessionStorage.getItem('ca3_session');if(!s){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}else{var sess=JSON.parse(s);if(sess.role!=='owner'&&sess.role!=='admin'){location.href='/admin/login.html';}}})();</script>
+    <style>
+        .owner-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #635bff 100%);
+            border-radius: 1rem;
+            padding: 2rem 2.5rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .owner-hero-info h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem;
+        }
+        .owner-hero-info p {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+        .owner-hero-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            text-align: center;
+            backdrop-filter: blur(4px);
+        }
+        .owner-hero-badge .badge-label {
+            font-size: 0.75rem;
+            opacity: 0.75;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        .owner-hero-badge .badge-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .owner-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .owner-stat {
+            background: #fff;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            padding: 1.25rem 1.5rem;
+        }
+        .owner-stat-icon {
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+        .owner-stat-icon svg { width: 18px; height: 18px; }
+        .owner-stat-icon.purple { background: #ede9fe; color: #7c3aed; }
+        .owner-stat-icon.green  { background: #dcfce7; color: #16a34a; }
+        .owner-stat-icon.blue   { background: #dbeafe; color: #2563eb; }
+        .owner-stat-label { font-size: 0.8125rem; color: #64748b; margin-bottom: 0.25rem; }
+        .owner-stat-value { font-size: 1.5rem; font-weight: 700; color: #0f172a; }
+        .owner-stat-sub   { font-size: 0.75rem; color: #94a3b8; margin-top: 0.125rem; }
+
+        .owner-card {
+            background: #fff;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .owner-card-header {
+            padding: 1.125rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .owner-card-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin: 0;
+        }
+        .owner-card-body { padding: 1.5rem; }
+
+        /* Stripe account card */
+        .stripe-account-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #635bff 0%, #7c3aed 100%);
+            border-radius: 0.75rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        .stripe-account-info { display: flex; align-items: center; gap: 1rem; }
+        .stripe-account-icon {
+            width: 52px; height: 52px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .stripe-account-icon svg { width: 26px; height: 26px; }
+        .stripe-account-name { font-size: 1rem; font-weight: 600; margin: 0 0 0.25rem; }
+        .stripe-account-email { font-size: 0.8125rem; opacity: 0.8; }
+        .stripe-account-meta {
+            display: flex; gap: 1.25rem; flex-wrap: wrap; margin-top: 0.75rem;
+        }
+        .stripe-account-meta span { font-size: 0.8125rem; opacity: 0.8; }
+        .stripe-account-meta strong { opacity: 1; }
+        .stripe-account-actions { display: flex; gap: 0.5rem; }
+        .btn-white {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.3);
+            border-radius: 0.5rem;
+            color: #fff; cursor: pointer;
+            font-size: 0.8125rem; font-weight: 600;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        .btn-white:hover { background: rgba(255,255,255,0.25); }
+        .btn-white svg { width: 14px; height: 14px; }
+
+        /* Royalty rate info */
+        .royalty-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.25rem;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .royalty-rate {
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .royalty-rate-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #635bff;
+            line-height: 1;
+        }
+        .royalty-rate-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 0.25rem;
+        }
+        .royalty-divider {
+            width: 1px; height: 60px;
+            background: #e2e8f0;
+            flex-shrink: 0;
+        }
+        .royalty-desc p { font-size: 0.875rem; color: #475569; margin: 0; line-height: 1.6; }
+
+        /* Transfer history table */
+        .transfer-table { width: 100%; border-collapse: collapse; }
+        .transfer-table th {
+            text-align: left; font-size: 0.75rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            color: #64748b; padding: 0.625rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc; white-space: nowrap;
+        }
+        .transfer-table td {
+            padding: 0.75rem 1rem; font-size: 0.875rem;
+            color: #334155; border-bottom: 1px solid #f1f5f9;
+        }
+        .transfer-table tbody tr:hover { background: #fafbfd; }
+        .transfer-amount-owner { color: #635bff; font-weight: 600; }
+        .transfer-stripe-id {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.75rem; color: #6366f1;
+            background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
+        }
+
+        /* Next payout card */
+        .next-payout-card {
+            background: linear-gradient(135deg, #635bff 0%, #8b5cf6 100%);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        .next-payout-label { font-size: 0.8125rem; opacity: 0.8; margin-bottom: 0.25rem; }
+        .next-payout-amount { font-size: 2rem; font-weight: 700; }
+        .next-payout-date { font-size: 0.8125rem; opacity: 0.8; margin-top: 0.25rem; }
+
+        .payout-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.625rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+        }
+        .payout-row:last-child { border-bottom: none; }
+        .payout-row-date { color: #64748b; }
+        .payout-row-amount { color: #635bff; font-weight: 600; }
+
+        @media (max-width: 900px) {
+            .owner-stats { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .owner-stats { grid-template-columns: 1fr; }
+            .owner-hero { flex-direction: column; }
+        }
+    </style>
+</head>
+<body class="admin-body">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-logo">
+            <a href="/admin/owner.html" class="sidebar-logo-link">
+                <span class="sidebar-logo-text">Cascade Apt 3</span>
+                <span class="sidebar-logo-badge" style="background:#635bff;">Owner</span>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">OWNER PORTAL</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item active">
+                        <a href="/admin/owner.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            <span>My Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/bookings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/calendar.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">EARNINGS</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/reports.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+        <!-- Topbar -->
+        <header class="admin-topbar">
+            <div class="admin-topbar__breadcrumb">
+                <a href="/admin/owner.html" class="admin-topbar__breadcrumb-link">Owner Portal</a>
+                <span class="admin-topbar__breadcrumb-separator">&rsaquo;</span>
+                <span class="admin-topbar__breadcrumb-current">My Dashboard</span>
+            </div>
+            <div class="admin-topbar__actions">
+                <div class="admin-topbar__user">
+                    <div class="admin-topbar__user-avatar">PO</div>
+                    <span class="admin-topbar__user-name">Property Owner</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="admin-content">
+
+            <!-- Hero -->
+            <div class="owner-hero">
+                <div class="owner-hero-info">
+                    <h2>Welcome back, Property Owner</h2>
+                    <p>Cascade Apartment 3 &nbsp;·&nbsp; Falls Creek, VIC &nbsp;·&nbsp; typhoon.tall69@gmail.com</p>
+                </div>
+                <div class="owner-hero-badge">
+                    <span class="badge-label">Your Royalty Rate</span>
+                    <div class="badge-value">1.7%</div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="owner-stats">
+                <div class="owner-stat">
+                    <div class="owner-stat-icon purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div class="owner-stat-label">Total Earned (All Time)</div>
+                    <div class="owner-stat-value">$1,520.34</div>
+                    <div class="owner-stat-sub">1.7% of $89,432 collected</div>
+                </div>
+                <div class="owner-stat">
+                    <div class="owner-stat-icon green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="owner-stat-label">Pending Transfer</div>
+                    <div class="owner-stat-value">$55.17</div>
+                    <div class="owner-stat-sub">Next payout: 21 Feb 2026</div>
+                </div>
+                <div class="owner-stat">
+                    <div class="owner-stat-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </div>
+                    <div class="owner-stat-label">This Month</div>
+                    <div class="owner-stat-value">$219.13</div>
+                    <div class="owner-stat-sub">1.7% of $12,890 this month</div>
+                </div>
+            </div>
+
+            <!-- Stripe Connected Account -->
+            <div class="owner-card">
+                <div class="owner-card-header">
+                    <h2>My Stripe Account</h2>
+                    <span class="badge badge--success" style="font-size:0.75rem;">Connected</span>
+                </div>
+                <div class="owner-card-body" style="padding:1.25rem;">
+                    <div class="stripe-account-card">
+                        <div>
+                            <div class="stripe-account-info">
+                                <div class="stripe-account-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                </div>
+                                <div>
+                                    <div class="stripe-account-name">Cascade Apartment 3 Owner</div>
+                                    <div class="stripe-account-email">typhoon.tall69@gmail.com</div>
+                                </div>
+                            </div>
+                            <div class="stripe-account-meta">
+                                <span><strong>Account ID:</strong> acct_conn_9ZyXwVuTsRq</span>
+                                <span><strong>Type:</strong> Express (Connected)</span>
+                                <span><strong>Connected:</strong> 15 Jan 2026</span>
+                            </div>
+                        </div>
+                        <div class="stripe-account-actions">
+                            <a href="https://connect.stripe.com/express_login" target="_blank" class="btn-white">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                Stripe Dashboard
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Royalty rate explanation -->
+                    <div class="royalty-info">
+                        <div class="royalty-rate">
+                            <div class="royalty-rate-value">1.7%</div>
+                            <div class="royalty-rate-label">Your royalty</div>
+                        </div>
+                        <div class="royalty-divider"></div>
+                        <div class="royalty-desc">
+                            <p>For every guest payment received, <strong>1.7%</strong> is automatically transferred to your Stripe account. Stripe processing fees are charged to the guest on top of the booking price — your 1.7% is always calculated from the <strong>base booking amount</strong> before any fees.</p>
+                        </div>
+                    </div>
+
+                    <!-- Example calculation -->
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;padding:1rem 1.25rem;">
+                        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#94a3b8;margin-bottom:0.75rem;">Example — $1,000 booking</div>
+                        <div style="display:flex;flex-direction:column;gap:0.375rem;">
+                            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;">
+                                <span style="color:#64748b;">Base booking price (set by admin)</span>
+                                <span style="font-weight:600;">$1,000.00</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;">
+                                <span style="color:#64748b;">Stripe fee added to guest price (2.9% + 30¢)</span>
+                                <span style="font-weight:600;color:#94a3b8;">+ $29.30</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;">
+                                <span style="color:#64748b;">Guest pays total</span>
+                                <span style="font-weight:600;">$1,029.30</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;padding:0.375rem 0;border-top:2px solid #e2e8f0;margin-top:0.125rem;">
+                                <span style="font-weight:700;color:#0f172a;">Your transfer (1.7% of $1,000)</span>
+                                <span style="font-weight:700;color:#635bff;font-size:1rem;">$17.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-col: Transfer history + Next payout -->
+            <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;">
+
+                <!-- Transfer history -->
+                <div class="owner-card" style="margin-bottom:0;">
+                    <div class="owner-card-header">
+                        <h2>Transfer History</h2>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="transfer-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Booking</th>
+                                    <th>Base Amount</th>
+                                    <th>Your Transfer (1.7%)</th>
+                                    <th>Status</th>
+                                    <th>Transfer ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="owner-transfers-tbody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Next payout & history -->
+                <div class="owner-card" style="margin-bottom:0;">
+                    <div class="owner-card-header">
+                        <h2>Payout Schedule</h2>
+                    </div>
+                    <div class="owner-card-body">
+                        <div class="next-payout-card">
+                            <div class="next-payout-label">Next Transfer</div>
+                            <div class="next-payout-amount">$55.17</div>
+                            <div class="next-payout-date">Scheduled 21 Feb 2026</div>
+                        </div>
+                        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#94a3b8;margin-bottom:0.5rem;">Recent Payouts</div>
+                        <div class="payout-row">
+                            <span class="payout-row-date">14 Feb 2026</span>
+                            <span class="payout-row-amount">$145.13</span>
+                            <span class="badge badge--success" style="font-size:0.7rem;">Paid</span>
+                        </div>
+                        <div class="payout-row">
+                            <span class="payout-row-date">7 Feb 2026</span>
+                            <span class="payout-row-amount">$107.44</span>
+                            <span class="badge badge--success" style="font-size:0.7rem;">Paid</span>
+                        </div>
+                        <div class="payout-row">
+                            <span class="payout-row-date">31 Jan 2026</span>
+                            <span class="payout-row-amount">$167.88</span>
+                            <span class="badge badge--success" style="font-size:0.7rem;">Paid</span>
+                        </div>
+                        <div class="payout-row">
+                            <span class="payout-row-date">24 Jan 2026</span>
+                            <span class="payout-row-amount">$88.57</span>
+                            <span class="badge badge--success" style="font-size:0.7rem;">Paid</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        /* Owner portal — apply auth session */
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.CA3Auth) { CA3Auth.requireAuth(); }
+
+            /* Build transfer table from booking data */
+            var tbody = document.getElementById('owner-transfers-tbody');
+            if (!tbody) return;
+
+            var bookings = window.CA3Data ? CA3Data.getBookings() : [];
+            var rows = [];
+
+            bookings.forEach(function (b) {
+                if (b.status === 'cancelled') return;
+                if (b.paid > 0) {
+                    rows.push({
+                        date:     b.checkIn,
+                        guest:    b.guestName,
+                        base:     b.paid,
+                        status:   b.status === 'confirmed' ? 'completed' : 'pending',
+                        transferId: 'tr_' + b.id.toLowerCase().replace('-', '')
+                    });
+                }
+            });
+
+            rows.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+
+            if (rows.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="color:#94a3b8;padding:20px;text-align:center;">No transfers yet.</td></tr>';
+                return;
+            }
+
+            var OWNER_PCT = 0.017; // 1.7%
+
+            tbody.innerHTML = rows.map(function (r) {
+                var d = new Date(r.date + 'T00:00:00');
+                var dateStr  = d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+                var ownerAmt = (r.base * OWNER_PCT).toFixed(2);
+                var statusBadge = r.status === 'completed'
+                    ? '<span class="badge badge--success" style="font-size:0.7rem;">Transferred</span>'
+                    : '<span class="badge badge--warning" style="font-size:0.7rem;">Pending</span>';
+                return '<tr>' +
+                    '<td>' + dateStr + '</td>' +
+                    '<td>' + r.guest + '</td>' +
+                    '<td>$' + r.base.toFixed(2) + '</td>' +
+                    '<td class="transfer-amount-owner">$' + ownerAmt + '</td>' +
+                    '<td>' + statusBadge + '</td>' +
+                    '<td><span class="transfer-stripe-id">' + r.transferId + '...</span></td>' +
+                    '</tr>';
+            }).join('');
+        });
+    </script>
+</body>
+</html>

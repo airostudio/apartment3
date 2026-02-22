@@ -12,6 +12,8 @@
      * Initialize admin panel
      */
     init() {
+      // Apply authenticated session to topbar (auth.js handles redirect if not logged in)
+      if (window.CA3Auth) { CA3Auth.requireAuth(); }
       this.initSidebar();
       this.initDashboardStats();
       this.initPropertyManagement();

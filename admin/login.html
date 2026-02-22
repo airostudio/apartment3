@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <script src="../js/auth.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -152,6 +153,43 @@
             justify-content: center;
         }
         .login-security-note svg { flex-shrink: 0; }
+
+        /* Role indicator */
+        .login-role-indicator {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: var(--font-size-xs);
+            color: var(--color-muted);
+            margin-top: 5px;
+            padding: 5px 10px;
+            background: #f8fafc;
+            border-radius: var(--radius-sm);
+        }
+        .login-role-indicator.visible { display: flex; }
+        .login-role-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .login-role-badge.admin { background: #0f172a; color: #fff; }
+        .login-role-badge.owner { background: #635bff; color: #fff; }
+
+        /* Loading spinner on btn */
+        .login-btn-spinner {
+            display: inline-block;
+            width: 14px; height: 14px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -172,7 +210,7 @@
         <!-- Login Card -->
         <div class="login-card">
             <h1 class="login-title">Sign In</h1>
-            <p class="login-subtitle">Enter your admin credentials to access the panel</p>
+            <p class="login-subtitle">Admin &amp; Owner portal — enter your credentials</p>
 
             <form class="login-form" id="loginForm" autocomplete="off">
 
@@ -182,10 +220,14 @@
                         type="email"
                         id="adminEmail"
                         class="login-input"
-                        placeholder="hello@cascadeapartment3.com.au"
+                        placeholder="Enter your email address"
                         required
                         autocomplete="email"
                     >
+                    <div class="login-role-indicator" id="roleIndicator">
+                        <span class="login-role-badge" id="roleBadge"></span>
+                        <span id="roleText"></span>
+                    </div>
                 </div>
 
                 <div class="login-field">
@@ -224,62 +266,77 @@
     </div>
 
     <script>
-        // Admin credentials — in production these would be verified server-side
-        var ADMIN_CREDENTIALS = [
-            { email: 'typhoon.tall69@gmail.com', password: 'CascadeAdmin2026!', role: 'owner' },
-            { email: 'hello@cascadeapartment3.com.au', password: 'Admin2026!', role: 'admin' }
-        ];
+        // Redirect to dashboard if already logged in
+        (function () {
+            var session = window.CA3Auth && CA3Auth.getSession();
+            if (session) {
+                window.location.href = session.role === 'owner' ? 'owner.html' : 'index.html';
+            }
+        })();
 
-        // If already logged in, redirect to dashboard
-        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-            window.location.href = 'index.html';
-        }
+        // Role detection — show badge when email matches a known account
+        var KNOWN_ROLES = {
+            'admin@cascadeapartment3.com.au': { role: 'admin', label: 'Admin',          text: 'Full admin access' },
+            'typhoon.tall69@gmail.com':        { role: 'owner', label: 'Property Owner', text: 'Owner portal access' }
+        };
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('adminEmail').addEventListener('input', function () {
+            var val = this.value.toLowerCase().trim();
+            var match = KNOWN_ROLES[val];
+            var indicator = document.getElementById('roleIndicator');
+            var badge     = document.getElementById('roleBadge');
+            var text      = document.getElementById('roleText');
+            if (match) {
+                badge.textContent = match.label;
+                badge.className   = 'login-role-badge ' + match.role;
+                text.textContent  = match.text;
+                indicator.classList.add('visible');
+            } else {
+                indicator.classList.remove('visible');
+            }
+        });
+
+        // Form submit — uses CA3Auth.login() with SHA-256 verification
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
-            var emailInput = document.getElementById('adminEmail');
+            var emailInput    = document.getElementById('adminEmail');
             var passwordInput = document.getElementById('adminPassword');
-            var errorEl = document.getElementById('loginError');
-            var btn = document.getElementById('loginBtn');
+            var errorEl       = document.getElementById('loginError');
+            var btn           = document.getElementById('loginBtn');
 
-            var email = emailInput.value.trim().toLowerCase();
+            var email    = emailInput.value.trim().toLowerCase();
             var password = passwordInput.value;
 
-            // Reset state
             errorEl.classList.remove('visible');
             emailInput.classList.remove('error');
             passwordInput.classList.remove('error');
-            btn.textContent = 'Signing in...';
-            btn.disabled = true;
+            btn.innerHTML = '<span class="login-btn-spinner"></span>Signing in…';
+            btn.disabled  = true;
 
-            // Simulate a brief delay for UX
-            setTimeout(function() {
-                var matched = ADMIN_CREDENTIALS.find(function(c) {
-                    return c.email === email && c.password === password;
-                });
-
-                if (matched) {
-                    // Store auth state
-                    sessionStorage.setItem('adminLoggedIn', 'true');
-                    sessionStorage.setItem('adminEmail', matched.email);
-                    sessionStorage.setItem('adminRole', matched.role);
-
-                    // Redirect to dashboard (or where they came from)
-                    var redirect = sessionStorage.getItem('adminRedirect') || 'index.html';
-                    sessionStorage.removeItem('adminRedirect');
+            CA3Auth.login(email, password).then(function (result) {
+                if (result.success) {
+                    var redirect = sessionStorage.getItem('ca3_redirect');
+                    sessionStorage.removeItem('ca3_redirect');
+                    // Owner goes to owner portal; admin goes to dashboard
+                    if (!redirect || redirect.includes('login')) {
+                        redirect = result.session.role === 'owner' ? 'owner.html' : 'index.html';
+                    }
                     window.location.href = redirect;
                 } else {
-                    // Show error
                     emailInput.classList.add('error');
                     passwordInput.classList.add('error');
                     errorEl.classList.add('visible');
                     btn.textContent = 'Sign In';
-                    btn.disabled = false;
+                    btn.disabled    = false;
                     passwordInput.value = '';
                     passwordInput.focus();
                 }
-            }, 600);
+            }).catch(function () {
+                errorEl.classList.add('visible');
+                btn.textContent = 'Sign In';
+                btn.disabled    = false;
+            });
         });
     </script>
 </body>

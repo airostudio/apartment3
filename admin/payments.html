@@ -9,6 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <script src="../js/auth.js"></script>
+    <script>/* Immediate auth guard - redirect to login if no session */
+    (function(){if(!sessionStorage.getItem('ca3_session')){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}}());</script>
     <style>
         /* ===== Layout ===== */
         .admin-layout {
@@ -1390,7 +1393,7 @@
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                                         </div>
                                         <div class="flow-node-label">Owner Account</div>
-                                        <div class="flow-node-sublabel" style="color:#635bff;font-weight:600;">85% → typhoon.tall69</div>
+                                        <div class="flow-node-sublabel" style="color:#635bff;font-weight:600;">1.7% royalty → Owner</div>
                                     </div>
                                 </div>
                                 <div style="display:flex;align-items:center;gap:0.5rem;">
@@ -1399,20 +1402,20 @@
                                         <div class="flow-node-icon admin-earn">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                                         </div>
-                                        <div class="flow-node-label">Admin Earnings</div>
-                                        <div class="flow-node-sublabel" style="color:#16a34a;font-weight:600;">15% management fee</div>
+                                        <div class="flow-node-label">Admin Revenue</div>
+                                        <div class="flow-node-sublabel" style="color:#16a34a;font-weight:600;">98.3% of base price</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <p style="font-size:0.8125rem;color:#64748b;margin:0;text-align:center;">
-                            Stripe automatically transfers the owner's share to their connected account on every payment — no manual payouts needed.
+                            Guest prices include the Stripe processing fee (2.9% + 30¢). Stripe takes their fee from the total, then admin keeps 98.3% and the owner receives a 1.7% royalty — automatically transferred to their Stripe account.
                         </p>
                     </div>
                 </div>
 
                 <!-- Stripe Accounts -->
-                <div class="accounts-grid">
+                <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;margin-bottom:1.5rem;">
 
                     <!-- Admin Platform Account -->
                     <div class="account-card">
@@ -1438,8 +1441,8 @@
                                     <span class="account-meta-value">Platform (Connect)</span>
                                 </div>
                                 <div class="account-meta-row">
-                                    <span class="account-meta-label">Connected</span>
-                                    <span class="account-meta-value">15 Jan 2026</span>
+                                    <span class="account-meta-label">Revenue Split</span>
+                                    <span class="account-meta-value" style="background:#dcfce7;color:#16a34a;">98.3% of base price</span>
                                 </div>
                             </div>
                             <div class="account-capabilities">
@@ -1469,17 +1472,17 @@
                         </div>
                     </div>
 
-                    <!-- Owner Connected Account -->
+                    <!-- Owner Account — link to owner portal -->
                     <div class="account-card">
                         <div class="account-card-header owner">
-                            <span class="account-type-label">Property Owner (Connected Account)</span>
+                            <span class="account-type-label">Owner Connected Account</span>
                             <div class="account-type-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
                             </div>
                         </div>
                         <div class="account-card-body">
                             <div class="account-name">
-                                Cascade Apartment 3 Owner
+                                Property Owner
                                 <span class="badge badge-success">Connected</span>
                             </div>
                             <div class="account-email">typhoon.tall69@gmail.com</div>
@@ -1489,38 +1492,20 @@
                                     <span class="account-meta-value">acct_conn_9ZyXwVuTsRq</span>
                                 </div>
                                 <div class="account-meta-row">
-                                    <span class="account-meta-label">Account Type</span>
-                                    <span class="account-meta-value">Express (Connected)</span>
-                                </div>
-                                <div class="account-meta-row">
-                                    <span class="account-meta-label">Connected</span>
-                                    <span class="account-meta-value">15 Jan 2026</span>
+                                    <span class="account-meta-label">Royalty Rate</span>
+                                    <span class="account-meta-value" style="background:#ede9fe;color:#7c3aed;">1.7% of base price</span>
                                 </div>
                             </div>
-                            <div class="account-capabilities">
-                                <span class="cap-badge">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Transfers Active
-                                </span>
-                                <span class="cap-badge">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Payouts Enabled
-                                </span>
-                                <span class="cap-badge">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Details Submitted
-                                </span>
+                            <div class="info-box" style="margin-top:0.5rem;font-size:0.75rem;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                <span>Owner account details and payout history are managed through the <strong>Owner Portal</strong>.</span>
                             </div>
                         </div>
                         <div class="account-card-footer">
-                            <button class="btn btn-primary" onclick="connectOwnerAccount()" style="font-size:0.8125rem;padding:0.5rem 1rem;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                Owner Dashboard
-                            </button>
-                            <button class="btn btn-danger-outline" onclick="disconnectOwner()" style="font-size:0.8125rem;padding:0.5rem 1rem;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-                                Remove
-                            </button>
+                            <a href="/admin/owner.html" class="btn btn-primary" style="font-size:0.8125rem;padding:0.5rem 1rem;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                View Owner Portal
+                            </a>
                         </div>
                     </div>
 
@@ -1529,25 +1514,25 @@
                 <!-- Payment Split Configuration -->
                 <div class="card" style="margin-bottom:1.5rem;border-left:4px solid #635bff;">
                     <div class="card-header">
-                        <h2>Payment Split Configuration</h2>
+                        <h2>Revenue Split Configuration</h2>
                         <span class="badge badge-info">Auto-transfer on payment</span>
                     </div>
                     <div class="card-body">
                         <div class="split-config">
                             <div>
-                                <h3 style="font-size:0.9375rem;font-weight:600;color:#0f172a;margin:0 0 0.375rem;">Management Fee</h3>
-                                <p style="font-size:0.8125rem;color:#64748b;margin:0;line-height:1.6;">Set the percentage kept by the admin account. The remainder is automatically transferred to the owner's Stripe account on every booking payment.</p>
+                                <h3 style="font-size:0.9375rem;font-weight:600;color:#0f172a;margin:0 0 0.375rem;">Owner Royalty Rate</h3>
+                                <p style="font-size:0.8125rem;color:#64748b;margin:0;line-height:1.6;">Set the owner's royalty percentage. This amount is automatically transferred to the owner's connected Stripe account on every booking payment. Admin retains the remainder.</p>
                                 <div class="split-input-group">
-                                    <input type="number" id="mgmt-fee" value="15" min="1" max="50" oninput="updateSplitPreview()">
+                                    <input type="number" id="mgmt-fee" value="1.7" min="0.1" max="50" step="0.1" oninput="updateSplitPreview()">
                                     <span class="split-input-suffix">%</span>
                                 </div>
                                 <div class="split-bar">
-                                    <div class="split-bar-admin" id="split-bar-admin" style="width:15%;">15%</div>
-                                    <div class="split-bar-owner" id="split-bar-owner">85%</div>
+                                    <div class="split-bar-owner" id="split-bar-owner" style="width:1.7%;min-width:28px;">1.7%</div>
+                                    <div class="split-bar-admin" id="split-bar-admin" style="flex:1;">98.3%</div>
                                 </div>
                                 <div class="split-bar-legend">
-                                    <span><span class="split-legend-dot" style="background:#635bff;"></span>Admin keeps <strong id="admin-pct-label">15%</strong></span>
-                                    <span><span class="split-legend-dot" style="background:#16a34a;"></span>Owner receives <strong id="owner-pct-label">85%</strong></span>
+                                    <span><span class="split-legend-dot" style="background:#635bff;"></span>Owner royalty <strong id="owner-pct-label">1.7%</strong></span>
+                                    <span><span class="split-legend-dot" style="background:#16a34a;"></span>Admin revenue <strong id="admin-pct-label">98.3%</strong></span>
                                 </div>
                                 <button class="btn btn-primary" onclick="saveSplitConfig()" style="margin-top:1.25rem;font-size:0.875rem;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
@@ -1556,27 +1541,31 @@
                             </div>
                             <div>
                                 <div class="split-preview-example">
-                                    <div class="split-preview-title">Example — based on $1,000 guest payment</div>
+                                    <div class="split-preview-title">Example — $1,000 base booking price</div>
                                     <div class="split-preview-row">
-                                        <span class="spr-label">Guest pays</span>
+                                        <span class="spr-label">Base booking price</span>
                                         <span class="spr-value">$1,000.00</span>
                                     </div>
                                     <div class="split-preview-row">
-                                        <span class="spr-label">Stripe processing fee (~2.9% + 30¢)</span>
-                                        <span class="spr-value">−$29.30</span>
+                                        <span class="spr-label">+ Stripe fee added to guest price (2.9% + 30¢)</span>
+                                        <span class="spr-value" style="color:#94a3b8;">+ $29.30</span>
                                     </div>
                                     <div class="split-preview-row">
-                                        <span class="spr-label">Admin management fee (<span id="ex-fee-pct">15</span>%)</span>
-                                        <span class="spr-value admin-val" id="ex-admin-fee">$150.00</span>
+                                        <span class="spr-label">Guest pays total</span>
+                                        <span class="spr-value">$1,029.30</span>
                                     </div>
                                     <div class="split-preview-row">
-                                        <span class="spr-label" style="font-weight:600;">Owner receives</span>
-                                        <span class="spr-value owner-val" id="ex-owner">$850.00</span>
+                                        <span class="spr-label">Owner royalty (<span id="ex-fee-pct">1.7</span>% of $1,000)</span>
+                                        <span class="spr-value owner-val" id="ex-owner">$17.00</span>
+                                    </div>
+                                    <div class="split-preview-row">
+                                        <span class="spr-label" style="font-weight:600;">Admin revenue (<span id="ex-admin-pct">98.3</span>% of $1,000)</span>
+                                        <span class="spr-value admin-val" id="ex-admin-fee">$983.00</span>
                                     </div>
                                 </div>
                                 <div class="info-box" style="margin-top:1rem;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                                    <span>Stripe processing fees (~2.9% + 30¢) are deducted from the admin's share, not the owner's. The owner always receives their exact percentage of the gross payment.</span>
+                                    <span>Stripe fees (2.9% + 30¢) are added on top of the price and paid by the guest. The 98.3%/1.7% split is calculated from the <strong>base booking price only</strong>.</span>
                                 </div>
                             </div>
                         </div>
@@ -1594,20 +1583,20 @@
                         <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">All guest payments</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon blue">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                        </div>
-                        <div class="stat-label">Owner Transfers</div>
-                        <div class="stat-value">$75,917</div>
-                        <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">85% → typhoon.tall69</div>
-                    </div>
-                    <div class="stat-card">
                         <div class="stat-icon purple">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                         </div>
-                        <div class="stat-label">Admin Fees Earned</div>
-                        <div class="stat-value">$13,415</div>
-                        <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">15% management fee</div>
+                        <div class="stat-label">Admin Revenue</div>
+                        <div class="stat-value">$87,911</div>
+                        <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">98.3% of collected</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                        </div>
+                        <div class="stat-label">Owner Royalties Paid</div>
+                        <div class="stat-value">$1,520</div>
+                        <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">1.7% → typhoon.tall69</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon amber">
@@ -1798,8 +1787,8 @@
                                         <th>Date</th>
                                         <th>Guest</th>
                                         <th>Guest Paid</th>
-                                        <th>To Owner (85%)</th>
-                                        <th>Admin Fee (15%)</th>
+                                        <th>Admin Revenue (98.3%)</th>
+                                        <th>Owner Royalty (1.7%)</th>
                                         <th>Status</th>
                                         <th>Stripe ID</th>
                                     </tr>
@@ -1821,45 +1810,45 @@
                         </div>
                         <div class="card-body">
                             <div class="next-payout">
-                                <div class="next-label">Next Owner Transfer</div>
-                                <div class="next-amount">$2,758.25</div>
-                                <div class="next-date">Scheduled for 21 Feb 2026 → typhoon.tall69</div>
+                                <div class="next-label">Next Admin Payout</div>
+                                <div class="next-amount">$3,189.83</div>
+                                <div class="next-date">Scheduled for 21 Feb 2026</div>
                             </div>
 
-                            <h3 style="font-size: 0.8125rem; font-weight: 600; color: #64748b; margin: 0 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Owner Transfers (85%)</h3>
+                            <h3 style="font-size: 0.8125rem; font-weight: 600; color: #64748b; margin: 0 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Admin Revenue (98.3%)</h3>
                             <ul class="payout-history-list" style="margin-bottom:1rem;">
                                 <li>
                                     <span class="payout-date">14 Feb 2026</span>
-                                    <span class="payout-amount" style="color:#635bff;">$7,259.00</span>
-                                    <span class="badge badge-success">Transferred</span>
+                                    <span class="payout-amount" style="color:#16a34a;">$8,394.87</span>
+                                    <span class="badge badge-success">Settled</span>
                                 </li>
                                 <li>
                                     <span class="payout-date">7 Feb 2026</span>
-                                    <span class="payout-amount" style="color:#635bff;">$5,372.00</span>
-                                    <span class="badge badge-success">Transferred</span>
+                                    <span class="payout-amount" style="color:#16a34a;">$6,212.56</span>
+                                    <span class="badge badge-success">Settled</span>
                                 </li>
                                 <li>
                                     <span class="payout-date">31 Jan 2026</span>
-                                    <span class="payout-amount" style="color:#635bff;">$8,394.00</span>
-                                    <span class="badge badge-success">Transferred</span>
+                                    <span class="payout-amount" style="color:#16a34a;">$9,706.13</span>
+                                    <span class="badge badge-success">Settled</span>
                                 </li>
                             </ul>
-                            <h3 style="font-size: 0.8125rem; font-weight: 600; color: #64748b; margin: 0 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Admin Fees Collected (15%)</h3>
+                            <h3 style="font-size: 0.8125rem; font-weight: 600; color: #64748b; margin: 0 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Owner Royalties (1.7%)</h3>
                             <ul class="payout-history-list">
                                 <li>
                                     <span class="payout-date">14 Feb 2026</span>
-                                    <span class="payout-amount" style="color:#16a34a;">$1,281.00</span>
-                                    <span class="badge badge-success">Settled</span>
+                                    <span class="payout-amount" style="color:#635bff;">$145.13</span>
+                                    <span class="badge badge-success">Transferred</span>
                                 </li>
                                 <li>
                                     <span class="payout-date">7 Feb 2026</span>
-                                    <span class="payout-amount" style="color:#16a34a;">$948.00</span>
-                                    <span class="badge badge-success">Settled</span>
+                                    <span class="payout-amount" style="color:#635bff;">$107.44</span>
+                                    <span class="badge badge-success">Transferred</span>
                                 </li>
                                 <li>
                                     <span class="payout-date">31 Jan 2026</span>
-                                    <span class="payout-amount" style="color:#16a34a;">$1,481.00</span>
-                                    <span class="badge badge-success">Settled</span>
+                                    <span class="payout-amount" style="color:#635bff;">$167.88</span>
+                                    <span class="badge badge-success">Transferred</span>
                                 </li>
                             </ul>
                         </div>
@@ -1916,7 +1905,7 @@
     <script>
         /* ── Payments page JS ── */
 
-        var MGMT_FEE_PCT = 15; // default management fee %
+        var OWNER_ROYALTY_PCT = 1.7; // owner gets 1.7%, admin keeps 98.3%
 
         function disconnectPlatform() {
             if (confirm('Are you sure you want to disconnect the admin platform account? This will disable all payment processing.')) {
@@ -1936,43 +1925,48 @@
             window.open('https://connect.stripe.com/setup/s/demo', '_blank');
         }
 
-        /* ── Payment Split Configuration ── */
+        /* ── Revenue Split Configuration ── */
         function updateSplitPreview() {
-            var fee = parseInt(document.getElementById('mgmt-fee').value) || 15;
-            fee = Math.max(1, Math.min(50, fee));
-            var ownerPct = 100 - fee;
+            var ownerPct = parseFloat(document.getElementById('mgmt-fee').value) || 1.7;
+            ownerPct = Math.max(0.1, Math.min(50, ownerPct));
+            var adminPct = Math.round((100 - ownerPct) * 10) / 10;
 
-            // Update bar
-            document.getElementById('split-bar-admin').style.width = fee + '%';
-            document.getElementById('split-bar-admin').textContent = fee + '%';
-            document.getElementById('split-bar-owner').textContent = ownerPct + '%';
+            // Update bar (owner is a small sliver on the left)
+            var ownerBar = document.getElementById('split-bar-owner');
+            var adminBar = document.getElementById('split-bar-admin');
+            ownerBar.style.width  = ownerPct + '%';
+            ownerBar.textContent  = ownerPct + '%';
+            adminBar.textContent  = adminPct + '%';
 
             // Update labels
-            document.getElementById('admin-pct-label').textContent = fee + '%';
             document.getElementById('owner-pct-label').textContent = ownerPct + '%';
+            document.getElementById('admin-pct-label').textContent = adminPct + '%';
 
-            // Update example
-            var gross = 1000;
-            var stripeFee = Math.round(gross * 0.029 * 100 + 30) / 100;
-            var adminFee = gross * fee / 100;
-            var ownerAmt = gross - adminFee;
+            // Update example (based on $1,000 base price)
+            var base = 1000;
+            var ownerAmt = (base * ownerPct / 100).toFixed(2);
+            var adminAmt = (base * adminPct / 100).toFixed(2);
 
-            document.getElementById('ex-fee-pct').textContent = fee;
-            document.getElementById('ex-admin-fee').textContent = '$' + adminFee.toFixed(2);
-            document.getElementById('ex-owner').textContent = '$' + ownerAmt.toFixed(2);
+            document.getElementById('ex-fee-pct').textContent  = ownerPct;
+            document.getElementById('ex-admin-pct').textContent = adminPct;
+            document.getElementById('ex-owner').textContent    = '$' + ownerAmt;
+            document.getElementById('ex-admin-fee').textContent = '$' + adminAmt;
 
             // Update flow diagram sublabels
             var ownerSublabel = document.querySelector('.flow-node-sublabel[style*="635bff"]');
-            if (ownerSublabel) ownerSublabel.textContent = ownerPct + '% \u2192 typhoon.tall69';
+            if (ownerSublabel) ownerSublabel.textContent = ownerPct + '% royalty \u2192 Owner';
             var adminSublabel = document.querySelector('.flow-node-sublabel[style*="16a34a"]');
-            if (adminSublabel) adminSublabel.textContent = fee + '% management fee';
+            if (adminSublabel) adminSublabel.textContent = adminPct + '% of base price';
 
-            MGMT_FEE_PCT = fee;
+            OWNER_ROYALTY_PCT = ownerPct;
         }
 
         function saveSplitConfig() {
-            var fee = parseInt(document.getElementById('mgmt-fee').value) || 15;
-            window.CascadeApp && window.CascadeApp.showToast('Payment split saved: Admin ' + fee + '% / Owner ' + (100 - fee) + '%', 'success');
+            var ownerPct = parseFloat(document.getElementById('mgmt-fee').value) || 1.7;
+            var adminPct = Math.round((100 - ownerPct) * 10) / 10;
+            window.CascadeApp && window.CascadeApp.showToast(
+                'Split saved: Admin ' + adminPct + '% / Owner ' + ownerPct + '%', 'success'
+            );
         }
 
         /* ── Build transaction rows from CA3Data bookings ── */
@@ -2016,13 +2010,13 @@
 
             tbody.innerHTML = rows.map(function(r) {
                 var d = new Date(r.date + 'T00:00:00');
-                var dateStr = d.toLocaleDateString('en-AU', {day: 'numeric', month: 'short', year: 'numeric'});
-                var gross = r.amount;
-                var adminFee = Math.round(gross * MGMT_FEE_PCT) / 100;
-                var ownerAmt = gross - adminFee;
-                var grossStr = '$' + Math.abs(gross).toFixed(2);
+                var dateStr  = d.toLocaleDateString('en-AU', {day: 'numeric', month: 'short', year: 'numeric'});
+                var base     = r.amount;
+                var ownerAmt = (base * OWNER_ROYALTY_PCT / 100);
+                var adminAmt = base - ownerAmt;
+                var grossStr = '$' + base.toFixed(2);
+                var adminStr = '<span style="color:#16a34a;font-weight:600;">$' + adminAmt.toFixed(2) + '</span>';
                 var ownerStr = '<span style="color:#635bff;font-weight:600;">$' + ownerAmt.toFixed(2) + '</span>';
-                var adminStr = '<span style="color:#16a34a;font-weight:600;">$' + adminFee.toFixed(2) + '</span>';
                 var statusBadge;
                 if (r.status === 'completed')    statusBadge = '<span class="badge badge-success">Completed</span>';
                 else if (r.status === 'pending') statusBadge = '<span class="badge badge-warning">Pending</span>';
@@ -2031,8 +2025,8 @@
                     '<td>' + dateStr + '</td>' +
                     '<td>' + r.guest + '</td>' +
                     '<td class="amount-positive">' + grossStr + '</td>' +
-                    '<td>' + ownerStr + '</td>' +
                     '<td>' + adminStr + '</td>' +
+                    '<td>' + ownerStr + '</td>' +
                     '<td>' + statusBadge + '</td>' +
                     '<td><span class="stripe-id">' + r.stripeId + '...</span></td>' +
                     '</tr>';

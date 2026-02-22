@@ -371,6 +371,25 @@
         return;
       }
 
+      // Save booking data for checkout + confirmation pages
+      const nights = (() => {
+        const ci = new Date(data.checkinDate || data.checkin);
+        const co = new Date(data.checkoutDate || data.checkout);
+        return isNaN(ci) || isNaN(co) ? null : Math.round((co - ci) / 86400000);
+      })();
+      const adults   = parseInt(data.numAdults)   || 1;
+      const children = parseInt(data.numChildren) || 0;
+      sessionStorage.setItem('ca3_pending_booking', JSON.stringify({
+        guestName:  ((data.firstName || '') + ' ' + (data.lastName || '')).trim(),
+        guestEmail: data.email || '',
+        guestPhone: data.phone || '',
+        checkin:    data.checkinDate  || data.checkin  || '',
+        checkout:   data.checkoutDate || data.checkout || '',
+        nights:     nights,
+        guests:     adults + children,
+        specialRequests: data.specialRequests || '',
+      }));
+
       // Proceed to checkout
       window.location.href = 'checkout.html';
     });

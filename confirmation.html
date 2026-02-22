@@ -523,5 +523,79 @@
   </footer>
 
   <script src="js/app.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    // ── Read confirmed booking from sessionStorage ─────────────────────────
+    var booking = {};
+    try {
+      booking = JSON.parse(sessionStorage.getItem('ca3_confirmed_booking') || '{}');
+    } catch (e) { /* ignore */ }
+
+    // Fallback: ref from URL query string
+    var urlRef = new URLSearchParams(window.location.search).get('ref');
+    if (!booking.ref && urlRef) booking.ref = urlRef;
+
+    // ── Update DOM with real booking data ──────────────────────────────────
+    function setText(sel, val) {
+      if (!val) return;
+      document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });
+    }
+    function fmtDate(d) {
+      if (!d) return '';
+      try {
+        return new Date(d + 'T12:00:00').toLocaleDateString('en-AU', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        });
+      } catch (e) { return d; }
+    }
+
+    if (booking.ref)          setText('.confirmation-success__ref, [data-field="ref"]', booking.ref);
+    if (booking.guestName)    setText('[data-field="guestName"]', booking.guestName);
+    if (booking.checkin)      setText('[data-field="checkin"]',   fmtDate(booking.checkin));
+    if (booking.checkout)     setText('[data-field="checkout"]',  fmtDate(booking.checkout));
+    if (booking.nights)       setText('[data-field="nights"]',    booking.nights + (booking.nights === 1 ? ' night' : ' nights'));
+    if (booking.guests)       setText('[data-field="guests"]',    booking.guests + ' guest' + (booking.guests === 1 ? '' : 's'));
+    if (booking.totalAmount)  setText('[data-field="totalAmount"]', booking.totalAmount);
+    if (booking.depositAmount)setText('[data-field="depositAmount"]', booking.depositAmount);
+
+    // Replace static booking details in the card
+    var propField   = document.querySelector('.booking-detail-item__value');
+    var checkinEl   = document.querySelectorAll('.booking-detail-item__value')[1];
+    var checkoutEl  = document.querySelectorAll('.booking-detail-item__value')[2];
+    var guestsEl    = document.querySelectorAll('.booking-detail-item__value')[3];
+    var refEl       = document.querySelectorAll('.booking-detail-item__value')[5];
+    var totalEl     = document.querySelector('.total-paid-amount');
+
+    if (propField)  propField.textContent  = 'Cascade Apartment 3';
+    if (booking.checkin  && checkinEl)  checkinEl.textContent  = fmtDate(booking.checkin)  + ', from 2:00 PM';
+    if (booking.checkout && checkoutEl) checkoutEl.textContent = fmtDate(booking.checkout) + ', by 10:00 AM';
+    if (booking.guests   && guestsEl)   guestsEl.textContent   = booking.guests + ' guest' + (booking.guests === 1 ? '' : 's');
+    if (booking.ref      && refEl)      refEl.textContent      = booking.ref;
+    if (booking.totalAmount && totalEl) totalEl.textContent    = booking.totalAmount;
+
+    // ── Fire confirmation emails via /api/send-email ───────────────────────
+    if (booking.guestEmail && booking.ref) {
+      fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(booking),
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.success) {
+            console.log('[CA3] Confirmation emails sent:', d);
+          } else {
+            console.warn('[CA3] Email API returned error:', d);
+          }
+        })
+        .catch(function (err) {
+          // Non-fatal — the booking is confirmed regardless
+          console.warn('[CA3] Could not send confirmation email:', err);
+        });
+    }
+  })();
+  </script>
 </body>
 </html>

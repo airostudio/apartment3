@@ -250,8 +250,32 @@
 
         if (result.success) {
           window.CascadeApp?.showToast('Payment successful!', 'success');
-          window.location.href = 'confirmation.html?ref=' +
-            (window.CascadeApp?.BookingEngine?.generateReference() || 'TRA-2026-00001');
+
+          // Merge guest data (from booking form) with payment data, save for confirmation
+          const ref = window.CascadeApp?.BookingEngine?.generateReference() || 'CA3-' + Date.now();
+          const pending = JSON.parse(sessionStorage.getItem('ca3_pending_booking') || '{}');
+          const amountCents = parseInt(data.amount) || 0;
+          const totalFormatted = amountCents
+            ? new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(amountCents / 100)
+            : '';
+          const depositCents = Math.round(amountCents * 0.3);
+          const depositFormatted = depositCents
+            ? new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(depositCents / 100)
+            : '';
+
+          const confirmedBooking = {
+            ...pending,
+            ref,
+            guestName:    pending.guestName  || data.cardholderName || 'Guest',
+            guestEmail:   pending.guestEmail || data.email || '',
+            totalAmount:  totalFormatted,
+            depositAmount: depositFormatted,
+            paymentStatus: 'paid',
+            confirmedAt:  new Date().toISOString(),
+          };
+          sessionStorage.setItem('ca3_confirmed_booking', JSON.stringify(confirmedBooking));
+
+          window.location.href = 'confirmation.html?ref=' + encodeURIComponent(ref);
         }
       } catch (error) {
         window.CascadeApp?.showToast(error.message || 'Payment failed. Please try again.', 'error');

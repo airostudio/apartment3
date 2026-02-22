@@ -264,6 +264,24 @@
     .booking-page-content {
       padding-top: 100px;
     }
+
+    /* ── Validation error highlight ── */
+    .form-group--error {
+      border-left: 3px solid #ef4444;
+      padding-left: 10px;
+      border-radius: 2px;
+    }
+    .form-group--error input,
+    .form-group--error select,
+    .form-group--error textarea {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
+    }
+    .form-error {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
@@ -458,53 +476,53 @@
 
         <!-- Right Column: Summary Sidebar -->
         <aside class="booking-summary">
-          <div class="booking-summary__property">The Grand Harbour Hotel</div>
+          <div class="booking-summary__property">Cascade Apartment 3</div>
           <div class="booking-summary__rating">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <strong>4.8</strong> (246 reviews) &middot; Darling Harbour, Sydney
+            <strong>4.9</strong> (28 reviews) &middot; Mt. Baw Baw, VIC
           </div>
 
           <div class="summary-divider"></div>
 
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span><strong>Check-in:</strong> Sat, 14 Mar 2026</span>
+            <span><strong>Check-in:</strong> <span id="summaryCheckin">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span><strong>Check-out:</strong> Wed, 18 Mar 2026</span>
+            <span><strong>Check-out:</strong> <span id="summaryCheckout">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <span><strong>Guests:</strong> 2 Adults, 0 Children</span>
+            <span><strong>Guests:</strong> <span id="summaryGuests">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>4 nights &middot; Deluxe Harbour View Room</span>
+            <span id="summaryNightsLine">Select dates to see pricing</span>
           </div>
 
           <div class="summary-divider"></div>
 
           <div class="price-breakdown">
             <div class="price-row">
-              <span>$289 x 4 nights</span>
-              <span>$1,156.00</span>
+              <span data-summary="rate-label">—</span>
+              <span data-summary="accommodation">—</span>
             </div>
             <div class="price-row">
               <span>Cleaning fee</span>
-              <span>$75.00</span>
+              <span data-summary="cleaning">$75.00</span>
             </div>
             <div class="price-row">
               <span>Service fee</span>
-              <span>$98.00</span>
+              <span data-summary="service-fee">—</span>
             </div>
             <div class="price-row">
               <span>Taxes &amp; levies</span>
-              <span>$132.90</span>
+              <span data-summary="tax">—</span>
             </div>
             <div class="price-row price-row--total">
               <span>Total</span>
-              <span>$1,461.90</span>
+              <span data-summary="total">—</span>
             </div>
           </div>
 
@@ -586,5 +604,52 @@
 
   <script src="js/app.js"></script>
   <script src="js/booking-engine.js"></script>
+  <script>
+    (function() {
+      var params   = new URLSearchParams(window.location.search);
+      var checkin  = params.get('checkin')  || '';
+      var checkout = params.get('checkout') || '';
+      var guests   = parseInt(params.get('guests')) || 0;
+
+      function fmtDate(dateStr) {
+        if (!dateStr) return '—';
+        var d = new Date(dateStr + 'T00:00:00');
+        return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      // Pre-fill form fields
+      if (checkin)  { var ci = document.getElementById('checkinDate');  if (ci)  ci.value  = checkin; }
+      if (checkout) { var co = document.getElementById('checkoutDate'); if (co)  co.value  = checkout; }
+      if (guests > 0) {
+        var adults   = Math.min(guests, 6);
+        var children = Math.max(0, guests - 6);
+        var adEl = document.getElementById('numAdults');
+        var chEl = document.getElementById('numChildren');
+        if (adEl) adEl.value = adults;
+        if (chEl) chEl.value = Math.min(children, 4);
+      }
+
+      // Update sidebar date/guest labels
+      var elCI = document.getElementById('summaryCheckin');
+      var elCO = document.getElementById('summaryCheckout');
+      var elGU = document.getElementById('summaryGuests');
+      if (elCI) elCI.textContent = checkin  ? fmtDate(checkin)  : '—';
+      if (elCO) elCO.textContent = checkout ? fmtDate(checkout) : '—';
+      if (elGU && guests > 0) elGU.textContent = guests + ' Guest' + (guests !== 1 ? 's' : '');
+
+      // Calculate and show pricing if dates are present
+      if (checkin && checkout && window.CascadeApp && window.CascadeApp.BookingEngine) {
+        var pricing = window.CascadeApp.BookingEngine.calculatePrice({
+          baseRate: 289,
+          checkin:  checkin,
+          checkout: checkout,
+          guests:   guests || 2
+        });
+        if (pricing && !pricing.error) {
+          window.CascadeApp.BookingEngine.updateSummaryUI(pricing);
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

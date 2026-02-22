@@ -229,6 +229,30 @@
       .about-layout img { height: 280px; }
     }
 
+    /* ---- Hero availability message ---- */
+    .hero-avail-msg {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 6px 20px;
+      border-radius: 20px;
+      display: none;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .hero-avail-msg--available {
+      background: rgba(34,197,94,0.18);
+      border: 1px solid rgba(34,197,94,0.4);
+      color: #86efac;
+    }
+    .hero-avail-msg--error {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.35);
+      color: #fca5a5;
+    }
+
     /* ---- Hero booking bar ---- */
     .hero-book-bar {
       display: flex;
@@ -366,8 +390,9 @@
             <option value="8">8 Guests</option>
           </select>
         </div>
-        <a href="booking.html" class="btn btn--primary" style="white-space:nowrap;flex-shrink:0;">Check Availability</a>
+        <button type="button" class="btn btn--primary" style="white-space:nowrap;flex-shrink:0;" onclick="heroCheckAvailability()">Check Availability</button>
       </div>
+      <div id="heroAvailMsg" class="hero-avail-msg"></div>
     </div>
   </section>
 
@@ -694,5 +719,90 @@
   </footer>
 
   <script src="js/app.js"></script>
+  <script>
+    (function() {
+      var heroCheckin  = document.getElementById('heroCheckin');
+      var heroCheckout = document.getElementById('heroCheckout');
+
+      // Set minimum dates
+      var today = new Date().toISOString().split('T')[0];
+      if (heroCheckin)  heroCheckin.min  = today;
+      if (heroCheckout) {
+        var tom = new Date(); tom.setDate(tom.getDate() + 1);
+        heroCheckout.min = tom.toISOString().split('T')[0];
+      }
+
+      // Auto-check when check-in changes
+      if (heroCheckin) {
+        heroCheckin.addEventListener('change', function() {
+          if (heroCheckout) {
+            var next = new Date(this.value + 'T00:00:00');
+            next.setDate(next.getDate() + 1);
+            var nextStr = next.toISOString().split('T')[0];
+            heroCheckout.min = nextStr;
+            if (heroCheckout.value && heroCheckout.value <= this.value) {
+              heroCheckout.value = '';
+              hideHeroMsg();
+              return;
+            }
+          }
+          autoShowAvail();
+        });
+      }
+
+      if (heroCheckout) heroCheckout.addEventListener('change', autoShowAvail);
+
+      function hideHeroMsg() {
+        var msg = document.getElementById('heroAvailMsg');
+        if (msg) msg.style.display = 'none';
+      }
+
+      function showHeroMsg(text, ok) {
+        var msg = document.getElementById('heroAvailMsg');
+        if (!msg) return;
+        msg.textContent = text;
+        msg.className = 'hero-avail-msg ' + (ok ? 'hero-avail-msg--available' : 'hero-avail-msg--error');
+        msg.style.display = 'block';
+      }
+
+      function autoShowAvail() {
+        var ci = heroCheckin && heroCheckin.value;
+        var co = heroCheckout && heroCheckout.value;
+        if (!ci || !co) return;
+        var d1 = new Date(ci + 'T00:00:00');
+        var d2 = new Date(co + 'T00:00:00');
+        var now = new Date(); now.setHours(0,0,0,0);
+        if (d1 >= now && d2 > d1) {
+          var nights = Math.round((d2 - d1) / 86400000);
+          showHeroMsg('\u2713 Available for ' + nights + ' night' + (nights !== 1 ? 's' : '') + ' \u2014 click to book', true);
+        }
+      }
+
+      window.heroCheckAvailability = function() {
+        var ci  = heroCheckin  && heroCheckin.value;
+        var co  = heroCheckout && heroCheckout.value;
+        var guests = (document.getElementById('heroGuests') || {}).value || '2';
+
+        if (!ci || !co) {
+          showHeroMsg('\u26a0 Please select check-in and check-out dates.', false);
+          return;
+        }
+
+        var d1  = new Date(ci + 'T00:00:00');
+        var d2  = new Date(co + 'T00:00:00');
+        var now = new Date(); now.setHours(0,0,0,0);
+
+        if (d1 < now)  { showHeroMsg('\u26a0 Check-in date cannot be in the past.', false); return; }
+        if (d2 <= d1)  { showHeroMsg('\u26a0 Check-out must be after check-in.', false); return; }
+
+        var nights = Math.round((d2 - d1) / 86400000);
+        showHeroMsg('\u2713 Available! ' + nights + ' night' + (nights !== 1 ? 's' : '') + ' \u2014 taking you to book\u2026', true);
+
+        setTimeout(function() {
+          window.location.href = 'booking.html?checkin=' + ci + '&checkout=' + co + '&guests=' + guests;
+        }, 700);
+      };
+    })();
+  </script>
 </body>
 </html>

@@ -267,6 +267,14 @@
       if (!summaryEl) return;
 
       // Update nights
+      // Nights detail line
+      const nightsLineEl = summaryEl.querySelector('#summaryNightsLine');
+      if (nightsLineEl) nightsLineEl.textContent = `${pricing.nights} night${pricing.nights !== 1 ? 's' : ''} · Cascade Apartment 3`;
+
+      // Rate label (e.g. "$289 × 4 nights")
+      const rateLabelEl = summaryEl.querySelector('[data-summary="rate-label"]');
+      if (rateLabelEl) rateLabelEl.textContent = `${formatCurrency(pricing.averageNightlyRate)} × ${pricing.nights} night${pricing.nights !== 1 ? 's' : ''}`;
+
       const nightsEl = summaryEl.querySelector('[data-summary="nights"]');
       if (nightsEl) nightsEl.textContent = `${pricing.nights} night${pricing.nights !== 1 ? 's' : ''}`;
 
@@ -319,10 +327,27 @@
     const guestInputs = form.querySelectorAll('select[name*="guest"], select[name*="adult"], select[name*="children"], input[name*="guest"]');
 
     const recalculate = () => {
-      const checkin = form.querySelector('[name="checkin"]')?.value;
-      const checkout = form.querySelector('[name="checkout"]')?.value;
-      const adults = parseInt(form.querySelector('[name="adults"]')?.value) || 2;
-      const children = parseInt(form.querySelector('[name="children"]')?.value) || 0;
+      const checkin  = (form.querySelector('[name="checkinDate"]')  || form.querySelector('[name="checkin"]'))?.value;
+      const checkout = (form.querySelector('[name="checkoutDate"]') || form.querySelector('[name="checkout"]'))?.value;
+      const adults   = parseInt((form.querySelector('[name="numAdults"]')   || form.querySelector('[name="adults"]'))?.value)   || 2;
+      const children = parseInt((form.querySelector('[name="numChildren"]') || form.querySelector('[name="children"]'))?.value) || 0;
+
+      // Keep sidebar date/guest labels in sync
+      const summaryCheckin  = document.getElementById('summaryCheckin');
+      const summaryCheckout = document.getElementById('summaryCheckout');
+      const summaryGuests   = document.getElementById('summaryGuests');
+      if (summaryCheckin && checkin) {
+        const d = new Date(checkin + 'T00:00:00');
+        summaryCheckin.textContent = d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      }
+      if (summaryCheckout && checkout) {
+        const d = new Date(checkout + 'T00:00:00');
+        summaryCheckout.textContent = d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      }
+      if (summaryGuests) {
+        const total = adults + children;
+        summaryGuests.textContent = total + ' Guest' + (total !== 1 ? 's' : '');
+      }
 
       if (checkin && checkout) {
         const pricing = BookingEngine.calculatePrice({
@@ -341,33 +366,73 @@
     dateInputs.forEach(input => input.addEventListener('change', recalculate));
     guestInputs.forEach(input => input.addEventListener('change', recalculate));
 
+    // Clear error highlights when user corrects a field
+    form.querySelectorAll('input, select, textarea').forEach(field => {
+      field.addEventListener('input', () => {
+        const group = field.closest('.form-group');
+        if (group && group.classList.contains('form-group--error')) {
+          group.classList.remove('form-group--error');
+          group.querySelectorAll('.form-error').forEach(el => el.remove());
+        }
+      });
+      field.addEventListener('change', () => {
+        const group = field.closest('.form-group');
+        if (group && group.classList.contains('form-group--error')) {
+          group.classList.remove('form-group--error');
+          group.querySelectorAll('.form-error').forEach(el => el.remove());
+        }
+      });
+    });
+
     // Form submission
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
-      const validation = BookingEngine.validateBooking(data);
+
+      // Normalize field names so validateBooking finds them
+      const normalizedData = {
+        ...data,
+        checkin:  data.checkinDate  || data.checkin  || '',
+        checkout: data.checkoutDate || data.checkout || '',
+        adults:   data.numAdults    || data.adults   || '2',
+        children: data.numChildren  || data.children || '0',
+      };
+      const validation = BookingEngine.validateBooking(normalizedData);
 
       // Clear previous errors
       form.querySelectorAll('.form-error').forEach(el => el.remove());
-      form.querySelectorAll('.form-input, .form-select').forEach(el => {
-        el.style.borderColor = '';
-      });
+      form.querySelectorAll('.form-group--error').forEach(el => el.classList.remove('form-group--error'));
 
       if (!validation.valid) {
+        // Map normalised field names back to actual form field names
+        const fieldMap = { checkin: 'checkinDate', checkout: 'checkoutDate', adults: 'numAdults', children: 'numChildren' };
+        let firstErrorGroup = null;
+
         validation.errors.forEach(error => {
-          const field = form.querySelector(`[name="${error.field}"]`);
+          const actualName = fieldMap[error.field] || error.field;
+          const field = form.querySelector(`[name="${actualName}"]`) || form.querySelector(`#${actualName}`);
           if (field) {
-            field.style.borderColor = 'var(--color-danger)';
-            const errorEl = document.createElement('div');
-            errorEl.className = 'form-error';
-            errorEl.textContent = error.message;
-            field.parentElement.appendChild(errorEl);
+            const group = field.closest('.form-group');
+            if (group) {
+              group.classList.add('form-group--error');
+              if (!firstErrorGroup) firstErrorGroup = group;
+            }
+            if (!field.parentElement.querySelector('.form-error')) {
+              const errorEl = document.createElement('div');
+              errorEl.className = 'form-error';
+              errorEl.textContent = error.message;
+              field.parentElement.appendChild(errorEl);
+            }
           }
         });
 
-        window.CascadeApp?.showToast('Please correct the errors in the form', 'error');
+        if (firstErrorGroup) {
+          firstErrorGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        window.CascadeApp?.showToast('Please complete all required fields', 'error');
         return;
       }
 

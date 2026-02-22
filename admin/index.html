@@ -232,17 +232,22 @@
 
                 <div class="stat-card">
                     <div class="stat-card-header">
-                        <span class="stat-card-label">Active Properties</span>
+                        <span class="stat-card-label">Avg Nightly Rate</span>
                         <span class="stat-card-icon stat-card-icon--properties">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="stat-card-value">24</div>
-                    <div class="stat-card-change stat-card-change--neutral">
-                        <span class="stat-card-change-period">Total active listings</span>
+                    <div class="stat-card-value">$185</div>
+                    <div class="stat-card-change stat-card-change--up">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                        +5%
+                        <span class="stat-card-change-period">vs last month</span>
                     </div>
                 </div>
             </div>
@@ -261,7 +266,6 @@
                                 <thead>
                                     <tr>
                                         <th>Guest</th>
-                                        <th>Property</th>
                                         <th>Check-in</th>
                                         <th>Check-out</th>
                                         <th>Status</th>
@@ -274,7 +278,6 @@
                                             <span class="guest-avatar">JD</span>
                                             <span>John Doe</span>
                                         </td>
-                                        <td>Ocean View Villa</td>
                                         <td>Feb 20, 2026</td>
                                         <td>Feb 25, 2026</td>
                                         <td><span class="badge badge--confirmed">Confirmed</span></td>
@@ -285,7 +288,6 @@
                                             <span class="guest-avatar">SM</span>
                                             <span>Sarah Miller</span>
                                         </td>
-                                        <td>Mountain Retreat</td>
                                         <td>Feb 22, 2026</td>
                                         <td>Feb 28, 2026</td>
                                         <td><span class="badge badge--pending">Pending</span></td>
@@ -296,7 +298,6 @@
                                             <span class="guest-avatar">RJ</span>
                                             <span>Robert Johnson</span>
                                         </td>
-                                        <td>Downtown Loft</td>
                                         <td>Feb 18, 2026</td>
                                         <td>Feb 21, 2026</td>
                                         <td><span class="badge badge--checked-in">Checked In</span></td>
@@ -307,7 +308,6 @@
                                             <span class="guest-avatar">EW</span>
                                             <span>Emily Watson</span>
                                         </td>
-                                        <td>Lakeside Cabin</td>
                                         <td>Mar 1, 2026</td>
                                         <td>Mar 5, 2026</td>
                                         <td><span class="badge badge--confirmed">Confirmed</span></td>
@@ -318,7 +318,6 @@
                                             <span class="guest-avatar">MC</span>
                                             <span>Michael Chen</span>
                                         </td>
-                                        <td>City Penthouse</td>
                                         <td>Feb 15, 2026</td>
                                         <td>Feb 18, 2026</td>
                                         <td><span class="badge badge--completed">Completed</span></td>
@@ -396,44 +395,27 @@
                         </div>
                     </div>
 
-                    <!-- Properties Overview -->
+                    <!-- Property Summary -->
                     <div class="admin-card">
                         <div class="admin-card-header">
-                            <h2 class="admin-card-title">Properties Overview</h2>
+                            <h2 class="admin-card-title">Cascade Apartment 3</h2>
                         </div>
-                        <div class="admin-card-body">
-                            <ul class="property-mini-list">
-                                <li class="property-mini-item">
-                                    <div class="property-mini-thumb" aria-label="Ocean View Villa thumbnail"></div>
-                                    <div class="property-mini-info">
-                                        <span class="property-mini-name">Ocean View Villa</span>
-                                        <span class="property-mini-occupancy">92% occupancy</span>
-                                    </div>
-                                    <div class="property-mini-bar">
-                                        <div class="property-mini-bar-fill" style="width: 92%;"></div>
-                                    </div>
-                                </li>
-                                <li class="property-mini-item">
-                                    <div class="property-mini-thumb" aria-label="Mountain Retreat thumbnail"></div>
-                                    <div class="property-mini-info">
-                                        <span class="property-mini-name">Mountain Retreat</span>
-                                        <span class="property-mini-occupancy">76% occupancy</span>
-                                    </div>
-                                    <div class="property-mini-bar">
-                                        <div class="property-mini-bar-fill" style="width: 76%;"></div>
-                                    </div>
-                                </li>
-                                <li class="property-mini-item">
-                                    <div class="property-mini-thumb" aria-label="Downtown Loft thumbnail"></div>
-                                    <div class="property-mini-info">
-                                        <span class="property-mini-name">Downtown Loft</span>
-                                        <span class="property-mini-occupancy">64% occupancy</span>
-                                    </div>
-                                    <div class="property-mini-bar">
-                                        <div class="property-mini-bar-fill" style="width: 64%;"></div>
-                                    </div>
-                                </li>
-                            </ul>
+                        <div class="admin-card-body" style="display:flex;flex-direction:column;gap:var(--space-md);">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <span style="font-size:var(--font-size-sm);color:var(--color-gray);">This month occupancy</span>
+                                <strong style="font-size:var(--font-size-md);">78%</strong>
+                            </div>
+                            <div class="property-mini-bar" style="width:100%;">
+                                <div class="property-mini-bar-fill" style="width:78%;"></div>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:var(--font-size-xs);color:var(--color-gray);">
+                                <span>Next available: Mar 8, 2026</span>
+                                <span>Nights booked: 18/23</span>
+                            </div>
+                            <a href="calendar.html" class="admin-card-footer-link" style="margin-top:var(--space-xs);">
+                                View Calendar
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="admin-card-footer-icon"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
                         </div>
                     </div>
 

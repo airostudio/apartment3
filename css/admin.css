@@ -1474,6 +1474,108 @@
 }
 
 /* ============================================
+   LEGACY SIDEBAR CLASS ALIASES
+   (reviews.html and stripe-connect.html use older naming)
+   ============================================ */
+.sidebar-header {
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-header .sidebar-logo,
+.sidebar-header > a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+}
+
+.logo-text {
+  color: var(--color-white);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.logo-badge {
+  font-size: var(--font-size-xs);
+  background: var(--color-secondary);
+  color: var(--color-white);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.nav-section { margin-top: var(--space-md); }
+
+.nav-section-title {
+  display: block;
+  padding: var(--space-xs) var(--space-xl);
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: var(--space-xs);
+}
+
+.nav-list { list-style: none; margin: 0; padding: 0; }
+
+.nav-item { position: relative; }
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-xl);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item.active .nav-link,
+.nav-link.active {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.08);
+  border-left-color: var(--color-secondary);
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Legacy breadcrumb (reviews / stripe-connect topbar) */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.breadcrumb-link {
+  color: var(--color-gray);
+  text-decoration: none;
+}
+
+.breadcrumb-link:hover { color: var(--color-primary); }
+
+.breadcrumb-separator { color: var(--color-muted); }
+
+.breadcrumb-current {
+  color: var(--color-dark);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 1200px) {

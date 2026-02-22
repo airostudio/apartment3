@@ -849,107 +849,105 @@
 <body>
     <div class="admin-layout">
 
-        <!-- ===== Sidebar ===== -->
-        <aside class="admin-sidebar">
-            <div class="sidebar-logo">
-                <h1>Cascade Apt 3</h1>
-                <span class="admin-badge">Admin</span>
-            </div>
+    <!-- ======================================================
+         SIDEBAR
+    ======================================================= -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <a href="index.html" class="sidebar-logo-link">
+                <span class="sidebar-logo-text">Cascade Apt 3</span>
+                <span class="sidebar-logo-badge">Admin</span>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
 
             <!-- MAIN -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Main</div>
-                <ul class="sidebar-nav">
-                    <li>
-                        <a href="index.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                            Dashboard
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">MAIN</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="index.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            <span>Dashboard</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="properties.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                            Properties
+                    <li class="sidebar-nav-item">
+                        <a href="bookings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Bookings</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="bookings.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>
-                            Bookings
+                    <li class="sidebar-nav-item">
+                        <a href="calendar.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Calendar</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="calendar.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                            Calendar
+                    <li class="sidebar-nav-item">
+                        <a href="guests.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Guests</span>
                         </a>
                     </li>
                 </ul>
             </div>
 
             <!-- MANAGEMENT -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Management</div>
-                <ul class="sidebar-nav">
-                    <li>
-                        <a href="rates.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            Rates &amp; Pricing
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">MANAGEMENT</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="rates.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Rates &amp; Pricing</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="guests.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            Guests
-                        </a>
-                    </li>
-                    <li>
-                        <a href="reviews.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            Reviews
+                    <li class="sidebar-nav-item">
+                        <a href="reports.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
                         </a>
                     </li>
                 </ul>
             </div>
 
             <!-- INTEGRATIONS -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Integrations</div>
-                <ul class="sidebar-nav">
-                    <li>
-                        <a href="ical-sync.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                            iCal Sync
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">INTEGRATIONS</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="ical-sync.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <span>iCal Sync</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="payments.html" class="active">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                            Stripe Connect
+                    <li class="sidebar-nav-item active">
+                        <a href="payments.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Payments</span>
                         </a>
                     </li>
                 </ul>
             </div>
 
             <!-- SYSTEM -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">System</div>
-                <ul class="sidebar-nav">
-                    <li>
-                        <a href="settings.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                            Settings
-                        </a>
-                    </li>
-                    <li>
-                        <a href="reports.html">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
-                            Reports
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">SYSTEM</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="settings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Settings</span>
                         </a>
                     </li>
                 </ul>
             </div>
-        </aside>
+
+        </nav>
+    </aside>
 
         <!-- ===== Main Content ===== -->
         <main class="admin-main">
@@ -959,7 +957,7 @@
                 <nav class="breadcrumb">
                     <a href="index.html">Dashboard</a>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                    <span class="current">Stripe Connect</span>
+                    <span class="current">Payments</span>
                 </nav>
             </div>
 
@@ -1161,6 +1159,27 @@
                     </div>
                 </div>
 
+                <!-- Stripe Setup Instructions -->
+                <div class="card" id="stripe-setup-info" style="border-left: 4px solid #635bff;">
+                    <div class="card-header">
+                        <h2>Stripe Setup Instructions</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-box" style="margin-bottom:1rem;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            <span>To enable live payments, complete these one-time steps. This is a static demo — a server-side backend is required to process real transactions.</span>
+                        </div>
+                        <ol style="font-size:0.875rem;color:#334155;line-height:2;padding-left:1.25rem;margin:0;">
+                            <li>Create a free account at <strong>stripe.com</strong> and complete business verification.</li>
+                            <li>In the Stripe Dashboard → Developers → API Keys, copy your <strong>Publishable Key</strong> (starts with <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">pk_live_...</code>).</li>
+                            <li>In <strong>Settings → Connect</strong>, create a Connect application and copy the <strong>Client ID</strong> (starts with <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">ca_...</code>).</li>
+                            <li>Replace <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">ca_xxx</code> in <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">js/stripe-connect.js</code> and in the <code>connectStripe()</code> function of this page with your actual Client ID.</li>
+                            <li>Set up webhook endpoints in the Stripe Dashboard to handle payment events (payment_intent.succeeded, checkout.session.completed).</li>
+                            <li>Update your bank account details in Stripe Dashboard → Settings → Bank Accounts to receive payouts.</li>
+                        </ol>
+                    </div>
+                </div>
+
                 <!-- Two Column: Transactions + Payout Schedule -->
                 <div class="two-col">
 
@@ -1182,79 +1201,8 @@
                                         <th>Stripe ID</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>18 Feb 2026</td>
-                                        <td>Sarah Mitchell</td>
-                                        <td>Bondi Beach House</td>
-                                        <td class="type-payment">Payment</td>
-                                        <td class="amount-positive">$2,450.00</td>
-                                        <td><span class="badge badge-success">Completed</span></td>
-                                        <td><span class="stripe-id">pi_3Nh7x2...</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>17 Feb 2026</td>
-                                        <td>James Chen</td>
-                                        <td>Sydney CBD Apartment</td>
-                                        <td class="type-payment">Payment</td>
-                                        <td class="amount-positive">$1,890.00</td>
-                                        <td><span class="badge badge-success">Completed</span></td>
-                                        <td><span class="stripe-id">pi_3Nh6k1...</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>16 Feb 2026</td>
-                                        <td>Emma Wilson</td>
-                                        <td>Manly Surf Retreat</td>
-                                        <td class="type-refund">Refund</td>
-                                        <td class="amount-negative">-$750.00</td>
-                                        <td><span class="badge badge-danger">Refunded</span></td>
-                                        <td><span class="stripe-id">re_1Nh5p9...</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>15 Feb 2026</td>
-                                        <td>Michael Brown</td>
-                                        <td>Coogee Bay Villa</td>
-                                        <td class="type-payment">Payment</td>
-                                        <td class="amount-positive">$3,200.00</td>
-                                        <td><span class="badge badge-success">Completed</span></td>
-                                        <td><span class="stripe-id">pi_3Nh4m8...</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>14 Feb 2026</td>
-                                        <td>—</td>
-                                        <td>—</td>
-                                        <td class="type-payout">Payout</td>
-                                        <td class="amount-positive">$8,540.00</td>
-                                        <td><span class="badge badge-success">Completed</span></td>
-                                        <td><span class="stripe-id">po_1Nh3j7...</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>13 Feb 2026</td>
-                                        <td>Olivia Davis</td>
-                                        <td>Bondi Beach House</td>
-                                        <td class="type-payment">Payment</td>
-                                        <td class="amount-positive">$1,650.00</td>
-                                        <td><span class="badge badge-warning">Pending</span></td>
-                                        <td><span class="stripe-id">pi_3Nh2g6...</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>12 Feb 2026</td>
-                                        <td>Liam Taylor</td>
-                                        <td>Darling Harbour Loft</td>
-                                        <td class="type-payment">Payment</td>
-                                        <td class="amount-positive">$2,100.00</td>
-                                        <td><span class="badge badge-success">Completed</span></td>
-                                        <td><span class="stripe-id">pi_3Nh1f5...</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>11 Feb 2026</td>
-                                        <td>Sophia Martinez</td>
-                                        <td>Sydney CBD Apartment</td>
-                                        <td class="type-refund">Refund</td>
-                                        <td class="amount-negative">-$420.00</td>
-                                        <td><span class="badge badge-danger">Refunded</span></td>
-                                        <td><span class="stripe-id">re_1Nh0e4...</span></td>
-                                    </tr>
+                                <tbody id="transactions-tbody">
+                                    <!-- Rendered dynamically by JS below -->
                                 </tbody>
                             </table>
                         </div>
@@ -1355,19 +1303,93 @@
         </main>
     </div>
 
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
     <script src="../js/stripe-connect.js"></script>
     <script>
+        /* ── Payments page JS ── */
+
         function disconnectStripe() {
             if (confirm('Are you sure you want to disconnect your Stripe account? This will disable payment processing.')) {
-                alert('Stripe account disconnected.');
+                alert('Stripe account disconnected. Please reconnect via the Stripe dashboard.');
             }
         }
 
         function connectStripe() {
+            /* Replace ca_xxx with your actual Stripe Connect client_id from https://dashboard.stripe.com/settings/connect */
             window.location.href = 'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_xxx&scope=read_write';
         }
+
+        /* ── Build transaction rows from CA3Data bookings ── */
+        function renderTransactions() {
+            const tbody = document.getElementById('transactions-tbody');
+            if (!tbody) return;
+
+            const bookings = window.CA3Data ? CA3Data.getBookings() : [];
+            const rows = [];
+
+            bookings.forEach(function(b) {
+                if (b.status === 'cancelled') return;
+                if (b.paid > 0) {
+                    rows.push({
+                        date: b.checkIn,
+                        guest: b.guestName,
+                        type: 'payment',
+                        amount: b.paid,
+                        status: b.status === 'confirmed' ? 'completed' : 'pending',
+                        stripeId: 'pi_' + b.id.toLowerCase().replace('-','')
+                    });
+                }
+                const balance = b.total - b.paid;
+                if (balance > 0 && b.status === 'confirmed') {
+                    rows.push({
+                        date: b.checkOut,
+                        guest: b.guestName,
+                        type: 'payment',
+                        amount: balance,
+                        status: 'pending',
+                        stripeId: 'pi_' + b.id.toLowerCase().replace('-','') + 'b'
+                    });
+                }
+            });
+
+            /* Sort newest first */
+            rows.sort(function(a,b) { return new Date(b.date) - new Date(a.date); });
+
+            if (rows.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="color:#94a3b8;padding:20px;text-align:center;">No transactions yet.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = rows.map(function(r) {
+                const d = new Date(r.date + 'T00:00:00');
+                const dateStr = d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
+                const typeClass = r.type === 'refund' ? 'type-refund' : (r.type === 'payout' ? 'type-payout' : 'type-payment');
+                const typeLabel = r.type.charAt(0).toUpperCase() + r.type.slice(1);
+                const amtClass = r.amount < 0 ? 'amount-negative' : 'amount-positive';
+                const amtStr = (r.amount < 0 ? '-' : '') + '$' + Math.abs(r.amount).toFixed(2);
+                let statusBadge;
+                if (r.status === 'completed')    statusBadge = '<span class="badge badge-success">Completed</span>';
+                else if (r.status === 'pending') statusBadge = '<span class="badge badge-warning">Pending</span>';
+                else                             statusBadge = '<span class="badge badge-danger">Refunded</span>';
+                return `<tr>
+                    <td>${dateStr}</td>
+                    <td>${r.guest}</td>
+                    <td>Cascade Apartment 3</td>
+                    <td class="${typeClass}">${typeLabel}</td>
+                    <td class="${amtClass}">${amtStr}</td>
+                    <td>${statusBadge}</td>
+                    <td><span class="stripe-id">${r.stripeId}...</span></td>
+                </tr>`;
+            }).join('');
+        }
+
+        /* ── Init ── */
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTransactions();
+        });
     </script>
 </body>
 </html>

@@ -653,119 +653,103 @@
     <!-- ========================================
          SIDEBAR
          ======================================== -->
-    <aside class="admin-sidebar">
+        <!-- ======================================================
+         SIDEBAR
+    ======================================================= -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <!-- Logo -->
         <div class="sidebar-logo">
-            <span class="logo-text">Cascade Apt 3</span>
-            <span class="admin-badge">Admin</span>
+            <a href="index.html" class="sidebar-logo-link">
+                <span class="sidebar-logo-text">Cascade Apt 3</span>
+                <span class="sidebar-logo-badge">Admin</span>
+            </a>
         </div>
 
+        <!-- Navigation -->
         <nav class="sidebar-nav">
+
             <!-- MAIN -->
-            <div class="nav-section-label">Main</div>
-
-            <a href="dashboard.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-                    <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-                    <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-                    <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-                </svg>
-                Dashboard
-            </a>
-
-            <a href="properties.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                Properties
-            </a>
-
-            <a href="bookings.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"></path>
-                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                </svg>
-                Bookings
-            </a>
-
-            <a href="calendar.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                Calendar
-            </a>
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">MAIN</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="index.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="bookings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="calendar.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="guests.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Guests</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
             <!-- MANAGEMENT -->
-            <div class="nav-section-label">Management</div>
-
-            <a href="rates.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="1" x2="12" y2="23"></line>
-                    <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path>
-                </svg>
-                Rates &amp; Pricing
-            </a>
-
-            <a href="guests.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 010 7.75"></path>
-                </svg>
-                Guests
-            </a>
-
-            <a href="reviews.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                </svg>
-                Reviews
-            </a>
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">MANAGEMENT</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="rates.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Rates &amp; Pricing</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="reports.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
             <!-- INTEGRATIONS -->
-            <div class="nav-section-label">Integrations</div>
-
-            <a href="ical-sync.html" class="nav-link active">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="23 4 23 10 17 10"></polyline>
-                    <polyline points="1 20 1 14 7 14"></polyline>
-                    <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path>
-                </svg>
-                iCal Sync
-            </a>
-
-            <a href="stripe-connect.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                    <line x1="1" y1="10" x2="23" y2="10"></line>
-                </svg>
-                Stripe Connect
-            </a>
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">INTEGRATIONS</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item active">
+                        <a href="ical-sync.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <span>iCal Sync</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="payments.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Payments</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
             <!-- SYSTEM -->
-            <div class="nav-section-label">System</div>
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">SYSTEM</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="settings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-            <a href="settings.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path>
-                </svg>
-                Settings
-            </a>
-
-            <a href="reports.html" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
-                Reports
-            </a>
         </nav>
     </aside>
 
@@ -777,7 +761,7 @@
         <!-- Top Bar -->
         <header class="admin-topbar">
             <div class="breadcrumb">
-                <a href="dashboard.html">Dashboard</a>
+                <a href="index.html">Dashboard</a>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
@@ -831,18 +815,16 @@
                     <p>Share your Cascade Apartment 3 availability calendar with external booking platforms. Copy the iCal export URL below and paste it into the external platform's calendar import settings to keep availability synchronised.</p>
 
                     <div class="form-group">
-                        <label for="export-property">Select Property</label>
+                        <label for="export-property">Property</label>
                         <select id="export-property" class="form-select" style="max-width: 400px;">
-                            <option value="property-1">Grand Harbour Hotel - Sydney</option>
-                            <option value="property-2">Bondi Beach Apartment - Sydney</option>
-                            <option value="property-3">Blue Mountains Cabin - Katoomba</option>
+                            <option value="cascade-apt3">Cascade Apartment 3 — Falls Creek</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Export URL</label>
                         <div class="export-url-wrapper">
-                            <div class="export-url-display" id="export-url">https://cascadeapartment3.com.au/ical/export/property-1.ics</div>
+                            <div class="export-url-display" id="export-url">https://cascadeapartment3.com.au/ical/export/cascade-apt3.ics</div>
                             <button class="btn-copy" onclick="copyExportUrl()">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -885,12 +867,9 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="import-property">Property to Sync With</label>
+                                <label for="import-property">Property</label>
                                 <select id="import-property" class="form-select">
-                                    <option value="">Select property...</option>
-                                    <option value="property-1">Grand Harbour Hotel - Sydney</option>
-                                    <option value="property-2">Bondi Beach Apartment - Sydney</option>
-                                    <option value="property-3">Blue Mountains Cabin - Katoomba</option>
+                                    <option value="cascade-apt3">Cascade Apartment 3 — Falls Creek</option>
                                 </select>
                             </div>
                             <div class="form-group full-width">
@@ -930,186 +909,8 @@
                     </svg>
                     <h2>Connected Calendars</h2>
                 </div>
-                <div class="card-body">
-
-                    <!-- Connection 1: Airbnb - Grand Harbour Hotel -->
-                    <div class="ical-connection">
-                        <div class="ical-platform-icon airbnb">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C7.6 2 4.4 5.4 3.2 8.2c-1.2 2.8-1 5.8.6 8 .8 1.2 2 2 3.2 2.4.6.2 1.2.2 1.8 0 .4-.2.8-.4 1.2-.8.4-.4.8-1 1.2-1.6.4.6.8 1.2 1.2 1.6.4.4.8.6 1.2.8.6.2 1.2.2 1.8 0 1.2-.4 2.4-1.2 3.2-2.4 1.6-2.2 1.8-5.2.6-8C18.6 5.4 16.4 2 12 2z"/>
-                            </svg>
-                        </div>
-                        <div class="ical-connection-info">
-                            <div class="ical-connection-name">Airbnb - Grand Harbour Hotel</div>
-                            <div class="ical-connection-meta">
-                                <span class="ical-status active">
-                                    <span class="status-dot green"></span>
-                                    Active
-                                </span>
-                                <span class="ical-last-sync">Last synced: 5 min ago</span>
-                            </div>
-                        </div>
-                        <div class="ical-connection-actions">
-                            <button class="btn-action btn-sync">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <path d="M20.49 15a9 9 0 01-17.02-2"></path>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0117.02 2"></path>
-                                </svg>
-                                Sync Now
-                            </button>
-                            <button class="btn-action btn-edit">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
-                                Edit
-                            </button>
-                            <button class="btn-action btn-remove">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
-                                </svg>
-                                Remove
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Connection 2: Booking.com - Grand Harbour Hotel -->
-                    <div class="ical-connection">
-                        <div class="ical-platform-icon booking">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M4 6h6v6H4V6zm0 8h6v4H4v-4zm8-8h6v4h-6V6zm0 6h6v6h-6v-6z"/>
-                            </svg>
-                        </div>
-                        <div class="ical-connection-info">
-                            <div class="ical-connection-name">Booking.com - Grand Harbour Hotel</div>
-                            <div class="ical-connection-meta">
-                                <span class="ical-status active">
-                                    <span class="status-dot green"></span>
-                                    Active
-                                </span>
-                                <span class="ical-last-sync">Last synced: 12 min ago</span>
-                            </div>
-                        </div>
-                        <div class="ical-connection-actions">
-                            <button class="btn-action btn-sync">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <path d="M20.49 15a9 9 0 01-17.02-2"></path>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0117.02 2"></path>
-                                </svg>
-                                Sync Now
-                            </button>
-                            <button class="btn-action btn-edit">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
-                                Edit
-                            </button>
-                            <button class="btn-action btn-remove">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
-                                </svg>
-                                Remove
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Connection 3: Airbnb - Bondi Beach Apartment (Error) -->
-                    <div class="ical-connection">
-                        <div class="ical-platform-icon airbnb">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C7.6 2 4.4 5.4 3.2 8.2c-1.2 2.8-1 5.8.6 8 .8 1.2 2 2 3.2 2.4.6.2 1.2.2 1.8 0 .4-.2.8-.4 1.2-.8.4-.4.8-1 1.2-1.6.4.6.8 1.2 1.2 1.6.4.4.8.6 1.2.8.6.2 1.2.2 1.8 0 1.2-.4 2.4-1.2 3.2-2.4 1.6-2.2 1.8-5.2.6-8C18.6 5.4 16.4 2 12 2z"/>
-                            </svg>
-                        </div>
-                        <div class="ical-connection-info">
-                            <div class="ical-connection-name">Airbnb - Bondi Beach Apartment</div>
-                            <div class="ical-connection-meta">
-                                <span class="ical-status error">
-                                    <span class="status-dot red"></span>
-                                    Error
-                                </span>
-                                <span class="ical-last-sync">Failed 2 hours ago</span>
-                            </div>
-                            <div class="ical-error-msg">Connection failed: Unable to fetch iCal feed. The remote server returned a 403 Forbidden error. Please verify the iCal URL is still valid.</div>
-                        </div>
-                        <div class="ical-connection-actions">
-                            <button class="btn-action btn-sync">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <path d="M20.49 15a9 9 0 01-17.02-2"></path>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0117.02 2"></path>
-                                </svg>
-                                Sync Now
-                            </button>
-                            <button class="btn-action btn-edit">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
-                                Edit
-                            </button>
-                            <button class="btn-action btn-remove">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
-                                </svg>
-                                Remove
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Connection 4: Google Calendar - Blue Mountains Cabin -->
-                    <div class="ical-connection">
-                        <div class="ical-platform-icon google">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <rect x="3" y="4" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                                <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/>
-                                <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2"/>
-                                <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="ical-connection-info">
-                            <div class="ical-connection-name">Google Cal - Blue Mountains Cabin</div>
-                            <div class="ical-connection-meta">
-                                <span class="ical-status active">
-                                    <span class="status-dot green"></span>
-                                    Active
-                                </span>
-                                <span class="ical-last-sync">Last synced: 1 hour ago</span>
-                            </div>
-                        </div>
-                        <div class="ical-connection-actions">
-                            <button class="btn-action btn-sync">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <path d="M20.49 15a9 9 0 01-17.02-2"></path>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0117.02 2"></path>
-                                </svg>
-                                Sync Now
-                            </button>
-                            <button class="btn-action btn-edit">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
-                                Edit
-                            </button>
-                            <button class="btn-action btn-remove">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
-                                </svg>
-                                Remove
-                            </button>
-                        </div>
+                    <div id="connections-list">
+                        <!-- Rendered dynamically by JS below -->
                     </div>
 
                 </div>
@@ -1141,71 +942,8 @@
                                 <th>Events Synced</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Today, 14:32</td>
-                                <td>Airbnb</td>
-                                <td>Grand Harbour Hotel</td>
-                                <td><span class="direction-badge import">&#8595; Import</span></td>
-                                <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
-                                <td><span class="events-count">3</span></td>
-                            </tr>
-                            <tr>
-                                <td>Today, 14:30</td>
-                                <td>Booking.com</td>
-                                <td>Grand Harbour Hotel</td>
-                                <td><span class="direction-badge import">&#8595; Import</span></td>
-                                <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
-                                <td><span class="events-count">1</span></td>
-                            </tr>
-                            <tr>
-                                <td>Today, 14:15</td>
-                                <td>Cascade Apt 3</td>
-                                <td>Grand Harbour Hotel</td>
-                                <td><span class="direction-badge export">&#8593; Export</span></td>
-                                <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
-                                <td><span class="events-count">7</span></td>
-                            </tr>
-                            <tr>
-                                <td>Today, 13:45</td>
-                                <td>Google Calendar</td>
-                                <td>Blue Mountains Cabin</td>
-                                <td><span class="direction-badge import">&#8595; Import</span></td>
-                                <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
-                                <td><span class="events-count">2</span></td>
-                            </tr>
-                            <tr>
-                                <td>Today, 12:32</td>
-                                <td>Airbnb</td>
-                                <td>Bondi Beach Apartment</td>
-                                <td><span class="direction-badge import">&#8595; Import</span></td>
-                                <td><span class="status-badge failed"><span class="status-dot red"></span> Failed</span></td>
-                                <td><span class="events-count">0</span></td>
-                            </tr>
-                            <tr>
-                                <td>Today, 12:00</td>
-                                <td>Cascade Apt 3</td>
-                                <td>Bondi Beach Apartment</td>
-                                <td><span class="direction-badge export">&#8593; Export</span></td>
-                                <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
-                                <td><span class="events-count">4</span></td>
-                            </tr>
-                            <tr>
-                                <td>Today, 11:30</td>
-                                <td>Booking.com</td>
-                                <td>Grand Harbour Hotel</td>
-                                <td><span class="direction-badge import">&#8595; Import</span></td>
-                                <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
-                                <td><span class="events-count">2</span></td>
-                            </tr>
-                            <tr>
-                                <td>Today, 10:45</td>
-                                <td>Airbnb</td>
-                                <td>Grand Harbour Hotel</td>
-                                <td><span class="direction-badge import">&#8595; Import</span></td>
-                                <td><span class="status-badge success"><span class="status-dot green"></span> Success</span></td>
-                                <td><span class="events-count">5</span></td>
-                            </tr>
+                        <tbody id="sync-log-body">
+                            <!-- Rendered dynamically by JS below -->
                         </tbody>
                     </table>
                 </div>
@@ -1215,29 +953,177 @@
     </main>
 
     <script>
+        /* ── iCal Sync page JS ── */
+
+        const PLATFORM_ICONS = {
+            airbnb: {
+                cls: 'airbnb',
+                svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4.4 5.4 3.2 8.2c-1.2 2.8-1 5.8.6 8 .8 1.2 2 2 3.2 2.4.6.2 1.2.2 1.8 0 .4-.2.8-.4 1.2-.8.4-.4.8-1 1.2-1.6.4.6.8 1.2 1.2 1.6.4.4.8.6 1.2.8.6.2 1.2.2 1.8 0 1.2-.4 2.4-1.2 3.2-2.4 1.6-2.2 1.8-5.2.6-8C18.6 5.4 16.4 2 12 2z"/></svg>'
+            },
+            booking_com: {
+                cls: 'booking',
+                svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h6v6H4V6zm0 8h6v4H4v-4zm8-8h6v4h-6V6zm0 6h6v6h-6v-6z"/></svg>'
+            },
+            google: {
+                cls: 'google',
+                svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>'
+            },
+            vrbo: {
+                cls: 'vrbo',
+                svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>'
+            }
+        };
+
+        function timeSince(isoStr) {
+            if (!isoStr) return 'Never';
+            const diff = Math.floor((Date.now() - new Date(isoStr)) / 60000);
+            if (diff < 1)  return 'Just now';
+            if (diff < 60) return diff + ' min ago';
+            return Math.floor(diff / 60) + ' hr ago';
+        }
+
+        const SYNC_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 01-17.02-2"></path><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0117.02 2"></path></svg>`;
+        const EDIT_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
+        const REMOVE_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path></svg>`;
+
+        function renderConnections() {
+            const list = window.CA3Data ? CA3Data.getIcal() : [];
+            const container = document.getElementById('connections-list');
+            if (!container) return;
+            if (list.length === 0) {
+                container.innerHTML = '<p style="color:#94a3b8;font-size:0.875rem;padding:20px 0;">No iCal connections yet. Add a feed above to get started.</p>';
+                return;
+            }
+            container.innerHTML = list.map(conn => {
+                const pi = PLATFORM_ICONS[conn.platform] || PLATFORM_ICONS.google;
+                const label = conn.label || conn.platform;
+                const isActive = conn.status === 'active';
+                return `
+                <div class="ical-connection" data-id="${conn.id}">
+                    <div class="ical-platform-icon ${pi.cls}">${pi.svg}</div>
+                    <div class="ical-connection-info">
+                        <div class="ical-connection-name">${label}</div>
+                        <div class="ical-connection-meta">
+                            <span class="ical-status ${isActive ? 'active' : 'error'}">
+                                <span class="status-dot ${isActive ? 'green' : 'red'}"></span>
+                                ${isActive ? 'Active' : 'Error'}
+                            </span>
+                            <span class="ical-last-sync">Last synced: ${timeSince(conn.lastSync)}</span>
+                            <span class="ical-last-sync">${conn.eventsImported || 0} events imported</span>
+                        </div>
+                    </div>
+                    <div class="ical-connection-actions">
+                        <button class="btn-action btn-sync" onclick="syncNow('${conn.id}')">${SYNC_ICON} Sync Now</button>
+                        <button class="btn-action btn-remove" onclick="removeConnection('${conn.id}')">${REMOVE_ICON} Remove</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function syncNow(id) {
+            if (!window.CA3Data) return;
+            CA3Data.saveIcal(CA3Data.getIcal().map(c =>
+                c.id === id ? { ...c, lastSync: new Date().toISOString() } : c
+            ));
+            renderConnections();
+            renderSyncLog();
+        }
+
+        function removeConnection(id) {
+            if (!confirm('Remove this iCal connection?')) return;
+            if (window.CA3Data) CA3Data.removeIcal(id);
+            renderConnections();
+        }
+
+        /* ── Add Feed ── */
+        document.querySelector('.btn-add-feed').addEventListener('click', function() {
+            const platform = document.getElementById('import-platform').value;
+            const url = document.getElementById('import-url').value.trim();
+            if (!platform || !url) {
+                alert('Please select a platform and enter an iCal URL.');
+                return;
+            }
+            const labels = { airbnb: 'Airbnb', booking_com: 'Booking.com', vrbo: 'VRBO', google: 'Google Calendar', other: 'Custom' };
+            const conn = {
+                id: window.CA3Data ? CA3Data.generateId('IC') : 'IC-' + Date.now(),
+                platform: platform,
+                label: (labels[platform] || platform) + ' \u2014 Cascade Apt 3',
+                url: url,
+                status: 'active',
+                lastSync: new Date().toISOString(),
+                eventsImported: 0,
+                frequency: '1hour',
+                exportUrl: 'https://cascadeapartment3.com.au/ical/export/cascade-apt3.ics'
+            };
+            if (window.CA3Data) CA3Data.addIcal(conn);
+            document.getElementById('import-platform').value = '';
+            document.getElementById('import-url').value = '';
+            renderConnections();
+            renderSyncLog();
+        });
+
+        /* ── Sync Log ── */
+        var syncLogEntries = [];
+
+        function renderSyncLog() {
+            const tbody = document.getElementById('sync-log-body');
+            if (!tbody) return;
+            if (window.CA3Data) {
+                const connections = CA3Data.getIcal();
+                syncLogEntries = connections.flatMap(c => [
+                    { time: c.lastSync, platform: c.label, direction: 'import', status: 'success', events: c.eventsImported || 0 },
+                    { time: c.lastSync ? new Date(new Date(c.lastSync).getTime() - 15*60000).toISOString() : null,
+                      platform: 'Cascade Apt 3', direction: 'export', status: 'success', events: 5 }
+                ]).filter(e => e.time).sort((a,b) => new Date(b.time) - new Date(a.time)).slice(0, 10);
+            }
+            if (syncLogEntries.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="color:#94a3b8;padding:20px;text-align:center;">No sync history yet.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = syncLogEntries.map(e => {
+                const t = new Date(e.time);
+                const today = new Date();
+                const timeStr = t.toDateString() === today.toDateString()
+                    ? 'Today, ' + t.toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'})
+                    : t.toLocaleDateString('en-AU', {day:'numeric', month:'short'}) + ', ' + t.toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'});
+                const dirBadge = e.direction === 'import'
+                    ? '<span class="direction-badge import">&#8595; Import</span>'
+                    : '<span class="direction-badge export">&#8593; Export</span>';
+                const statusBadge = e.status === 'success'
+                    ? '<span class="status-badge success"><span class="status-dot green"></span> Success</span>'
+                    : '<span class="status-badge failed"><span class="status-dot red"></span> Failed</span>';
+                return `<tr>
+                    <td>${timeStr}</td>
+                    <td>${e.platform}</td>
+                    <td>Cascade Apartment 3</td>
+                    <td>${dirBadge}</td>
+                    <td>${statusBadge}</td>
+                    <td><span class="events-count">${e.events}</span></td>
+                </tr>`;
+            }).join('');
+        }
+
+        /* ── Copy export URL ── */
         function copyExportUrl() {
             const urlEl = document.getElementById('export-url');
             const url = urlEl.textContent;
             navigator.clipboard.writeText(url).then(function() {
                 const btn = document.querySelector('.btn-copy');
-                const originalText = btn.innerHTML;
+                const orig = btn.innerHTML;
                 btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
                 btn.style.color = '#16a34a';
                 btn.style.borderColor = '#86efac';
-                setTimeout(function() {
-                    btn.innerHTML = originalText;
-                    btn.style.color = '';
-                    btn.style.borderColor = '';
-                }, 2000);
+                setTimeout(function() { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
             });
         }
 
-        // Update export URL when property changes
-        document.getElementById('export-property').addEventListener('change', function() {
-            var val = this.value;
-            document.getElementById('export-url').textContent = 'https://cascadeapartment3.com.au/ical/export/' + val + '.ics';
+        /* ── Init ── */
+        document.addEventListener('DOMContentLoaded', function() {
+            renderConnections();
+            renderSyncLog();
         });
     </script>
+    <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
 </body>

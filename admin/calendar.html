@@ -9,108 +9,361 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        /* ── Dynamic calendar overrides ─────────────────────────── */
+        .admin-calendar__grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .admin-calendar__day {
+            min-height: 88px;
+            border-right: 1px solid #eef0f4;
+            border-bottom: 1px solid #eef0f4;
+            padding: 6px 4px 4px;
+            vertical-align: top;
+            position: relative;
+            cursor: default;
+        }
+
+        .admin-calendar__day:hover { background: #f8f9fc; }
+        .admin-calendar__day--other-month { background: #fafbfd; opacity: 0.55; }
+        .admin-calendar__day--today .admin-calendar__day-number {
+            background: var(--color-primary, #0f2744);
+            color: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        .admin-calendar__day-number {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #374151;
+            display: inline-block;
+            margin-bottom: 4px;
+            min-width: 22px;
+            text-align: center;
+        }
+
+        /* Booking bar styles */
+        .cal-booking {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 2px 5px;
+            margin-bottom: 2px;
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .cal-booking--confirmed {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 3px solid #059669;
+        }
+        .cal-booking--pending {
+            background: #fef3c7;
+            color: #92400e;
+            border-left: 3px solid #d97706;
+        }
+        .cal-booking--airbnb {
+            background: #ffe4e6;
+            color: #9f1239;
+            border-left: 3px solid #ff5a5f;
+        }
+        .cal-booking--booking_com {
+            background: #dbeafe;
+            color: #1e3a5f;
+            border-left: 3px solid #003580;
+        }
+        .cal-booking--continues::after {
+            content: '→';
+            float: right;
+            opacity: 0.6;
+            margin-left: 2px;
+        }
+        .cal-booking--continued::before {
+            content: '←';
+            opacity: 0.6;
+            margin-right: 2px;
+        }
+        .cal-booking--middle {
+            border-left: none;
+            border-radius: 0;
+            border-top: 1px solid currentColor;
+            border-bottom: 1px solid currentColor;
+            opacity: 0.75;
+        }
+
+        /* Blocked day */
+        .cal-blocked {
+            display: block;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            margin-bottom: 2px;
+            background: #f3f4f6;
+            color: #6b7280;
+            border-left: 3px solid #9ca3af;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Legend */
+        .cal-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-top: 1px solid #eef0f4;
+            font-size: 0.78rem;
+        }
+        .cal-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #374151;
+        }
+        .cal-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        .cal-legend-dot--confirmed  { background: #059669; }
+        .cal-legend-dot--pending    { background: #d97706; }
+        .cal-legend-dot--airbnb     { background: #ff5a5f; }
+        .cal-legend-dot--booking    { background: #003580; }
+        .cal-legend-dot--blocked    { background: #9ca3af; }
+        .cal-legend-dot--available  { background: #fff; border: 1px solid #d1d5db; }
+
+        /* Modal */
+        .cal-modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .cal-modal-overlay.is-open { display: flex; }
+        .cal-modal {
+            background: #fff;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 460px;
+            margin: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .cal-modal__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .cal-modal__title { font-size: 1rem; font-weight: 700; color: #111827; }
+        .cal-modal__close {
+            background: none; border: none; cursor: pointer;
+            color: #6b7280; font-size: 1.4rem; line-height: 1;
+            padding: 2px 6px;
+        }
+        .cal-modal__body { padding: 20px 24px; }
+        .cal-modal__footer {
+            display: flex; gap: 10px; justify-content: flex-end;
+            padding: 16px 24px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* Detail modal */
+        .booking-detail-row {
+            display: flex;
+            gap: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.85rem;
+        }
+        .booking-detail-row:last-child { border-bottom: none; }
+        .booking-detail-label { color: #6b7280; min-width: 110px; flex-shrink: 0; }
+        .booking-detail-value { color: #111827; font-weight: 500; }
+
+        .source-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 99px;
+        }
+        .source-badge--direct   { background: #d1fae5; color: #065f46; }
+        .source-badge--airbnb   { background: #ffe4e6; color: #9f1239; }
+        .source-badge--booking_com { background: #dbeafe; color: #1e3a5f; }
+
+        .status-confirmed { color: #059669; font-weight: 600; }
+        .status-pending   { color: #d97706; font-weight: 600; }
+        .status-cancelled { color: #dc2626; font-weight: 600; }
+
+        /* Block dates form */
+        .block-form-group { margin-bottom: 16px; }
+        .block-form-group label {
+            display: block; font-size: 0.82rem; font-weight: 600;
+            color: #374151; margin-bottom: 6px;
+        }
+        .block-form-group input,
+        .block-form-group select,
+        .block-form-group textarea {
+            width: 100%; padding: 8px 12px;
+            border: 1px solid #d1d5db; border-radius: 6px;
+            font-size: 0.85rem; font-family: inherit; color: #111827;
+        }
+        .block-form-group input:focus,
+        .block-form-group select:focus {
+            outline: none; border-color: #0f2744;
+            box-shadow: 0 0 0 3px rgba(15,39,68,0.08);
+        }
+
+        /* Upcoming check-ins */
+        .checkin-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .checkin-card:last-child { border-bottom: none; }
+        .checkin-date-badge {
+            width: 50px;
+            flex-shrink: 0;
+            text-align: center;
+            background: #f0f4ff;
+            border-radius: 8px;
+            padding: 8px 4px;
+        }
+        .checkin-date-badge .day { font-size: 1.4rem; font-weight: 700; color: #0f2744; line-height: 1; }
+        .checkin-date-badge .mon { font-size: 0.7rem; font-weight: 600; color: #6b7280; text-transform: uppercase; }
+        .checkin-info { flex: 1; min-width: 0; }
+        .checkin-guest { font-weight: 600; font-size: 0.9rem; color: #111827; }
+        .checkin-meta { font-size: 0.78rem; color: #6b7280; margin-top: 2px; }
+
+        /* Occupied percent bar */
+        .occupancy-bar {
+            height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; margin-top: 4px;
+        }
+        .occupancy-bar__fill {
+            height: 100%; background: #059669; border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        /* Toolbar row */
+        .cal-toolbar {
+            display: flex; align-items: center; gap: 10px;
+            padding: 0 0 14px;
+            flex-wrap: wrap;
+        }
+        .cal-toolbar__month {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem; font-weight: 700;
+            color: #0f2744; min-width: 180px; text-align: center;
+        }
+        .admin-calendar__weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+    </style>
 </head>
 <body class="admin-body">
 
     <!-- Admin Sidebar -->
     <aside class="admin-sidebar">
         <div class="admin-sidebar__header">
-            <a href="dashboard.html" class="admin-sidebar__logo">
+            <a href="index.html" class="admin-sidebar__logo">
                 <span class="admin-sidebar__logo-text">Cascade Apt 3</span>
                 <span class="admin-sidebar__logo-badge">Admin</span>
             </a>
         </div>
-
         <nav class="admin-sidebar__nav">
-            <!-- MAIN Section -->
             <div class="admin-sidebar__section">
                 <span class="admin-sidebar__section-title">MAIN</span>
                 <ul class="admin-sidebar__menu">
                     <li class="admin-sidebar__menu-item">
-                        <a href="dashboard.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        <a href="index.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                             <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="admin-sidebar__menu-item">
-                        <a href="properties.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                            <span>Properties</span>
-                        </a>
-                    </li>
-                    <li class="admin-sidebar__menu-item">
                         <a href="bookings.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                             <span>Bookings</span>
                         </a>
                     </li>
                     <li class="admin-sidebar__menu-item">
                         <a href="calendar.html" class="admin-sidebar__menu-link admin-sidebar__menu-link--active">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__menu-item">
+                        <a href="guests.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Guests</span>
                         </a>
                     </li>
                 </ul>
             </div>
-
-            <!-- MANAGEMENT Section -->
             <div class="admin-sidebar__section">
                 <span class="admin-sidebar__section-title">MANAGEMENT</span>
                 <ul class="admin-sidebar__menu">
                     <li class="admin-sidebar__menu-item">
                         <a href="rates.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                             <span>Rates &amp; Pricing</span>
                         </a>
                     </li>
                     <li class="admin-sidebar__menu-item">
-                        <a href="guests.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            <span>Guests</span>
-                        </a>
-                    </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="reviews.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            <span>Reviews</span>
+                        <a href="reports.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
                         </a>
                     </li>
                 </ul>
             </div>
-
-            <!-- INTEGRATIONS Section -->
             <div class="admin-sidebar__section">
                 <span class="admin-sidebar__section-title">INTEGRATIONS</span>
                 <ul class="admin-sidebar__menu">
                     <li class="admin-sidebar__menu-item">
                         <a href="ical-sync.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                             <span>iCal Sync</span>
                         </a>
                     </li>
                     <li class="admin-sidebar__menu-item">
-                        <a href="stripe-connect.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                            <span>Stripe Connect</span>
+                        <a href="payments.html" class="admin-sidebar__menu-link">
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Payments</span>
                         </a>
                     </li>
                 </ul>
             </div>
-
-            <!-- SYSTEM Section -->
             <div class="admin-sidebar__section">
                 <span class="admin-sidebar__section-title">SYSTEM</span>
                 <ul class="admin-sidebar__menu">
                     <li class="admin-sidebar__menu-item">
                         <a href="settings.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                             <span>Settings</span>
-                        </a>
-                    </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="reports.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                            <span>Reports</span>
                         </a>
                     </li>
                 </ul>
@@ -120,17 +373,15 @@
 
     <!-- Main Content -->
     <main class="admin-main">
-
-        <!-- Topbar -->
         <header class="admin-topbar">
             <div class="admin-topbar__breadcrumb">
-                <a href="dashboard.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
+                <a href="index.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
                 <span class="admin-topbar__breadcrumb-separator">&rsaquo;</span>
                 <span class="admin-topbar__breadcrumb-current">Calendar</span>
             </div>
             <div class="admin-topbar__actions">
                 <button class="admin-topbar__notification-btn" aria-label="Notifications">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 </button>
                 <div class="admin-topbar__user">
                     <div class="admin-topbar__user-avatar">AD</div>
@@ -139,324 +390,553 @@
             </div>
         </header>
 
-        <!-- Page Content -->
         <div class="admin-content">
-
             <!-- Page Header -->
             <div class="admin-page-header">
                 <div class="admin-page-header__info">
                     <h1 class="admin-page-header__title">Availability Calendar</h1>
-                    <p class="admin-page-header__description">Manage availability across all properties</p>
+                    <p class="admin-page-header__description">Cascade Apartment 3 — Mt Baw Baw</p>
                 </div>
                 <div class="admin-page-header__actions">
-                    <div class="admin-select-wrapper">
-                        <select class="admin-select" id="propertySelector">
-                            <option value="all">All Properties</option>
-                            <option value="oceanfront">Oceanfront Villa Deluxe</option>
-                            <option value="mountain">Mountain Retreat Cabin</option>
-                            <option value="downtown">Downtown Luxury Apartment</option>
-                            <option value="seaside">Seaside Cottage</option>
-                            <option value="lakeside">Lakeside Bungalow</option>
-                        </select>
-                    </div>
-                    <div class="admin-btn-group">
-                        <button class="admin-btn admin-btn--outline admin-btn--sm">Today</button>
-                        <button class="admin-btn admin-btn--primary admin-btn--sm">Month</button>
-                        <button class="admin-btn admin-btn--outline admin-btn--sm">Week</button>
-                    </div>
+                    <button class="admin-btn admin-btn--outline admin-btn--sm" id="btnBlockDates">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Block Dates
+                    </button>
+                    <a href="bookings.html" class="admin-btn admin-btn--primary admin-btn--sm">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Booking
+                    </a>
                 </div>
             </div>
 
-            <!-- Calendar -->
-            <div class="admin-card">
-                <div class="admin-calendar">
-
-                    <!-- Calendar Header -->
-                    <div class="admin-calendar__header">
-                        <button class="admin-calendar__nav-btn" aria-label="Previous month">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+            <!-- Calendar Card -->
+            <div class="admin-card" style="padding: 0; overflow: hidden;">
+                <!-- Toolbar -->
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #eef0f4; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="admin-btn admin-btn--outline admin-btn--sm" id="btnPrevMonth" aria-label="Previous month">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
                         </button>
-                        <h2 class="admin-calendar__month-year">March 2026</h2>
-                        <button class="admin-calendar__nav-btn" aria-label="Next month">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9 18 15 12 9 6"/></svg>
+                        <h2 id="calMonthTitle" style="font-size:1.05rem; font-weight:700; color:#0f2744; min-width:160px; text-align:center; margin:0;"></h2>
+                        <button class="admin-btn admin-btn--outline admin-btn--sm" id="btnNextMonth" aria-label="Next month">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
+                        <button class="admin-btn admin-btn--outline admin-btn--sm" id="btnToday">Today</button>
                     </div>
+                    <div id="calOccupancy" style="font-size:0.82rem; color:#6b7280;"></div>
+                </div>
 
-                    <!-- Weekday Headers -->
-                    <div class="admin-calendar__weekdays">
-                        <div class="admin-calendar__weekday">Mon</div>
-                        <div class="admin-calendar__weekday">Tue</div>
-                        <div class="admin-calendar__weekday">Wed</div>
-                        <div class="admin-calendar__weekday">Thu</div>
-                        <div class="admin-calendar__weekday">Fri</div>
-                        <div class="admin-calendar__weekday">Sat</div>
-                        <div class="admin-calendar__weekday">Sun</div>
-                    </div>
+                <!-- Weekday headers -->
+                <div class="admin-calendar__weekdays" style="border-bottom:1px solid #eef0f4;">
+                    <div class="admin-calendar__weekday">Mon</div>
+                    <div class="admin-calendar__weekday">Tue</div>
+                    <div class="admin-calendar__weekday">Wed</div>
+                    <div class="admin-calendar__weekday">Thu</div>
+                    <div class="admin-calendar__weekday">Fri</div>
+                    <div class="admin-calendar__weekday" style="color:#c9a84c;">Sat</div>
+                    <div class="admin-calendar__weekday" style="color:#c9a84c;">Sun</div>
+                </div>
 
-                    <!-- Calendar Grid (March 2026 starts on Sunday, so Mon Feb 23 is first cell) -->
-                    <div class="admin-calendar__grid">
-                        <!-- Week 1: Feb 23 - Mar 1 -->
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">23</span>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">24</span>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">25</span>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">26</span>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">27</span>
-                            <div class="day-booking day-booking--pending">M. Torres</div>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">28</span>
-                            <div class="day-booking day-booking--pending">M. Torres</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">1</span>
-                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
-                        </div>
+                <!-- Calendar grid (rendered by JS) -->
+                <div class="admin-calendar__grid" id="calGrid"></div>
 
-                        <!-- Week 2: Mar 2 - Mar 8 -->
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">2</span>
-                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">3</span>
-                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">4</span>
-                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">5</span>
-                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">6</span>
-                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">7</span>
-                            <div class="day-booking day-booking--confirmed">J. Davidson</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">8</span>
-                            <div class="day-booking day-booking--pending">D. Park</div>
-                        </div>
-
-                        <!-- Week 3: Mar 9 - Mar 15 -->
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">9</span>
-                            <div class="day-booking day-booking--pending">D. Park</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">10</span>
-                            <div class="day-booking day-booking--pending">D. Park</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">11</span>
-                            <div class="day-booking day-booking--blocked">Blocked</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">12</span>
-                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">13</span>
-                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">14</span>
-                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">15</span>
-                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
-                        </div>
-
-                        <!-- Week 4: Mar 16 - Mar 22 -->
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">16</span>
-                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">17</span>
-                            <div class="day-booking day-booking--confirmed">S. Mitchell</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">18</span>
-                            <div class="day-booking day-booking--blocked">Blocked</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">19</span>
-                            <div class="day-booking day-booking--blocked">Blocked</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">20</span>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">21</span>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">22</span>
-                        </div>
-
-                        <!-- Week 5: Mar 23 - Mar 29 -->
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">23</span>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">24</span>
-                            <div class="day-booking day-booking--pending">M. Torres</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">25</span>
-                            <div class="day-booking day-booking--pending">M. Torres</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">26</span>
-                            <div class="day-booking day-booking--pending">M. Torres</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">27</span>
-                            <div class="day-booking day-booking--pending">M. Torres</div>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">28</span>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">29</span>
-                        </div>
-
-                        <!-- Week 6: Mar 30 - Apr 5 -->
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">30</span>
-                        </div>
-                        <div class="admin-calendar__day">
-                            <span class="admin-calendar__day-number">31</span>
-                            <div class="day-booking day-booking--blocked">Blocked</div>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">1</span>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">2</span>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">3</span>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">4</span>
-                        </div>
-                        <div class="admin-calendar__day admin-calendar__day--other-month">
-                            <span class="admin-calendar__day-number">5</span>
-                        </div>
-                    </div>
+                <!-- Legend -->
+                <div class="cal-legend">
+                    <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--available"></span>Available</div>
+                    <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--confirmed"></span>Confirmed</div>
+                    <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--pending"></span>Pending</div>
+                    <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--airbnb"></span>Airbnb import</div>
+                    <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--booking"></span>Booking.com import</div>
+                    <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--blocked"></span>Blocked</div>
                 </div>
             </div>
 
-            <!-- Calendar Legend -->
-            <div class="admin-calendar-legend">
-                <div class="admin-calendar-legend__item">
-                    <span class="admin-calendar-legend__color admin-calendar-legend__color--available"></span>
-                    <span class="admin-calendar-legend__label">Available</span>
+            <!-- Stats row -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin:20px 0 0;">
+                <div class="admin-card" style="padding:16px;">
+                    <div style="font-size:0.72rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">This Month</div>
+                    <div id="statBooked" style="font-size:1.6rem; font-weight:700; color:#0f2744; margin:4px 0 2px;"></div>
+                    <div style="font-size:0.78rem; color:#6b7280;" id="statBookedLabel">nights booked</div>
                 </div>
-                <div class="admin-calendar-legend__item">
-                    <span class="admin-calendar-legend__color admin-calendar-legend__color--booked"></span>
-                    <span class="admin-calendar-legend__label">Booked</span>
+                <div class="admin-card" style="padding:16px;">
+                    <div style="font-size:0.72rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">Occupancy</div>
+                    <div id="statOcc" style="font-size:1.6rem; font-weight:700; color:#059669; margin:4px 0 2px;"></div>
+                    <div class="occupancy-bar"><div class="occupancy-bar__fill" id="statOccBar"></div></div>
                 </div>
-                <div class="admin-calendar-legend__item">
-                    <span class="admin-calendar-legend__color admin-calendar-legend__color--pending"></span>
-                    <span class="admin-calendar-legend__label">Pending</span>
+                <div class="admin-card" style="padding:16px;">
+                    <div style="font-size:0.72rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">Confirmed</div>
+                    <div id="statConfirmed" style="font-size:1.6rem; font-weight:700; color:#0f2744; margin:4px 0 2px;"></div>
+                    <div style="font-size:0.78rem; color:#6b7280;">bookings this month</div>
                 </div>
-                <div class="admin-calendar-legend__item">
-                    <span class="admin-calendar-legend__color admin-calendar-legend__color--blocked"></span>
-                    <span class="admin-calendar-legend__label">Blocked</span>
+                <div class="admin-card" style="padding:16px;">
+                    <div style="font-size:0.72rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">Revenue</div>
+                    <div id="statRevenue" style="font-size:1.6rem; font-weight:700; color:#0f2744; margin:4px 0 2px;"></div>
+                    <div style="font-size:0.78rem; color:#6b7280;">this month (AUD)</div>
                 </div>
             </div>
 
-            <!-- Upcoming Check-ins -->
-            <div class="admin-card">
+            <!-- Upcoming check-ins -->
+            <div class="admin-card" style="margin-top:0;">
                 <div class="admin-card__header">
                     <h2 class="admin-card__title">Upcoming Check-ins</h2>
+                    <a href="bookings.html" class="admin-btn admin-btn--outline admin-btn--sm">View All Bookings</a>
                 </div>
-                <div class="admin-card__body">
-                    <div class="admin-checkin-list">
-                        <div class="admin-checkin-item">
-                            <div class="admin-checkin-item__date">
-                                <span class="admin-checkin-item__date-day">01</span>
-                                <span class="admin-checkin-item__date-month">Mar</span>
-                            </div>
-                            <div class="admin-checkin-item__details">
-                                <span class="admin-checkin-item__guest">James Davidson</span>
-                                <span class="admin-checkin-item__property">Oceanfront Villa Deluxe</span>
-                            </div>
-                            <div class="admin-checkin-item__stay">
-                                <span class="admin-checkin-item__nights">6 nights</span>
-                                <span class="admin-checkin-item__checkout">Check-out: Mar 7</span>
-                            </div>
-                            <div class="admin-checkin-item__status">
-                                <span class="admin-badge admin-badge--confirmed">Confirmed</span>
-                            </div>
-                            <div class="admin-checkin-item__actions">
-                                <button class="admin-btn admin-btn--outline admin-btn--sm">View Details</button>
-                            </div>
-                        </div>
-                        <div class="admin-checkin-item">
-                            <div class="admin-checkin-item__date">
-                                <span class="admin-checkin-item__date-day">05</span>
-                                <span class="admin-checkin-item__date-month">Mar</span>
-                            </div>
-                            <div class="admin-checkin-item__details">
-                                <span class="admin-checkin-item__guest">Robert Chen</span>
-                                <span class="admin-checkin-item__property">Downtown Luxury Apartment</span>
-                            </div>
-                            <div class="admin-checkin-item__stay">
-                                <span class="admin-checkin-item__nights">5 nights</span>
-                                <span class="admin-checkin-item__checkout">Check-out: Mar 10</span>
-                            </div>
-                            <div class="admin-checkin-item__status">
-                                <span class="admin-badge admin-badge--confirmed">Confirmed</span>
-                            </div>
-                            <div class="admin-checkin-item__actions">
-                                <button class="admin-btn admin-btn--outline admin-btn--sm">View Details</button>
-                            </div>
-                        </div>
-                        <div class="admin-checkin-item">
-                            <div class="admin-checkin-item__date">
-                                <span class="admin-checkin-item__date-day">08</span>
-                                <span class="admin-checkin-item__date-month">Mar</span>
-                            </div>
-                            <div class="admin-checkin-item__details">
-                                <span class="admin-checkin-item__guest">David Park</span>
-                                <span class="admin-checkin-item__property">Mountain Retreat Cabin</span>
-                            </div>
-                            <div class="admin-checkin-item__stay">
-                                <span class="admin-checkin-item__nights">3 nights</span>
-                                <span class="admin-checkin-item__checkout">Check-out: Mar 11</span>
-                            </div>
-                            <div class="admin-checkin-item__status">
-                                <span class="admin-badge admin-badge--pending">Pending</span>
-                            </div>
-                            <div class="admin-checkin-item__actions">
-                                <button class="admin-btn admin-btn--outline admin-btn--sm">View Details</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="admin-card__body" id="upcomingCheckins">
+                    <!-- rendered by JS -->
                 </div>
             </div>
-
         </div>
     </main>
 
+    <!-- Booking Detail Modal -->
+    <div class="cal-modal-overlay" id="modalBooking">
+        <div class="cal-modal">
+            <div class="cal-modal__header">
+                <h3 class="cal-modal__title" id="modalBookingTitle">Booking Details</h3>
+                <button class="cal-modal__close" id="modalBookingClose">&times;</button>
+            </div>
+            <div class="cal-modal__body" id="modalBookingBody"></div>
+            <div class="cal-modal__footer">
+                <button class="admin-btn admin-btn--outline admin-btn--sm" id="modalBookingClose2">Close</button>
+                <button class="admin-btn admin-btn--danger admin-btn--sm" id="modalBookingCancel" style="background:#fee2e2;color:#dc2626;border-color:#fca5a5;">Cancel Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Block Dates Modal -->
+    <div class="cal-modal-overlay" id="modalBlock">
+        <div class="cal-modal">
+            <div class="cal-modal__header">
+                <h3 class="cal-modal__title">Block Dates</h3>
+                <button class="cal-modal__close" id="modalBlockClose">&times;</button>
+            </div>
+            <div class="cal-modal__body">
+                <div class="block-form-group">
+                    <label for="blockStart">Start Date</label>
+                    <input type="date" id="blockStart">
+                </div>
+                <div class="block-form-group">
+                    <label for="blockEnd">End Date</label>
+                    <input type="date" id="blockEnd">
+                </div>
+                <div class="block-form-group">
+                    <label for="blockReason">Reason</label>
+                    <select id="blockReason">
+                        <option value="Owner use">Owner use</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Renovations">Renovations</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <p style="font-size:0.8rem; color:#6b7280; margin-top:8px;">
+                    Blocked dates will show as unavailable to guests and will be exported in iCal feeds to Airbnb and Booking.com.
+                </p>
+            </div>
+            <div class="cal-modal__footer">
+                <button class="admin-btn admin-btn--outline admin-btn--sm" id="modalBlockCancel">Cancel</button>
+                <button class="admin-btn admin-btn--primary admin-btn--sm" id="modalBlockSave">Block Dates</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blocked Entry Detail Modal -->
+    <div class="cal-modal-overlay" id="modalBlockDetail">
+        <div class="cal-modal">
+            <div class="cal-modal__header">
+                <h3 class="cal-modal__title">Blocked Period</h3>
+                <button class="cal-modal__close" id="modalBlockDetailClose">&times;</button>
+            </div>
+            <div class="cal-modal__body" id="modalBlockDetailBody"></div>
+            <div class="cal-modal__footer">
+                <button class="admin-btn admin-btn--outline admin-btn--sm" id="modalBlockDetailCancel">Close</button>
+                <button class="admin-btn admin-btn--sm" id="modalBlockDetailRemove" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;">Remove Block</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
+    <script>
+    (function() {
+        'use strict';
+
+        const MONTHS = ['January','February','March','April','May','June',
+                        'July','August','September','October','November','December'];
+        const SHORT_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+        let currentYear  = new Date().getFullYear();
+        let currentMonth = new Date().getMonth(); // 0-indexed
+
+        /* ── Helpers ─────────────────────────────────────── */
+        function dateStr(y, m, d) {
+            return y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+        }
+
+        function parseDate(str) { return new Date(str + 'T00:00:00'); }
+
+        function fmtDate(str) {
+            const d = parseDate(str);
+            return d.toLocaleDateString('en-AU', { day:'numeric', month:'short', year:'numeric' });
+        }
+
+        function fmtMoney(n) {
+            return '$' + Number(n).toLocaleString('en-AU');
+        }
+
+        function sourceBadge(source) {
+            const map = {
+                direct:      ['direct', 'Direct'],
+                airbnb:      ['airbnb', 'Airbnb'],
+                booking_com: ['booking_com', 'Booking.com'],
+            };
+            const [cls, label] = map[source] || ['direct', source];
+            return `<span class="source-badge source-badge--${cls}">${label}</span>`;
+        }
+
+        function statusText(s) {
+            const cls = 'status-' + s;
+            return `<span class="${cls}">${s.charAt(0).toUpperCase()+s.slice(1)}</span>`;
+        }
+
+        /* ── Calendar rendering ──────────────────────────── */
+        function render() {
+            const grid = document.getElementById('calGrid');
+            const title = document.getElementById('calMonthTitle');
+            const bookings = window.CA3Data.getBookings();
+            const blocked  = window.CA3Data.getBlocked();
+            const today    = new Date(); today.setHours(0,0,0,0);
+
+            title.textContent = MONTHS[currentMonth] + ' ' + currentYear;
+
+            // First day of month (0=Sun, shift to Mon=0)
+            const firstDay  = new Date(currentYear, currentMonth, 1);
+            const lastDay   = new Date(currentYear, currentMonth + 1, 0);
+            const startDow  = (firstDay.getDay() + 6) % 7; // Mon = 0
+            const daysInMon = lastDay.getDate();
+
+            let html = '';
+            let cell = 0;
+
+            // Leading cells from previous month
+            const prevLast = new Date(currentYear, currentMonth, 0).getDate();
+            for (let i = startDow - 1; i >= 0; i--) {
+                const d = prevLast - i;
+                const ds = dateStr(currentYear, currentMonth - 1, d);
+                html += renderDay(ds, d, true, bookings, blocked, today);
+                cell++;
+            }
+
+            // Days of current month
+            for (let d = 1; d <= daysInMon; d++) {
+                const ds = dateStr(currentYear, currentMonth, d);
+                html += renderDay(ds, d, false, bookings, blocked, today);
+                cell++;
+            }
+
+            // Trailing cells
+            let trailing = 1;
+            while (cell % 7 !== 0) {
+                const ds = dateStr(currentYear, currentMonth + 1, trailing);
+                html += renderDay(ds, trailing, true, bookings, blocked, today);
+                cell++; trailing++;
+            }
+
+            grid.innerHTML = html;
+            attachGridEvents(grid, bookings, blocked);
+            renderStats(bookings, blocked);
+            renderUpcoming(bookings);
+        }
+
+        function renderDay(ds, dayNum, otherMonth, bookings, blocked, today) {
+            const d = parseDate(ds);
+            const isToday = d.getTime() === today.getTime();
+            let cls = 'admin-calendar__day';
+            if (otherMonth) cls += ' admin-calendar__day--other-month';
+            if (isToday)    cls += ' admin-calendar__day--today';
+
+            // Collect booking bars for this day
+            let bars = '';
+
+            // Check blocked
+            const block = blocked.find(bl =>
+                d >= parseDate(bl.startDate) && d <= parseDate(bl.endDate)
+            );
+            if (block) {
+                const isStart = ds === block.startDate;
+                const label   = isStart ? '🔒 ' + block.reason : '';
+                bars += `<span class="cal-blocked" data-block-id="${block.id}">${label || '&nbsp;'}</span>`;
+            }
+
+            // Check bookings
+            bookings.forEach(bk => {
+                if (bk.status === 'cancelled') return;
+                const ci = parseDate(bk.checkIn), co = parseDate(bk.checkOut);
+                if (d < ci || d >= co) return;
+
+                const isStart  = ds === bk.checkIn;
+                const isEnd    = new Date(d.getTime() + 86400000).toISOString().slice(0,10) === bk.checkOut;
+                const continues = !isEnd;
+                const continued = !isStart;
+
+                let barCls = 'cal-booking';
+                if (bk.source === 'airbnb')      barCls += ' cal-booking--airbnb';
+                else if (bk.source === 'booking_com') barCls += ' cal-booking--booking_com';
+                else if (bk.status === 'pending') barCls += ' cal-booking--pending';
+                else                             barCls += ' cal-booking--confirmed';
+
+                if (continued && continues) barCls += ' cal-booking--middle';
+                else if (continues) barCls += ' cal-booking--continues';
+                else if (continued) barCls += ' cal-booking--continued';
+
+                const label = isStart
+                    ? bk.guestName.split(' ').map((p,i) => i === 0 ? p : p[0]+'.').join(' ')
+                    : '&nbsp;';
+
+                bars += `<span class="${barCls}" data-booking-id="${bk.id}">${label}</span>`;
+            });
+
+            return `<div class="${cls}" data-date="${ds}">
+                <span class="admin-calendar__day-number">${dayNum}</span>
+                ${bars}
+            </div>`;
+        }
+
+        function attachGridEvents(grid, bookings, blocked) {
+            grid.addEventListener('click', function(e) {
+                const bar = e.target.closest('.cal-booking');
+                const blk = e.target.closest('.cal-blocked');
+
+                if (bar) {
+                    const id = bar.dataset.bookingId;
+                    const bk = bookings.find(b => b.id === id);
+                    if (bk) openBookingModal(bk);
+                } else if (blk) {
+                    const id = blk.dataset.blockId;
+                    const bl = blocked.find(b => b.id === id);
+                    if (bl) openBlockDetailModal(bl);
+                }
+            });
+        }
+
+        /* ── Stats ───────────────────────────────────────── */
+        function renderStats(bookings, blocked) {
+            const daysInMon = new Date(currentYear, currentMonth + 1, 0).getDate();
+            let bookedNights = 0, confirmed = 0, revenue = 0;
+
+            bookings.forEach(bk => {
+                if (bk.status === 'cancelled') return;
+                const ci = parseDate(bk.checkIn), co = parseDate(bk.checkOut);
+                // Count nights overlapping this month
+                let d = new Date(Math.max(ci, new Date(currentYear, currentMonth, 1)));
+                const end = new Date(Math.min(co, new Date(currentYear, currentMonth + 1, 1)));
+                while (d < end) { bookedNights++; d.setDate(d.getDate() + 1); }
+
+                // Count if booking is this month
+                const startOfMonth = new Date(currentYear, currentMonth, 1);
+                const endOfMonth   = new Date(currentYear, currentMonth + 1, 0);
+                if (ci <= endOfMonth && co >= startOfMonth) {
+                    if (bk.status === 'confirmed') { confirmed++; revenue += bk.total || 0; }
+                }
+            });
+
+            const occ = Math.round((bookedNights / daysInMon) * 100);
+            document.getElementById('statBooked').textContent = bookedNights;
+            document.getElementById('statOcc').textContent = occ + '%';
+            document.getElementById('statOccBar').style.width = occ + '%';
+            document.getElementById('statConfirmed').textContent = confirmed;
+            document.getElementById('statRevenue').textContent = fmtMoney(revenue);
+        }
+
+        /* ── Upcoming check-ins ──────────────────────────── */
+        function renderUpcoming(bookings) {
+            const now = new Date(); now.setHours(0,0,0,0);
+            const soon = bookings
+                .filter(b => b.status !== 'cancelled' && parseDate(b.checkIn) >= now)
+                .sort((a,b) => a.checkIn.localeCompare(b.checkIn))
+                .slice(0, 5);
+
+            const container = document.getElementById('upcomingCheckins');
+            if (!soon.length) {
+                container.innerHTML = '<p style="color:#6b7280; font-size:0.85rem; padding:8px 0;">No upcoming check-ins.</p>';
+                return;
+            }
+
+            container.innerHTML = soon.map(bk => {
+                const ci = parseDate(bk.checkIn);
+                const co = parseDate(bk.checkOut);
+                const nights = bk.nights || Math.round((co - ci) / 86400000);
+                const coFmt = co.toLocaleDateString('en-AU', { day:'numeric', month:'short' });
+                return `<div class="checkin-card">
+                    <div class="checkin-date-badge">
+                        <div class="day">${ci.getDate()}</div>
+                        <div class="mon">${SHORT_MONTHS[ci.getMonth()]}</div>
+                    </div>
+                    <div class="checkin-info">
+                        <div class="checkin-guest">${bk.guestName}</div>
+                        <div class="checkin-meta">${nights} night${nights !== 1 ? 's' : ''} · Check-out ${coFmt} · ${bk.guests} guest${bk.guests !== 1 ? 's' : ''}</div>
+                    </div>
+                    <div style="flex-shrink:0;">${sourceBadge(bk.source)}</div>
+                    <span class="admin-badge admin-badge--${bk.status === 'confirmed' ? 'confirmed' : 'pending'}">${bk.status}</span>
+                    <button class="admin-btn admin-btn--outline admin-btn--sm" onclick="openBookingById('${bk.id}')">Details</button>
+                </div>`;
+            }).join('');
+        }
+
+        /* ── Booking Modal ───────────────────────────────── */
+        function openBookingModal(bk) {
+            const modal = document.getElementById('modalBooking');
+            document.getElementById('modalBookingTitle').textContent = bk.guestName;
+            const ci = parseDate(bk.checkIn), co = parseDate(bk.checkOut);
+            const nights = bk.nights || Math.round((co - ci) / 86400000);
+
+            document.getElementById('modalBookingBody').innerHTML = `
+                <div class="booking-detail-row"><span class="booking-detail-label">Reference</span><span class="booking-detail-value">${bk.ref || bk.id}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Status</span><span class="booking-detail-value">${statusText(bk.status)}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Source</span><span class="booking-detail-value">${sourceBadge(bk.source)}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Check-in</span><span class="booking-detail-value">${fmtDate(bk.checkIn)}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Check-out</span><span class="booking-detail-value">${fmtDate(bk.checkOut)}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Duration</span><span class="booking-detail-value">${nights} night${nights !== 1 ? 's' : ''}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Guests</span><span class="booking-detail-value">${bk.guests}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Email</span><span class="booking-detail-value">${bk.guestEmail || '—'}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Phone</span><span class="booking-detail-value">${bk.guestPhone || '—'}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Total</span><span class="booking-detail-value">${fmtMoney(bk.total)}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Paid</span><span class="booking-detail-value">${fmtMoney(bk.paid || 0)}</span></div>
+                ${bk.notes ? `<div class="booking-detail-row"><span class="booking-detail-label">Notes</span><span class="booking-detail-value">${bk.notes}</span></div>` : ''}
+            `;
+
+            modal.dataset.bookingId = bk.id;
+            modal.classList.add('is-open');
+        }
+
+        window.openBookingById = function(id) {
+            const bk = window.CA3Data.getBookings().find(b => b.id === id);
+            if (bk) openBookingModal(bk);
+        };
+
+        /* ── Block Dates Modal ───────────────────────────── */
+        function openBlockDetailModal(bl) {
+            const modal = document.getElementById('modalBlockDetail');
+            document.getElementById('modalBlockDetailBody').innerHTML = `
+                <div class="booking-detail-row"><span class="booking-detail-label">Start Date</span><span class="booking-detail-value">${fmtDate(bl.startDate)}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">End Date</span><span class="booking-detail-value">${fmtDate(bl.endDate)}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Reason</span><span class="booking-detail-value">${bl.reason}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Source</span><span class="booking-detail-value">${bl.source}</span></div>
+                <p style="font-size:0.8rem; color:#6b7280; margin-top:12px;">Removing this block will make these dates available again for booking.</p>
+            `;
+            modal.dataset.blockId = bl.id;
+            modal.classList.add('is-open');
+        }
+
+        /* ── Event wiring ────────────────────────────────── */
+        document.getElementById('btnPrevMonth').addEventListener('click', function() {
+            currentMonth--;
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            render();
+        });
+
+        document.getElementById('btnNextMonth').addEventListener('click', function() {
+            currentMonth++;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            render();
+        });
+
+        document.getElementById('btnToday').addEventListener('click', function() {
+            currentYear  = new Date().getFullYear();
+            currentMonth = new Date().getMonth();
+            render();
+        });
+
+        // Booking modal
+        ['modalBookingClose','modalBookingClose2'].forEach(id => {
+            document.getElementById(id).addEventListener('click', function() {
+                document.getElementById('modalBooking').classList.remove('is-open');
+            });
+        });
+
+        document.getElementById('modalBookingCancel').addEventListener('click', function() {
+            const id = document.getElementById('modalBooking').dataset.bookingId;
+            if (!id) return;
+            if (!confirm('Are you sure you want to cancel this booking? This cannot be undone.')) return;
+            window.CA3Data.updateBooking(id, { status: 'cancelled' });
+            document.getElementById('modalBooking').classList.remove('is-open');
+            render();
+            if (window.CascadeApp && window.CascadeApp.showToast) {
+                window.CascadeApp.showToast('Booking cancelled', 'warning');
+            }
+        });
+
+        // Block dates modal
+        document.getElementById('btnBlockDates').addEventListener('click', function() {
+            const today = new Date().toISOString().slice(0,10);
+            document.getElementById('blockStart').value = today;
+            document.getElementById('blockEnd').value = today;
+            document.getElementById('modalBlock').classList.add('is-open');
+        });
+
+        ['modalBlockClose','modalBlockCancel'].forEach(id => {
+            document.getElementById(id).addEventListener('click', function() {
+                document.getElementById('modalBlock').classList.remove('is-open');
+            });
+        });
+
+        document.getElementById('modalBlockSave').addEventListener('click', function() {
+            const start = document.getElementById('blockStart').value;
+            const end   = document.getElementById('blockEnd').value;
+            const reason = document.getElementById('blockReason').value;
+            if (!start || !end) { alert('Please select both start and end dates.'); return; }
+            if (end < start)   { alert('End date must be on or after start date.'); return; }
+
+            window.CA3Data.addBlocked({
+                id: window.CA3Data.generateId('BL'),
+                startDate: start, endDate: end,
+                reason: reason, source: 'manual'
+            });
+            document.getElementById('modalBlock').classList.remove('is-open');
+            render();
+            if (window.CascadeApp && window.CascadeApp.showToast) {
+                window.CascadeApp.showToast('Dates blocked successfully', 'success');
+            }
+        });
+
+        // Block detail modal
+        ['modalBlockDetailClose','modalBlockDetailCancel'].forEach(id => {
+            document.getElementById(id).addEventListener('click', function() {
+                document.getElementById('modalBlockDetail').classList.remove('is-open');
+            });
+        });
+
+        document.getElementById('modalBlockDetailRemove').addEventListener('click', function() {
+            const id = document.getElementById('modalBlockDetail').dataset.blockId;
+            if (!id) return;
+            window.CA3Data.deleteBlocked(id);
+            document.getElementById('modalBlockDetail').classList.remove('is-open');
+            render();
+            if (window.CascadeApp && window.CascadeApp.showToast) {
+                window.CascadeApp.showToast('Block removed', 'info');
+            }
+        });
+
+        // Close modals on overlay click
+        ['modalBooking','modalBlock','modalBlockDetail'].forEach(id => {
+            document.getElementById(id).addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('is-open');
+            });
+        });
+
+        // Keyboard close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                ['modalBooking','modalBlock','modalBlockDetail'].forEach(id => {
+                    document.getElementById(id).classList.remove('is-open');
+                });
+            }
+        });
+
+        // Initial render
+        render();
+
+    })();
+    </script>
 </body>
 </html>

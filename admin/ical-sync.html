@@ -10,160 +10,6 @@
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
     <style>
-        /* ========================================
-           ADMIN LAYOUT
-           ======================================== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f1f5f9;
-            color: #1e293b;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ---- Sidebar ---- */
-        .admin-sidebar {
-            width: 260px;
-            background: #0f172a;
-            color: #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 100;
-            overflow-y: auto;
-        }
-
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 24px 20px;
-            border-bottom: 1px solid #1e293b;
-        }
-
-        .sidebar-logo span.logo-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.02em;
-        }
-
-        .sidebar-logo .admin-badge {
-            background: #6366f1;
-            color: #fff;
-            font-size: 0.625rem;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 16px 0;
-        }
-
-        .nav-section-label {
-            font-size: 0.675rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #64748b;
-            padding: 16px 20px 8px;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 20px;
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.15s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .nav-link:hover {
-            color: #e2e8f0;
-            background: rgba(255,255,255,0.04);
-        }
-
-        .nav-link.active {
-            color: #fff;
-            background: rgba(99,102,241,0.12);
-            border-left-color: #6366f1;
-        }
-
-        .nav-link svg {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            opacity: 0.7;
-        }
-
-        .nav-link.active svg { opacity: 1; }
-
-        /* ---- Main Content Area ---- */
-        .admin-main {
-            margin-left: 260px;
-            flex: 1;
-            min-height: 100vh;
-        }
-
-        /* ---- Top Bar ---- */
-        .admin-topbar {
-            background: #fff;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 16px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.875rem;
-            color: #64748b;
-        }
-
-        .breadcrumb a {
-            color: #6366f1;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .breadcrumb a:hover { text-decoration: underline; }
-
-        .breadcrumb svg {
-            width: 14px;
-            height: 14px;
-            color: #94a3b8;
-        }
-
-        .breadcrumb .current {
-            color: #1e293b;
-            font-weight: 600;
-        }
-
-        /* ---- Page Content ---- */
-        .admin-content {
-            padding: 32px;
-            max-width: 1200px;
-        }
-
         /* ---- Page Header ---- */
         .page-header {
             display: flex;
@@ -648,7 +494,7 @@
         }
     </style>
 </head>
-<body>
+<body class="admin-body">
 
     <!-- ========================================
          SIDEBAR
@@ -760,12 +606,16 @@
 
         <!-- Top Bar -->
         <header class="admin-topbar">
-            <div class="breadcrumb">
-                <a href="/admin/index.html">Dashboard</a>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-                <span class="current">iCal Sync</span>
+            <div class="admin-topbar__breadcrumb">
+                <a href="/admin/index.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
+                <span class="admin-topbar__breadcrumb-separator">&rsaquo;</span>
+                <span class="admin-topbar__breadcrumb-current">iCal Sync</span>
+            </div>
+            <div class="admin-topbar__actions">
+                <div class="admin-topbar__user">
+                    <div class="admin-topbar__user-avatar">AD</div>
+                    <span class="admin-topbar__user-name">Admin</span>
+                </div>
             </div>
         </header>
 
@@ -774,11 +624,11 @@
 
             <!-- Page Header -->
             <div class="page-header">
-                <div class="page-header-text">
-                    <h1>iCal Sync</h1>
-                    <p>Sync your availability with external booking platforms</p>
+                <div>
+                    <h1 class="page-title">iCal Sync</h1>
+                    <p class="page-subtitle">Sync your availability with external booking platforms</p>
                 </div>
-                <button class="btn-primary">
+                <button class="admin-btn admin-btn--primary">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>

@@ -642,7 +642,7 @@
         }
     </style>
 </head>
-<body>
+<body class="admin-body">
 
     <!-- ======================================================
          SIDEBAR
@@ -744,26 +744,32 @@
         </nav>
     </aside>
 
-    <!-- ========== Main Wrapper ========== -->
-    <div class="main-wrapper">
+    <!-- ========== Main Content ========== -->
+    <main class="admin-main">
 
         <!-- Topbar -->
-        <header class="topbar">
-            <div class="breadcrumb">
-                <a href="/admin/index.html">Dashboard</a>
-                <span class="separator">/</span>
-                <span class="current">Settings</span>
+        <header class="admin-topbar">
+            <div class="admin-topbar__breadcrumb">
+                <a href="/admin/index.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
+                <span class="admin-topbar__breadcrumb-separator">&rsaquo;</span>
+                <span class="admin-topbar__breadcrumb-current">Settings</span>
+            </div>
+            <div class="admin-topbar__actions">
+                <div class="admin-topbar__user">
+                    <div class="admin-topbar__user-avatar">AD</div>
+                    <span class="admin-topbar__user-name">Admin</span>
+                </div>
             </div>
         </header>
 
         <!-- Content -->
-        <main class="content">
+        <div class="admin-content">
 
             <!-- Page Header -->
             <div class="page-header">
-                <div class="page-header-text">
-                    <h2>Settings</h2>
-                    <p>Configure your Cascade Apartment 3 settings</p>
+                <div>
+                    <h1 class="page-title">Settings</h1>
+                    <p class="page-subtitle">Configure your Cascade Apartment 3 settings</p>
                 </div>
                 <button class="btn btn-primary" id="saveChangesBtn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1399,8 +1405,8 @@
                 </div>
             </div>
 
-        </main>
-    </div>
+        </div>
+    </main>
 
     <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>

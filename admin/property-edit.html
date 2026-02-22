@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add New Property - Cascade Apartment 3 Admin</title>
+  <title>Edit Property - Cascade Apartment 3 Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -166,8 +166,7 @@
     }
   </style>
 </head>
-<body>
-  <div class="admin-layout">
+<body class="admin-body">
 
     <!-- ======================================================
          SIDEBAR
@@ -316,17 +315,17 @@
         <!-- Page Header -->
         <div class="admin-page-header">
           <div class="admin-page-header-text">
-            <h1 class="admin-page-title">Add New Property</h1>
-            <p class="admin-page-subtitle">Create a new accommodation listing</p>
+            <h1 class="admin-page-title">Edit Property</h1>
+            <p class="admin-page-subtitle">Update your property details and settings for Cascade Apartment 3</p>
           </div>
           <div style="display: flex; gap: var(--space-md);">
             <button class="btn btn--outline">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-right: 6px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               Save Draft
             </button>
-            <button class="btn btn-primary">
+            <button class="btn btn--primary">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-right: 6px;"><polyline points="20 6 9 17 4 12"/></svg>
-              Publish
+              Save Changes
             </button>
           </div>
         </div>
@@ -354,7 +353,7 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg);">
                   <div class="form-group">
                     <label class="form-label">Property Name <span class="required">*</span></label>
-                    <input type="text" class="form-input" placeholder="e.g. The Grand Harbour Hotel">
+                    <input type="text" class="form-input" value="Cascade Apartment 3">
                   </div>
                   <div class="form-group">
                     <label class="form-label">Property Type <span class="required">*</span></label>
@@ -362,7 +361,7 @@
                       <option value="">Select type...</option>
                       <option>Hotel</option>
                       <option>Motel</option>
-                      <option>Apartment</option>
+                      <option selected>Apartment</option>
                       <option>Pub</option>
                       <option>Caravan Park</option>
                       <option>Holiday Park</option>
@@ -372,7 +371,7 @@
 
                 <div class="form-group" style="margin-bottom: var(--space-lg);">
                   <label class="form-label">Description</label>
-                  <textarea class="form-textarea" rows="5" placeholder="Describe your property, its unique features and what guests can expect..."></textarea>
+                  <textarea class="form-textarea" rows="5">Cascade Apartment 3 is a premium ski-in/ski-out alpine apartment located at Falls Creek, Victoria. Sleeping up to 8 guests across 3 bedrooms, it features a full kitchen, cosy fireplace, private balcony with mountain views, ski storage, and access to the resort's year-round facilities.</textarea>
                   <span class="form-hint">Write a compelling description that highlights key selling points.</span>
                 </div>
 
@@ -380,20 +379,20 @@
 
                 <div class="form-group" style="margin-bottom: var(--space-lg);">
                   <label class="form-label">Street Address <span class="required">*</span></label>
-                  <input type="text" class="form-input" placeholder="123 Main Street">
+                  <input type="text" class="form-input" value="4 Bogong High Plains Road">
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg);">
                   <div class="form-group">
                     <label class="form-label">City <span class="required">*</span></label>
-                    <input type="text" class="form-input" placeholder="e.g. Sydney">
+                    <input type="text" class="form-input" value="Falls Creek">
                   </div>
                   <div class="form-group">
                     <label class="form-label">State <span class="required">*</span></label>
                     <select class="form-select">
                       <option value="">Select state...</option>
                       <option>NSW</option>
-                      <option>VIC</option>
+                      <option selected>VIC</option>
                       <option>QLD</option>
                       <option>WA</option>
                       <option>SA</option>
@@ -407,7 +406,7 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg);">
                   <div class="form-group">
                     <label class="form-label">Postcode <span class="required">*</span></label>
-                    <input type="text" class="form-input" placeholder="e.g. 2000">
+                    <input type="text" class="form-input" value="3699">
                   </div>
                   <div class="form-group">
                     <label class="form-label">Country</label>
@@ -437,11 +436,11 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                   <div class="form-group">
                     <label class="form-label">Contact Email</label>
-                    <input type="email" class="form-input" placeholder="info@property.com.au">
+                    <input type="email" class="form-input" value="hello@cascadeapartment3.com.au">
                   </div>
                   <div class="form-group">
                     <label class="form-label">Contact Phone</label>
-                    <input type="tel" class="form-input" placeholder="+61 2 1234 5678">
+                    <input type="tel" class="form-input" value="+61 3 5758 1234">
                   </div>
                 </div>
               </form>
@@ -850,7 +849,6 @@
 
       </main>
     </div>
-  </div>
 
   <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>

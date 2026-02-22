@@ -846,8 +846,7 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-layout">
+<body class="admin-body">
 
     <!-- ======================================================
          SIDEBAR
@@ -953,21 +952,29 @@
         <main class="admin-main">
 
             <!-- Topbar -->
-            <div class="admin-topbar">
-                <nav class="breadcrumb">
-                    <a href="/admin/index.html">Dashboard</a>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                    <span class="current">Payments</span>
-                </nav>
-            </div>
+            <header class="admin-topbar">
+                <div class="admin-topbar__breadcrumb">
+                    <a href="/admin/index.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
+                    <span class="admin-topbar__breadcrumb-separator">&rsaquo;</span>
+                    <span class="admin-topbar__breadcrumb-current">Payments</span>
+                </div>
+                <div class="admin-topbar__actions">
+                    <div class="admin-topbar__user">
+                        <div class="admin-topbar__user-avatar">AD</div>
+                        <span class="admin-topbar__user-name">Admin</span>
+                    </div>
+                </div>
+            </header>
 
             <!-- Content -->
             <div class="admin-content">
 
                 <!-- Page Header -->
                 <div class="page-header">
-                    <h1>Payments &amp; Stripe Connect</h1>
-                    <p>Manage your payment processing and payouts</p>
+                    <div>
+                        <h1 class="page-title">Payments &amp; Stripe Connect</h1>
+                        <p class="page-subtitle">Manage your payment processing and payouts</p>
+                    </div>
                 </div>
 
                 <!-- Stripe Connect Status -->
@@ -1301,7 +1308,6 @@
 
             </div>
         </main>
-    </div>
 
     <script src="https://js.stripe.com/v3/"></script>
     <script src="../js/data.js"></script>

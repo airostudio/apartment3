@@ -9,112 +9,247 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <script src="../js/auth.js"></script>
+    <script>/* Immediate auth guard - redirect to login if no session */
+    (function(){if(!sessionStorage.getItem('ca3_session')){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}}());</script>
+    <style>
+        /* ===== BOOKING MODALS ===== */
+        .bk-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .bk-overlay[hidden] { display: none; }
+
+        .bk-modal {
+            background: #fff;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 560px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .bk-modal[hidden] { display: none; }
+
+        .bk-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1;
+        }
+        .bk-modal-title { font-size: 1rem; font-weight: 600; color: #0f172a; margin: 0; }
+        .bk-modal-subtitle { font-size: 0.8125rem; color: #64748b; margin: 0.125rem 0 0; }
+
+        .bk-modal-close {
+            width: 32px; height: 32px;
+            border: none; background: #f1f5f9;
+            border-radius: 6px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: #64748b; transition: all 0.15s; flex-shrink: 0;
+        }
+        .bk-modal-close:hover { background: #e2e8f0; color: #0f172a; }
+
+        .bk-modal-body { padding: 1.5rem; }
+
+        .bk-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bk-field { margin-bottom: 1rem; }
+        .bk-field:last-child { margin-bottom: 0; }
+
+        .bk-label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.375rem;
+        }
+        .bk-label .bk-required { color: #dc2626; margin-left: 2px; }
+
+        .bk-input, .bk-select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: #0f172a;
+            background: #fff;
+            box-sizing: border-box;
+            font-family: inherit;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .bk-input:focus, .bk-select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .bk-input[readonly] { background: #f8fafc; color: #64748b; cursor: default; }
+
+        .bk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+        .bk-btn {
+            padding: 0.5625rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        .bk-btn--ghost { background: #f1f5f9; color: #374151; border: 1px solid #e2e8f0; }
+        .bk-btn--ghost:hover { background: #e2e8f0; }
+        .bk-btn--primary { background: #2563eb; color: #fff; }
+        .bk-btn--primary:hover { background: #1d4ed8; }
+        .bk-btn--warning { background: #f59e0b; color: #fff; }
+        .bk-btn--warning:hover { background: #d97706; }
+
+        /* View detail rows */
+        .bk-details { display: flex; flex-direction: column; gap: 0; }
+        .bk-detail-row {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            align-items: flex-start;
+        }
+        .bk-detail-row:last-child { border-bottom: none; }
+        .bk-detail-label {
+            flex-shrink: 0;
+            width: 110px;
+            font-size: 0.8125rem;
+            color: #64748b;
+            font-weight: 500;
+            padding-top: 1px;
+        }
+        .bk-detail-value { font-size: 0.875rem; color: #0f172a; }
+
+        /* Filter button active state */
+        .admin-filter-btn--active {
+            background: #2563eb;
+            color: #fff;
+            border-color: #2563eb;
+        }
+    </style>
 </head>
 <body class="admin-body">
 
-    <!-- Admin Sidebar -->
-    <aside class="admin-sidebar">
-        <div class="admin-sidebar__header">
-            <a href="dashboard.html" class="admin-sidebar__logo">
-                <span class="admin-sidebar__logo-text">Cascade Apartment 3</span>
-                <span class="admin-sidebar__logo-badge">Admin</span>
+    <!-- ======================================================
+         SIDEBAR
+    ======================================================= -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <a href="/admin/index.html" class="sidebar-logo-link">
+                <span class="sidebar-logo-text">Cascade Apt 3</span>
+                <span class="sidebar-logo-badge">Admin</span>
             </a>
         </div>
 
-        <nav class="admin-sidebar__nav">
-            <!-- MAIN Section -->
-            <div class="admin-sidebar__section">
-                <span class="admin-sidebar__section-title">MAIN</span>
-                <ul class="admin-sidebar__menu">
-                    <li class="admin-sidebar__menu-item">
-                        <a href="dashboard.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+
+            <!-- MAIN -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">MAIN</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/index.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="properties.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                            <span>Properties</span>
-                        </a>
-                    </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="bookings.html" class="admin-sidebar__menu-link admin-sidebar__menu-link--active">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <li class="sidebar-nav-item active">
+                        <a href="/admin/bookings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                             <span>Bookings</span>
                         </a>
                     </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="calendar.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/calendar.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             <span>Calendar</span>
                         </a>
                     </li>
-                </ul>
-            </div>
-
-            <!-- MANAGEMENT Section -->
-            <div class="admin-sidebar__section">
-                <span class="admin-sidebar__section-title">MANAGEMENT</span>
-                <ul class="admin-sidebar__menu">
-                    <li class="admin-sidebar__menu-item">
-                        <a href="rates.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            <span>Rates &amp; Pricing</span>
-                        </a>
-                    </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="guests.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/guests.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             <span>Guests</span>
                         </a>
                     </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="reviews.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            <span>Reviews</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
 
-            <!-- INTEGRATIONS Section -->
-            <div class="admin-sidebar__section">
-                <span class="admin-sidebar__section-title">INTEGRATIONS</span>
-                <ul class="admin-sidebar__menu">
-                    <li class="admin-sidebar__menu-item">
-                        <a href="ical-sync.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                            <span>iCal Sync</span>
+            <!-- MANAGEMENT -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">MANAGEMENT</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/rates.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Rates &amp; Pricing</span>
                         </a>
                     </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="stripe-connect.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                            <span>Stripe Connect</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- SYSTEM Section -->
-            <div class="admin-sidebar__section">
-                <span class="admin-sidebar__section-title">SYSTEM</span>
-                <ul class="admin-sidebar__menu">
-                    <li class="admin-sidebar__menu-item">
-                        <a href="settings.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                            <span>Settings</span>
-                        </a>
-                    </li>
-                    <li class="admin-sidebar__menu-item">
-                        <a href="reports.html" class="admin-sidebar__menu-link">
-                            <svg class="admin-sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/reports.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                             <span>Reports</span>
                         </a>
                     </li>
                 </ul>
             </div>
+
+            <!-- INTEGRATIONS -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">INTEGRATIONS</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/ical-sync.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <span>iCal Sync</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/payments.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Payments</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">SYSTEM</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/settings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
         </nav>
     </aside>
 
@@ -124,7 +259,7 @@
         <!-- Topbar -->
         <header class="admin-topbar">
             <div class="admin-topbar__breadcrumb">
-                <a href="dashboard.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
+                <a href="/admin/index.html" class="admin-topbar__breadcrumb-link">Dashboard</a>
                 <span class="admin-topbar__breadcrumb-separator">&rsaquo;</span>
                 <span class="admin-topbar__breadcrumb-current">Bookings</span>
             </div>
@@ -133,8 +268,8 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 </button>
                 <div class="admin-topbar__user">
-                    <div class="admin-topbar__user-avatar">AD</div>
-                    <span class="admin-topbar__user-name">Admin</span>
+                    <div class="admin-topbar__user-avatar" id="topbarAvatar">AD</div>
+                    <span class="admin-topbar__user-name" id="topbarName">Admin</span>
                 </div>
             </div>
         </header>
@@ -146,18 +281,18 @@
             <div class="admin-page-header">
                 <div class="admin-page-header__info">
                     <h1 class="admin-page-header__title">Bookings</h1>
-                    <p class="admin-page-header__description">Manage all reservations</p>
+                    <p class="admin-page-header__description">Manage all reservations for Cascade Apartment 3</p>
                 </div>
                 <div class="admin-page-header__actions">
                     <div class="admin-filter-buttons">
-                        <button class="admin-filter-btn admin-filter-btn--active">All</button>
-                        <button class="admin-filter-btn">Confirmed</button>
-                        <button class="admin-filter-btn">Pending</button>
-                        <button class="admin-filter-btn">Cancelled</button>
+                        <button class="admin-filter-btn admin-filter-btn--active" data-filter="all">All</button>
+                        <button class="admin-filter-btn" data-filter="confirmed">Confirmed</button>
+                        <button class="admin-filter-btn" data-filter="pending">Pending</button>
+                        <button class="admin-filter-btn" data-filter="cancelled">Cancelled</button>
                     </div>
-                    <button class="admin-btn admin-btn--primary">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        Create Booking
+                    <button class="admin-btn admin-btn--primary" id="openCreateBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Booking
                     </button>
                 </div>
             </div>
@@ -167,7 +302,7 @@
                 <div class="admin-stat-card admin-stat-card--mini">
                     <div class="admin-stat-card__content">
                         <span class="admin-stat-card__label">Total</span>
-                        <span class="admin-stat-card__value">156</span>
+                        <span class="admin-stat-card__value" id="statTotal">8</span>
                     </div>
                     <div class="admin-stat-card__icon admin-stat-card__icon--blue">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -176,7 +311,7 @@
                 <div class="admin-stat-card admin-stat-card--mini">
                     <div class="admin-stat-card__content">
                         <span class="admin-stat-card__label">Confirmed</span>
-                        <span class="admin-stat-card__value">128</span>
+                        <span class="admin-stat-card__value" id="statConfirmed">5</span>
                     </div>
                     <div class="admin-stat-card__icon admin-stat-card__icon--green">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="20 6 9 17 4 12"/></svg>
@@ -185,7 +320,7 @@
                 <div class="admin-stat-card admin-stat-card--mini">
                     <div class="admin-stat-card__content">
                         <span class="admin-stat-card__label">Pending</span>
-                        <span class="admin-stat-card__value">18</span>
+                        <span class="admin-stat-card__value" id="statPending">2</span>
                     </div>
                     <div class="admin-stat-card__icon admin-stat-card__icon--orange">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -194,7 +329,7 @@
                 <div class="admin-stat-card admin-stat-card--mini">
                     <div class="admin-stat-card__content">
                         <span class="admin-stat-card__label">Cancelled</span>
-                        <span class="admin-stat-card__value">10</span>
+                        <span class="admin-stat-card__value" id="statCancelled">1</span>
                     </div>
                     <div class="admin-stat-card__icon admin-stat-card__icon--red">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
@@ -207,17 +342,16 @@
                 <div class="admin-card__header">
                     <h2 class="admin-card__title">All Bookings</h2>
                     <div class="admin-card__header-actions">
-                        <input type="text" class="admin-input admin-input--search" placeholder="Search bookings...">
+                        <input type="text" id="bookingSearch" class="admin-input admin-input--search" placeholder="Search by name, email or ID…">
                     </div>
                 </div>
                 <div class="admin-card__body admin-card__body--no-padding">
                     <div class="admin-table-wrapper">
-                        <table class="admin-table">
+                        <table class="admin-table" id="bookingsTable">
                             <thead>
                                 <tr>
                                     <th>Booking ID</th>
                                     <th>Guest</th>
-                                    <th>Property</th>
                                     <th>Dates</th>
                                     <th>Guests</th>
                                     <th>Status</th>
@@ -226,7 +360,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr data-id="BK-1042" data-name="James Davidson" data-email="j.davidson@email.com" data-checkin="2026-03-01" data-checkout="2026-03-07" data-guests="4" data-status="confirmed" data-total="$2,340">
                                     <td><span class="admin-booking-id">#BK-1042</span></td>
                                     <td>
                                         <div class="admin-guest-cell">
@@ -234,7 +368,6 @@
                                             <span class="admin-guest-cell__email">j.davidson@email.com</span>
                                         </div>
                                     </td>
-                                    <td>Oceanfront Villa Deluxe</td>
                                     <td>
                                         <div class="admin-dates-cell">
                                             <span class="admin-dates-cell__checkin">Mar 1, 2026</span>
@@ -247,19 +380,19 @@
                                     <td><strong>$2,340</strong></td>
                                     <td>
                                         <div class="admin-actions-cell">
-                                            <button class="admin-action-btn" title="View">
+                                            <button class="admin-action-btn" data-action="view" title="View">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                             </button>
-                                            <button class="admin-action-btn" title="Edit">
+                                            <button class="admin-action-btn" data-action="edit" title="Edit">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
-                                            <button class="admin-action-btn admin-action-btn--danger" title="Cancel">
+                                            <button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-id="BK-1041" data-name="Maria Torres" data-email="m.torres@email.com" data-checkin="2026-02-28" data-checkout="2026-03-03" data-guests="2" data-status="pending" data-total="$1,120">
                                     <td><span class="admin-booking-id">#BK-1041</span></td>
                                     <td>
                                         <div class="admin-guest-cell">
@@ -267,7 +400,6 @@
                                             <span class="admin-guest-cell__email">m.torres@email.com</span>
                                         </div>
                                     </td>
-                                    <td>Mountain Retreat Cabin</td>
                                     <td>
                                         <div class="admin-dates-cell">
                                             <span class="admin-dates-cell__checkin">Feb 28, 2026</span>
@@ -280,19 +412,19 @@
                                     <td><strong>$1,120</strong></td>
                                     <td>
                                         <div class="admin-actions-cell">
-                                            <button class="admin-action-btn" title="View">
+                                            <button class="admin-action-btn" data-action="view" title="View">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                             </button>
-                                            <button class="admin-action-btn" title="Edit">
+                                            <button class="admin-action-btn" data-action="edit" title="Edit">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
-                                            <button class="admin-action-btn admin-action-btn--danger" title="Cancel">
+                                            <button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-id="BK-1040" data-name="Robert Chen" data-email="r.chen@email.com" data-checkin="2026-03-05" data-checkout="2026-03-10" data-guests="3" data-status="confirmed" data-total="$1,875">
                                     <td><span class="admin-booking-id">#BK-1040</span></td>
                                     <td>
                                         <div class="admin-guest-cell">
@@ -300,7 +432,6 @@
                                             <span class="admin-guest-cell__email">r.chen@email.com</span>
                                         </div>
                                     </td>
-                                    <td>Downtown Luxury Apartment</td>
                                     <td>
                                         <div class="admin-dates-cell">
                                             <span class="admin-dates-cell__checkin">Mar 5, 2026</span>
@@ -313,19 +444,19 @@
                                     <td><strong>$1,875</strong></td>
                                     <td>
                                         <div class="admin-actions-cell">
-                                            <button class="admin-action-btn" title="View">
+                                            <button class="admin-action-btn" data-action="view" title="View">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                             </button>
-                                            <button class="admin-action-btn" title="Edit">
+                                            <button class="admin-action-btn" data-action="edit" title="Edit">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
-                                            <button class="admin-action-btn admin-action-btn--danger" title="Cancel">
+                                            <button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-id="BK-1039" data-name="Emily Watson" data-email="e.watson@email.com" data-checkin="2026-02-22" data-checkout="2026-02-26" data-guests="2" data-status="cancelled" data-total="$980">
                                     <td><span class="admin-booking-id">#BK-1039</span></td>
                                     <td>
                                         <div class="admin-guest-cell">
@@ -333,7 +464,6 @@
                                             <span class="admin-guest-cell__email">e.watson@email.com</span>
                                         </div>
                                     </td>
-                                    <td>Seaside Cottage</td>
                                     <td>
                                         <div class="admin-dates-cell">
                                             <span class="admin-dates-cell__checkin">Feb 22, 2026</span>
@@ -346,19 +476,19 @@
                                     <td><strong>$980</strong></td>
                                     <td>
                                         <div class="admin-actions-cell">
-                                            <button class="admin-action-btn" title="View">
+                                            <button class="admin-action-btn" data-action="view" title="View">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                             </button>
-                                            <button class="admin-action-btn" title="Edit">
+                                            <button class="admin-action-btn" data-action="edit" title="Edit">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
-                                            <button class="admin-action-btn admin-action-btn--danger" title="Cancel">
+                                            <button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-id="BK-1038" data-name="Sarah Mitchell" data-email="s.mitchell@email.com" data-checkin="2026-03-12" data-checkout="2026-03-18" data-guests="6" data-status="confirmed" data-total="$2,940">
                                     <td><span class="admin-booking-id">#BK-1038</span></td>
                                     <td>
                                         <div class="admin-guest-cell">
@@ -366,7 +496,6 @@
                                             <span class="admin-guest-cell__email">s.mitchell@email.com</span>
                                         </div>
                                     </td>
-                                    <td>Oceanfront Villa Deluxe</td>
                                     <td>
                                         <div class="admin-dates-cell">
                                             <span class="admin-dates-cell__checkin">Mar 12, 2026</span>
@@ -379,19 +508,19 @@
                                     <td><strong>$2,940</strong></td>
                                     <td>
                                         <div class="admin-actions-cell">
-                                            <button class="admin-action-btn" title="View">
+                                            <button class="admin-action-btn" data-action="view" title="View">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                             </button>
-                                            <button class="admin-action-btn" title="Edit">
+                                            <button class="admin-action-btn" data-action="edit" title="Edit">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
-                                            <button class="admin-action-btn admin-action-btn--danger" title="Cancel">
+                                            <button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-id="BK-1037" data-name="David Park" data-email="d.park@email.com" data-checkin="2026-03-08" data-checkout="2026-03-11" data-guests="2" data-status="pending" data-total="$840">
                                     <td><span class="admin-booking-id">#BK-1037</span></td>
                                     <td>
                                         <div class="admin-guest-cell">
@@ -399,7 +528,6 @@
                                             <span class="admin-guest-cell__email">d.park@email.com</span>
                                         </div>
                                     </td>
-                                    <td>Mountain Retreat Cabin</td>
                                     <td>
                                         <div class="admin-dates-cell">
                                             <span class="admin-dates-cell__checkin">Mar 8, 2026</span>
@@ -412,19 +540,19 @@
                                     <td><strong>$840</strong></td>
                                     <td>
                                         <div class="admin-actions-cell">
-                                            <button class="admin-action-btn" title="View">
+                                            <button class="admin-action-btn" data-action="view" title="View">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                             </button>
-                                            <button class="admin-action-btn" title="Edit">
+                                            <button class="admin-action-btn" data-action="edit" title="Edit">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
-                                            <button class="admin-action-btn admin-action-btn--danger" title="Cancel">
+                                            <button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-id="BK-1036" data-name="Laura Hernandez" data-email="l.hernandez@email.com" data-checkin="2026-02-20" data-checkout="2026-02-25" data-guests="5" data-status="confirmed" data-total="$1,650">
                                     <td><span class="admin-booking-id">#BK-1036</span></td>
                                     <td>
                                         <div class="admin-guest-cell">
@@ -432,7 +560,6 @@
                                             <span class="admin-guest-cell__email">l.hernandez@email.com</span>
                                         </div>
                                     </td>
-                                    <td>Lakeside Bungalow</td>
                                     <td>
                                         <div class="admin-dates-cell">
                                             <span class="admin-dates-cell__checkin">Feb 20, 2026</span>
@@ -445,19 +572,19 @@
                                     <td><strong>$1,650</strong></td>
                                     <td>
                                         <div class="admin-actions-cell">
-                                            <button class="admin-action-btn" title="View">
+                                            <button class="admin-action-btn" data-action="view" title="View">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                             </button>
-                                            <button class="admin-action-btn" title="Edit">
+                                            <button class="admin-action-btn" data-action="edit" title="Edit">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
-                                            <button class="admin-action-btn admin-action-btn--danger" title="Cancel">
+                                            <button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-id="BK-1035" data-name="Kevin O'Brien" data-email="k.obrien@email.com" data-checkin="2026-02-18" data-checkout="2026-02-21" data-guests="1" data-status="cancelled" data-total="$1,125">
                                     <td><span class="admin-booking-id">#BK-1035</span></td>
                                     <td>
                                         <div class="admin-guest-cell">
@@ -465,7 +592,6 @@
                                             <span class="admin-guest-cell__email">k.obrien@email.com</span>
                                         </div>
                                     </td>
-                                    <td>Downtown Luxury Apartment</td>
                                     <td>
                                         <div class="admin-dates-cell">
                                             <span class="admin-dates-cell__checkin">Feb 18, 2026</span>
@@ -478,13 +604,13 @@
                                     <td><strong>$1,125</strong></td>
                                     <td>
                                         <div class="admin-actions-cell">
-                                            <button class="admin-action-btn" title="View">
+                                            <button class="admin-action-btn" data-action="view" title="View">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                             </button>
-                                            <button class="admin-action-btn" title="Edit">
+                                            <button class="admin-action-btn" data-action="edit" title="Edit">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             </button>
-                                            <button class="admin-action-btn admin-action-btn--danger" title="Cancel">
+                                            <button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                                             </button>
                                         </div>
@@ -496,34 +622,461 @@
                 </div>
             </div>
 
-            <!-- Pagination -->
-            <div class="admin-pagination">
-                <div class="admin-pagination__info">
-                    Showing <strong>1-8</strong> of <strong>156</strong> bookings
-                </div>
-                <div class="admin-pagination__controls">
-                    <button class="admin-pagination__btn admin-pagination__btn--disabled" disabled>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
-                        Previous
-                    </button>
-                    <div class="admin-pagination__pages">
-                        <button class="admin-pagination__page admin-pagination__page--active">1</button>
-                        <button class="admin-pagination__page">2</button>
-                        <button class="admin-pagination__page">3</button>
-                        <span class="admin-pagination__ellipsis">...</span>
-                        <button class="admin-pagination__page">20</button>
-                    </div>
-                    <button class="admin-pagination__btn">
-                        Next
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
-                    </button>
-                </div>
-            </div>
-
         </div>
     </main>
 
+    <!-- ======================================================
+         MODALS
+    ======================================================= -->
+    <div id="bkOverlay" class="bk-overlay" hidden>
+
+        <!-- CREATE BOOKING MODAL -->
+        <div id="bkCreateModal" class="bk-modal" hidden>
+            <div class="bk-modal-header">
+                <div>
+                    <h2 class="bk-modal-title">Add Booking</h2>
+                    <p class="bk-modal-subtitle">New ID: <strong id="bkCreateId">#BK-1043</strong></p>
+                </div>
+                <button class="bk-modal-close" data-close-modal aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="bkCreateForm" novalidate>
+                <div class="bk-modal-body">
+                    <div class="bk-grid">
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkName">Guest Name <span class="bk-required">*</span></label>
+                            <input type="text" id="bkName" name="bkName" class="bk-input" placeholder="Full name" required>
+                        </div>
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkEmail">Email <span class="bk-required">*</span></label>
+                            <input type="email" id="bkEmail" name="bkEmail" class="bk-input" placeholder="guest@email.com" required>
+                        </div>
+                    </div>
+                    <div class="bk-grid">
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkCheckin">Check-in <span class="bk-required">*</span></label>
+                            <input type="date" id="bkCheckin" name="bkCheckin" class="bk-input" required>
+                        </div>
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkCheckout">Check-out <span class="bk-required">*</span></label>
+                            <input type="date" id="bkCheckout" name="bkCheckout" class="bk-input" required>
+                        </div>
+                    </div>
+                    <div class="bk-grid">
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkGuests">Guests <span class="bk-required">*</span></label>
+                            <input type="number" id="bkGuests" name="bkGuests" class="bk-input" min="1" max="10" value="2" required>
+                        </div>
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkStatus">Status</label>
+                            <select id="bkStatus" name="bkStatus" class="bk-select">
+                                <option value="confirmed">Confirmed</option>
+                                <option value="pending" selected>Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="bk-field">
+                        <label class="bk-label" for="bkTotal">Total ($) <span class="bk-required">*</span></label>
+                        <input type="number" id="bkTotal" name="bkTotal" class="bk-input" min="0" step="1" placeholder="0" required>
+                    </div>
+                    <div class="bk-field">
+                        <label class="bk-label" for="bkNotes">Notes</label>
+                        <input type="text" id="bkNotes" name="bkNotes" class="bk-input" placeholder="Optional internal notes">
+                    </div>
+                </div>
+                <div class="bk-modal-footer">
+                    <button type="button" class="bk-btn bk-btn--ghost" data-close-modal>Cancel</button>
+                    <button type="submit" class="bk-btn bk-btn--primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>
+                        Create Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- VIEW BOOKING MODAL -->
+        <div id="bkViewModal" class="bk-modal" hidden>
+            <div class="bk-modal-header">
+                <div>
+                    <h2 class="bk-modal-title">Booking Details</h2>
+                    <p class="bk-modal-subtitle" id="bkViewId">#BK-0000</p>
+                </div>
+                <button class="bk-modal-close" data-close-modal aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="bk-modal-body">
+                <div class="bk-details">
+                    <div class="bk-detail-row">
+                        <span class="bk-detail-label">Guest</span>
+                        <div class="bk-detail-value">
+                            <div id="bkViewName" style="font-weight:500;"></div>
+                            <div id="bkViewEmail" style="color:#64748b;font-size:0.8125rem;margin-top:1px;"></div>
+                        </div>
+                    </div>
+                    <div class="bk-detail-row">
+                        <span class="bk-detail-label">Property</span>
+                        <span class="bk-detail-value">Cascade Apartment 3</span>
+                    </div>
+                    <div class="bk-detail-row">
+                        <span class="bk-detail-label">Check-in</span>
+                        <span class="bk-detail-value" id="bkViewCheckin"></span>
+                    </div>
+                    <div class="bk-detail-row">
+                        <span class="bk-detail-label">Check-out</span>
+                        <span class="bk-detail-value" id="bkViewCheckout"></span>
+                    </div>
+                    <div class="bk-detail-row">
+                        <span class="bk-detail-label">Duration</span>
+                        <span class="bk-detail-value" id="bkViewDuration"></span>
+                    </div>
+                    <div class="bk-detail-row">
+                        <span class="bk-detail-label">Guests</span>
+                        <span class="bk-detail-value" id="bkViewGuests"></span>
+                    </div>
+                    <div class="bk-detail-row">
+                        <span class="bk-detail-label">Status</span>
+                        <span class="bk-detail-value"><span id="bkViewStatus" class="admin-badge"></span></span>
+                    </div>
+                    <div class="bk-detail-row">
+                        <span class="bk-detail-label">Total</span>
+                        <span class="bk-detail-value" id="bkViewTotal" style="font-weight:600;font-size:1rem;"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="bk-modal-footer">
+                <button type="button" class="bk-btn bk-btn--ghost" data-close-modal>Close</button>
+                <button type="button" class="bk-btn bk-btn--primary" id="bkViewEditBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Booking
+                </button>
+            </div>
+        </div>
+
+        <!-- EDIT BOOKING MODAL -->
+        <div id="bkEditModal" class="bk-modal" hidden>
+            <div class="bk-modal-header">
+                <div>
+                    <h2 class="bk-modal-title">Edit Booking</h2>
+                    <p class="bk-modal-subtitle" id="bkEditId"></p>
+                </div>
+                <button class="bk-modal-close" data-close-modal aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="bkEditForm" novalidate>
+                <div class="bk-modal-body">
+                    <div class="bk-grid">
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkEditName">Guest Name</label>
+                            <input type="text" id="bkEditName" name="bkEditName" class="bk-input" required>
+                        </div>
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkEditEmail">Email</label>
+                            <input type="email" id="bkEditEmail" name="bkEditEmail" class="bk-input" required>
+                        </div>
+                    </div>
+                    <div class="bk-grid">
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkEditCheckin">Check-in</label>
+                            <input type="date" id="bkEditCheckin" name="bkEditCheckin" class="bk-input" required>
+                        </div>
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkEditCheckout">Check-out</label>
+                            <input type="date" id="bkEditCheckout" name="bkEditCheckout" class="bk-input" required>
+                        </div>
+                    </div>
+                    <div class="bk-grid">
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkEditGuests">Guests</label>
+                            <input type="number" id="bkEditGuests" name="bkEditGuests" class="bk-input" min="1" max="10" required>
+                        </div>
+                        <div class="bk-field">
+                            <label class="bk-label" for="bkEditStatus">Status</label>
+                            <select id="bkEditStatus" name="bkEditStatus" class="bk-select">
+                                <option value="confirmed">Confirmed</option>
+                                <option value="pending">Pending</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="bk-field">
+                        <label class="bk-label" for="bkEditTotal">Total ($)</label>
+                        <input type="number" id="bkEditTotal" name="bkEditTotal" class="bk-input" min="0" step="1" required>
+                    </div>
+                </div>
+                <div class="bk-modal-footer">
+                    <button type="button" class="bk-btn bk-btn--ghost" data-close-modal>Cancel</button>
+                    <button type="submit" class="bk-btn bk-btn--primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div><!-- /#bkOverlay -->
+
+    <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        var currentEditId = null;
+
+        /* ---- helpers ---- */
+        function fmtDate(iso) {
+            var d = new Date(iso + 'T00:00:00');
+            if (isNaN(d)) return iso;
+            return d.toLocaleDateString('en-AU', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function nightsBetween(checkin, checkout) {
+            var a = new Date(checkin), b = new Date(checkout);
+            var n = Math.round((b - a) / 86400000);
+            return isNaN(n) ? '' : n + (n === 1 ? ' night' : ' nights');
+        }
+
+        function fmtMoney(raw) {
+            var n = parseFloat(String(raw).replace(/[^0-9.]/g, '')) || 0;
+            return '$' + Math.round(n).toLocaleString('en-AU');
+        }
+
+        function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+
+        function nextId() {
+            var ids = Array.from(document.querySelectorAll('#bookingsTable tbody tr[data-id]'))
+                .map(function (r) { return parseInt(r.dataset.id.replace('BK-', '')) || 0; });
+            return 'BK-' + (Math.max.apply(null, ids.length ? ids : [1042]) + 1);
+        }
+
+        /* ---- overlay ---- */
+        function showOverlay() { document.getElementById('bkOverlay').hidden = false; }
+
+        function hideOverlay() {
+            document.getElementById('bkOverlay').hidden = true;
+            ['bkCreateModal', 'bkViewModal', 'bkEditModal'].forEach(function (id) {
+                document.getElementById(id).hidden = true;
+            });
+            currentEditId = null;
+        }
+
+        /* ---- stats ---- */
+        function updateStats() {
+            var rows = Array.from(document.querySelectorAll('#bookingsTable tbody tr[data-id]'));
+            var counts = { confirmed: 0, pending: 0, cancelled: 0 };
+            rows.forEach(function (r) { counts[r.dataset.status] = (counts[r.dataset.status] || 0) + 1; });
+            document.getElementById('statTotal').textContent      = rows.length;
+            document.getElementById('statConfirmed').textContent  = counts.confirmed || 0;
+            document.getElementById('statPending').textContent    = counts.pending   || 0;
+            document.getElementById('statCancelled').textContent  = counts.cancelled || 0;
+        }
+
+        /* ---- row HTML helper ---- */
+        function buildRowHTML(d) {
+            var badgeClass = 'admin-badge--' + d.status;
+            var eyeSVG  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+            var editSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+            var delSVG  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+            return '<td><span class="admin-booking-id">#' + d.id + '</span></td>' +
+                '<td><div class="admin-guest-cell">' +
+                    '<span class="admin-guest-cell__name">' + d.name + '</span>' +
+                    '<span class="admin-guest-cell__email">' + d.email + '</span>' +
+                '</div></td>' +
+                '<td><div class="admin-dates-cell">' +
+                    '<span class="admin-dates-cell__checkin">' + fmtDate(d.checkin) + '</span>' +
+                    '<span class="admin-dates-cell__separator">&rarr;</span>' +
+                    '<span class="admin-dates-cell__checkout">' + fmtDate(d.checkout) + '</span>' +
+                '</div></td>' +
+                '<td>' + d.guests + '</td>' +
+                '<td><span class="admin-badge ' + badgeClass + '">' + cap(d.status) + '</span></td>' +
+                '<td><strong>' + d.total + '</strong></td>' +
+                '<td><div class="admin-actions-cell">' +
+                    '<button class="admin-action-btn" data-action="view" title="View">' + eyeSVG + '</button>' +
+                    '<button class="admin-action-btn" data-action="edit" title="Edit">' + editSVG + '</button>' +
+                    '<button class="admin-action-btn admin-action-btn--danger" data-action="cancel" title="Cancel">' + delSVG + '</button>' +
+                '</div></td>';
+        }
+
+        /* ---- CREATE ---- */
+        function openCreate() {
+            document.getElementById('bkCreateForm').reset();
+            document.getElementById('bkCreateId').textContent = '#' + nextId();
+            document.getElementById('bkCreateModal').hidden = false;
+            showOverlay();
+        }
+
+        document.getElementById('bkCreateForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var f = e.target;
+            if (!f.bkName.value.trim() || !f.bkCheckin.value || !f.bkCheckout.value || !f.bkTotal.value) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            if (f.bkCheckin.value >= f.bkCheckout.value) {
+                alert('Check-out must be after check-in.');
+                return;
+            }
+            var id   = nextId();
+            var data = {
+                id:       id,
+                name:     f.bkName.value.trim(),
+                email:    f.bkEmail.value.trim(),
+                checkin:  f.bkCheckin.value,
+                checkout: f.bkCheckout.value,
+                guests:   f.bkGuests.value,
+                status:   f.bkStatus.value,
+                total:    fmtMoney(f.bkTotal.value)
+            };
+            var tr = document.createElement('tr');
+            tr.dataset.id       = data.id;
+            tr.dataset.name     = data.name;
+            tr.dataset.email    = data.email;
+            tr.dataset.checkin  = data.checkin;
+            tr.dataset.checkout = data.checkout;
+            tr.dataset.guests   = data.guests;
+            tr.dataset.status   = data.status;
+            tr.dataset.total    = data.total;
+            tr.innerHTML        = buildRowHTML(data);
+            document.querySelector('#bookingsTable tbody').prepend(tr);
+            updateStats();
+            hideOverlay();
+        });
+
+        /* ---- VIEW ---- */
+        function openView(row) {
+            var d = row.dataset;
+            document.getElementById('bkViewId').textContent      = '#' + d.id;
+            document.getElementById('bkViewName').textContent    = d.name;
+            document.getElementById('bkViewEmail').textContent   = d.email;
+            document.getElementById('bkViewCheckin').textContent = fmtDate(d.checkin);
+            document.getElementById('bkViewCheckout').textContent= fmtDate(d.checkout);
+            document.getElementById('bkViewDuration').textContent= nightsBetween(d.checkin, d.checkout);
+            document.getElementById('bkViewGuests').textContent  = d.guests + (d.guests === '1' ? ' guest' : ' guests');
+            document.getElementById('bkViewTotal').textContent   = d.total;
+            var badge = document.getElementById('bkViewStatus');
+            badge.textContent = cap(d.status);
+            badge.className   = 'admin-badge admin-badge--' + d.status;
+            document.getElementById('bkViewEditBtn').dataset.rowId = d.id;
+            document.getElementById('bkViewModal').hidden = false;
+            showOverlay();
+        }
+
+        document.getElementById('bkViewEditBtn').addEventListener('click', function () {
+            openEdit(this.dataset.rowId);
+        });
+
+        /* ---- EDIT ---- */
+        function openEdit(bookingId) {
+            var row = document.querySelector('#bookingsTable tr[data-id="' + bookingId + '"]');
+            if (!row) return;
+            var d = row.dataset;
+            currentEditId = bookingId;
+            document.getElementById('bkEditId').textContent         = '#' + d.id;
+            document.getElementById('bkEditName').value             = d.name;
+            document.getElementById('bkEditEmail').value            = d.email;
+            document.getElementById('bkEditCheckin').value          = d.checkin;
+            document.getElementById('bkEditCheckout').value         = d.checkout;
+            document.getElementById('bkEditGuests').value           = d.guests;
+            document.getElementById('bkEditStatus').value           = d.status;
+            document.getElementById('bkEditTotal').value            = String(d.total).replace(/[^0-9]/g, '');
+            document.getElementById('bkViewModal').hidden = true;
+            document.getElementById('bkEditModal').hidden = false;
+            showOverlay();
+        }
+
+        document.getElementById('bkEditForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var row = document.querySelector('#bookingsTable tr[data-id="' + currentEditId + '"]');
+            if (!row) { hideOverlay(); return; }
+            var f    = e.target;
+            var data = {
+                id:       currentEditId,
+                name:     f.bkEditName.value.trim(),
+                email:    f.bkEditEmail.value.trim(),
+                checkin:  f.bkEditCheckin.value,
+                checkout: f.bkEditCheckout.value,
+                guests:   f.bkEditGuests.value,
+                status:   f.bkEditStatus.value,
+                total:    fmtMoney(f.bkEditTotal.value)
+            };
+            row.dataset.name     = data.name;
+            row.dataset.email    = data.email;
+            row.dataset.checkin  = data.checkin;
+            row.dataset.checkout = data.checkout;
+            row.dataset.guests   = data.guests;
+            row.dataset.status   = data.status;
+            row.dataset.total    = data.total;
+            row.innerHTML        = buildRowHTML(data);
+            updateStats();
+            hideOverlay();
+        });
+
+        /* ---- CANCEL ---- */
+        function cancelBooking(row) {
+            if (!confirm('Cancel booking for ' + row.dataset.name + '?\nThis will update the booking status to Cancelled.')) return;
+            row.dataset.status = 'cancelled';
+            var badge = row.querySelector('.admin-badge');
+            if (badge) { badge.textContent = 'Cancelled'; badge.className = 'admin-badge admin-badge--cancelled'; }
+            updateStats();
+        }
+
+        /* ---- TABLE DELEGATION ---- */
+        document.querySelector('#bookingsTable tbody').addEventListener('click', function (e) {
+            var btn = e.target.closest('[data-action]');
+            if (!btn) return;
+            var row = btn.closest('tr');
+            switch (btn.dataset.action) {
+                case 'view':   openView(row);             break;
+                case 'edit':   openEdit(row.dataset.id);  break;
+                case 'cancel': cancelBooking(row);        break;
+            }
+        });
+
+        /* ---- FILTERS ---- */
+        document.querySelectorAll('.admin-filter-btn[data-filter]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.admin-filter-btn[data-filter]').forEach(function (b) {
+                    b.classList.remove('admin-filter-btn--active');
+                });
+                btn.classList.add('admin-filter-btn--active');
+                var filter = btn.dataset.filter;
+                document.querySelectorAll('#bookingsTable tbody tr[data-id]').forEach(function (row) {
+                    row.style.display = (filter === 'all' || row.dataset.status === filter) ? '' : 'none';
+                });
+            });
+        });
+
+        /* ---- SEARCH ---- */
+        document.getElementById('bookingSearch').addEventListener('input', function () {
+            var q = this.value.toLowerCase();
+            document.querySelectorAll('#bookingsTable tbody tr[data-id]').forEach(function (row) {
+                var text = (row.dataset.id + ' ' + row.dataset.name + ' ' + row.dataset.email).toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+
+        /* ---- CLOSE HANDLERS ---- */
+        document.querySelectorAll('[data-close-modal]').forEach(function (el) {
+            el.addEventListener('click', hideOverlay);
+        });
+        document.getElementById('bkOverlay').addEventListener('click', function (e) {
+            if (e.target === this) hideOverlay();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') hideOverlay();
+        });
+
+        /* ---- CREATE BUTTON ---- */
+        document.getElementById('openCreateBtn').addEventListener('click', openCreate);
+
+        /* initial stats */
+        updateStats();
+
+    }());
+    </script>
 </body>
 </html>

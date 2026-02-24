@@ -9,155 +9,111 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <script src="../js/auth.js"></script>
+    <script>/* Immediate auth guard - redirect to login if no session */
+    (function(){if(!sessionStorage.getItem('ca3_session')){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}}());</script>
 </head>
 <body class="admin-body">
-    <div class="admin-layout">
 
-        <!-- Sidebar -->
-        <aside class="admin-sidebar">
-            <div class="sidebar-logo">
-                <a href="index.html">
-                    <span class="logo-text">Cascade Apartment 3</span>
-                    <span class="logo-badge">Admin</span>
-                </a>
+    <!-- ======================================================
+         SIDEBAR
+    ======================================================= -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <a href="/admin/index.html" class="sidebar-logo-link">
+                <span class="sidebar-logo-text">Cascade Apt 3</span>
+                <span class="sidebar-logo-badge">Admin</span>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+
+            <!-- MAIN -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">MAIN</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/index.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/bookings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/calendar.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/guests.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Guests</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <nav class="sidebar-nav">
-                <!-- MAIN -->
-                <div class="nav-section">
-                    <div class="nav-section-title">MAIN</div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="index.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="3" width="7" height="7"></rect>
-                                    <rect x="14" y="3" width="7" height="7"></rect>
-                                    <rect x="3" y="14" width="7" height="7"></rect>
-                                    <rect x="14" y="14" width="7" height="7"></rect>
-                                </svg>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="properties.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                </svg>
-                                <span>Properties</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="bookings.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                                </svg>
-                                <span>Bookings</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="calendar.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                </svg>
-                                <span>Calendar</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <!-- MANAGEMENT -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">MANAGEMENT</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/rates.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Rates &amp; Pricing</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item active">
+                        <a href="/admin/reports.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-                <!-- MANAGEMENT -->
-                <div class="nav-section">
-                    <div class="nav-section-title">MANAGEMENT</div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="rates.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="12" y1="1" x2="12" y2="23"></line>
-                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                                </svg>
-                                <span>Rates &amp; Pricing</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="guests.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                                <span>Guests</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="reviews.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                </svg>
-                                <span>Reviews</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <!-- INTEGRATIONS -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">INTEGRATIONS</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/ical-sync.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <span>iCal Sync</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/payments.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Payments</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-                <!-- INTEGRATIONS -->
-                <div class="nav-section">
-                    <div class="nav-section-title">INTEGRATIONS</div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="ical-sync.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                                </svg>
-                                <span>iCal Sync</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="stripe-connect.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                                    <line x1="1" y1="10" x2="23" y2="10"></line>
-                                </svg>
-                                <span>Stripe Connect</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <!-- SYSTEM -->
+            <div class="sidebar-nav-section">
+                <span class="sidebar-nav-section-title">SYSTEM</span>
+                <ul class="sidebar-nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/settings.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-                <!-- SYSTEM -->
-                <div class="nav-section">
-                    <div class="nav-section-title">SYSTEM</div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="settings.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                                </svg>
-                                <span>Settings</span>
-                            </a>
-                        </li>
-                        <li class="nav-item active">
-                            <a href="reports.html" class="nav-link">
-                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                                </svg>
-                                <span>Reports</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </aside>
+        </nav>
+    </aside>
 
         <!-- Main Content -->
         <main class="admin-main">
@@ -165,7 +121,7 @@
             <!-- Topbar -->
             <header class="admin-topbar">
                 <div class="breadcrumb">
-                    <a href="index.html" class="breadcrumb-link">Dashboard</a>
+                    <a href="/admin/index.html" class="breadcrumb-link">Dashboard</a>
                     <span class="breadcrumb-separator">&gt;</span>
                     <span class="breadcrumb-current">Reports</span>
                 </div>
@@ -253,64 +209,58 @@
                     </div>
                 </div>
 
-                <!-- Two Column Layout: Top Properties & Booking Sources -->
+                <!-- Two Column Layout: Monthly Breakdown & Booking Sources -->
                 <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
 
-                    <!-- Top Performing Properties -->
+                    <!-- Monthly Breakdown -->
                     <div class="admin-card" style="padding: 1.5rem;">
-                        <h2 style="font-size: 1.125rem; font-weight: 600; color: #0f172a; margin: 0 0 1rem 0;">Top Performing Properties</h2>
+                        <h2 style="font-size: 1.125rem; font-weight: 600; color: #0f172a; margin: 0 0 1rem 0;">Monthly Breakdown — Cascade Apartment 3</h2>
                         <div style="overflow-x: auto;">
                             <table class="admin-table" style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
                                 <thead>
                                     <tr style="border-bottom: 2px solid #e2e8f0;">
-                                        <th style="padding: 0.75rem 0.5rem; text-align: left; font-weight: 600; color: #64748b; font-size: 0.8125rem;">Rank #</th>
-                                        <th style="padding: 0.75rem 0.5rem; text-align: left; font-weight: 600; color: #64748b; font-size: 0.8125rem;">Property Name</th>
+                                        <th style="padding: 0.75rem 0.5rem; text-align: left; font-weight: 600; color: #64748b; font-size: 0.8125rem;">Month</th>
                                         <th style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 600; color: #64748b; font-size: 0.8125rem;">Bookings</th>
                                         <th style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 600; color: #64748b; font-size: 0.8125rem;">Revenue</th>
                                         <th style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 600; color: #64748b; font-size: 0.8125rem;">Occupancy</th>
-                                        <th style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 600; color: #64748b; font-size: 0.8125rem;">Rating</th>
+                                        <th style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 600; color: #64748b; font-size: 0.8125rem;">Avg Rate</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr style="border-bottom: 1px solid #f1f5f9;">
-                                        <td style="padding: 0.75rem 0.5rem; color: #64748b;">1</td>
-                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Bondi Beach Penthouse</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">342</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$28,450</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">94%</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #f59e0b; font-weight: 500;">4.9</td>
+                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Feb 2026</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">18</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$8,430</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">78%</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">$185</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #f1f5f9;">
-                                        <td style="padding: 0.75rem 0.5rem; color: #64748b;">2</td>
-                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Sydney Harbour View</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">289</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$24,120</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">88%</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #f59e0b; font-weight: 500;">4.8</td>
+                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Jan 2026</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">22</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$9,790</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">87%</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">$176</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #f1f5f9;">
-                                        <td style="padding: 0.75rem 0.5rem; color: #64748b;">3</td>
-                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Manly Beachside Apartment</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">256</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$18,970</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">82%</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #f59e0b; font-weight: 500;">4.7</td>
+                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Dec 2025</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">26</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$12,350</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">96%</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">$210</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #f1f5f9;">
-                                        <td style="padding: 0.75rem 0.5rem; color: #64748b;">4</td>
-                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Surry Hills Terrace</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">198</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$12,340</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">76%</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #f59e0b; font-weight: 500;">4.6</td>
+                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Nov 2025</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">17</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$7,140</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">70%</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">$168</td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 0.75rem 0.5rem; color: #64748b;">5</td>
-                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Darling Harbour Studio</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">162</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$5,552</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">71%</td>
-                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #f59e0b; font-weight: 500;">4.5</td>
+                                        <td style="padding: 0.75rem 0.5rem; font-weight: 500; color: #0f172a;">Oct 2025</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">19</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 500; color: #0f172a;">$7,790</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">74%</td>
+                                        <td style="padding: 0.75rem 0.5rem; text-align: right; color: #334155;">$172</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -597,8 +547,8 @@
 
             </div>
         </main>
-    </div>
 
+    <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
 </body>

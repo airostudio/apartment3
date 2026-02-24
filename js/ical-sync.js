@@ -1,5 +1,5 @@
 /**
- * TrendAccom - iCal Sync
+ * Cascade Apartment 3 - iCal Sync
  * Handles: iCal feed import/export for Booking.com, Airbnb, VRBO,
  * Google Calendar, and other iCal-compatible services
  *
@@ -47,7 +47,7 @@
      * Generate an iCal export URL for a property
      */
     getExportUrl(propertyId) {
-      const baseUrl = window.location.origin || 'https://app.trendaccom.com';
+      const baseUrl = window.location.origin || 'https://cascadeapartment3.com.au';
       return `${baseUrl}/ical/export/${propertyId}.ics`;
     },
 
@@ -61,10 +61,10 @@
       let ical = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
-        'PRODID:-//TrendAccom//Booking Calendar//EN',
+        'PRODID:-//Cascade Apartment 3//Booking Calendar//EN',
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
-        `X-WR-CALNAME:${propertyName} - TrendAccom`,
+        `X-WR-CALNAME:${propertyName} - Cascade Apartment 3`,
         `X-WR-TIMEZONE:Australia/Sydney`,
       ];
 
@@ -77,7 +77,7 @@
           `DTSTART;VALUE=DATE:${this.formatICalDateOnly(checkin)}`,
           `DTEND;VALUE=DATE:${this.formatICalDateOnly(checkout)}`,
           `DTSTAMP:${timestamp}`,
-          `UID:${booking.id}@trendaccom.com`,
+          `UID:${booking.id}@cascadeapartment3.com.au`,
           `SUMMARY:${booking.status === 'blocked' ? 'Blocked' : booking.guestName || 'Reserved'}`,
           `DESCRIPTION:Booking ref: ${booking.reference || 'N/A'}`,
           `STATUS:CONFIRMED`,
@@ -271,7 +271,7 @@
       const url = this.getExportUrl(propertyId);
       try {
         await navigator.clipboard.writeText(url);
-        window.TrendAccom?.showToast('Export URL copied to clipboard', 'success');
+        window.CascadeApp?.showToast('Export URL copied to clipboard', 'success');
       } catch {
         // Fallback for older browsers
         const textarea = document.createElement('textarea');
@@ -280,7 +280,7 @@
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        window.TrendAccom?.showToast('Export URL copied to clipboard', 'success');
+        window.CascadeApp?.showToast('Export URL copied to clipboard', 'success');
       }
     }
   };
@@ -297,7 +297,7 @@
         const propertySelect = document.getElementById('icalProperty');
 
         if (!urlInput?.value) {
-          window.TrendAccom?.showToast('Please enter an iCal URL', 'warning');
+          window.CascadeApp?.showToast('Please enter an iCal URL', 'warning');
           return;
         }
 
@@ -308,14 +308,14 @@
           );
 
           if (result.success) {
-            window.TrendAccom?.showToast(
+            window.CascadeApp?.showToast(
               `Successfully imported ${result.eventsImported} events from ${iCalSync.platforms[result.platform]?.name || 'calendar'}`,
               'success'
             );
             urlInput.value = '';
           }
         } catch (error) {
-          window.TrendAccom?.showToast(error.message, 'error');
+          window.CascadeApp?.showToast(error.message, 'error');
         }
       });
     }
@@ -338,10 +338,10 @@
         try {
           const result = await iCalSync.syncNow(connectionId);
           if (result.success) {
-            window.TrendAccom?.showToast('Sync completed successfully', 'success');
+            window.CascadeApp?.showToast('Sync completed successfully', 'success');
           }
         } catch (error) {
-          window.TrendAccom?.showToast('Sync failed: ' + error.message, 'error');
+          window.CascadeApp?.showToast('Sync failed: ' + error.message, 'error');
         } finally {
           btn.disabled = false;
           btn.textContent = 'Sync Now';
@@ -355,7 +355,7 @@
         if (confirm('Are you sure you want to remove this calendar connection?')) {
           const connectionId = btn.dataset.removeConnection;
           console.log('Removing connection:', connectionId);
-          window.TrendAccom?.showToast('Calendar connection removed', 'info');
+          window.CascadeApp?.showToast('Calendar connection removed', 'info');
           btn.closest('.ical-connection')?.remove();
         }
       });
@@ -375,6 +375,6 @@
     init();
   }
 
-  window.TrendAccom = window.TrendAccom || {};
-  window.TrendAccom.iCalSync = iCalSync;
+  window.CascadeApp = window.CascadeApp || {};
+  window.CascadeApp.iCalSync = iCalSync;
 })();

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Your Stay - Cascade Apartment 3</title>
+  <title>Book Your Stay — Cascade Apartment 3</title>
   <meta name="description" content="Complete your accommodation booking with Cascade Apartment 3. Secure, simple and fast.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -264,6 +264,24 @@
     .booking-page-content {
       padding-top: 100px;
     }
+
+    /* ── Validation error highlight ── */
+    .form-group--error {
+      border-left: 3px solid #ef4444;
+      padding-left: 10px;
+      border-radius: 2px;
+    }
+    .form-group--error input,
+    .form-group--error select,
+    .form-group--error textarea {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
+    }
+    .form-error {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
@@ -271,28 +289,25 @@
   <header class="site-header" id="siteHeader">
     <div class="header-inner">
       <a href="index.html" class="logo">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M2 38 L10 18 L16 26 L22 5 L28 24 L33 14 L40 38"
-                stroke="currentColor" stroke-width="2.5"
-                stroke-linejoin="round" stroke-linecap="round"/>
-          <path d="M23 30 Q26 28.5 29 30" stroke="currentColor" stroke-width="1.5"
-                fill="none" stroke-linecap="round" opacity="0.6"/>
-          <path d="M22 34 Q25.5 32.5 29 34" stroke="currentColor" stroke-width="1.5"
-                fill="none" stroke-linecap="round" opacity="0.45"/>
-          <path d="M21 38 Q25 36.5 29 38" stroke="currentColor" stroke-width="1.5"
-                fill="none" stroke-linecap="round" opacity="0.3"/>
+        <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 36 L15 9 L27 36Z" fill="currentColor" fill-opacity="0.42"/>
+          <path d="M17 36 L30 3 L43 36Z" fill="currentColor"/>
+          <path d="M30 3 L36.5 17 L23.5 17Z" fill="currentColor" fill-opacity="0.22"/>
+          <path d="M1 40 Q5.5 37.2 10 40 Q14.5 42.8 19 40 Q23.5 37.2 28 40 Q32.5 42.8 37 40 Q39.5 38.5 43 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
         </svg>
-        Cascade Apartment 3
+        <span class="logo-wordmark">
+          <span class="logo-wordmark-main">Cascade</span>
+          <span class="logo-wordmark-sub">Apartment 3</span>
+        </span>
       </a>
       <nav class="nav-main">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="search.html" class="nav-link">Browse</a>
-        <a href="search.html?type=hotel" class="nav-link">Hotels</a>
-        <a href="search.html?type=apartment" class="nav-link">Apartments</a>
-        <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
+        <a href="property.html" class="nav-link">The Apartment</a>
+        <a href="search.html" class="nav-link">Gallery</a>
+        <a href="property.html#tab-rates" class="nav-link">Rates</a>
       </nav>
       <div class="nav-actions">
-        <a href="admin/index.html" class="btn btn--sm btn--outline">List Your Property</a>
+        <a href="booking.html" class="btn btn--sm btn--primary">Book Now</a>
         <a href="admin/index.html" class="btn btn--sm btn--ghost">Sign In</a>
       </div>
       <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
@@ -304,11 +319,10 @@
   <!-- Mobile Navigation -->
   <nav class="mobile-nav" id="mobileNav">
     <a href="index.html" class="nav-link">Home</a>
-    <a href="search.html" class="nav-link">Browse All</a>
-    <a href="search.html?type=hotel" class="nav-link">Hotels</a>
-    <a href="search.html?type=apartment" class="nav-link">Apartments</a>
-    <a href="search.html?type=holiday-park" class="nav-link">Holiday Parks</a>
-    <a href="admin/index.html" class="btn btn--primary btn--block">List Your Property</a>
+    <a href="property.html" class="nav-link">The Apartment</a>
+    <a href="search.html" class="nav-link">Gallery</a>
+    <a href="property.html#tab-rates" class="nav-link">Rates</a>
+    <a href="booking.html" class="btn btn--primary btn--block">Book Now</a>
     <a href="admin/index.html" class="btn btn--outline btn--block">Sign In</a>
   </nav>
 
@@ -462,53 +476,53 @@
 
         <!-- Right Column: Summary Sidebar -->
         <aside class="booking-summary">
-          <div class="booking-summary__property">The Grand Harbour Hotel</div>
+          <div class="booking-summary__property">Cascade Apartment 3</div>
           <div class="booking-summary__rating">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <strong>4.8</strong> (246 reviews) &middot; Darling Harbour, Sydney
+            <strong>4.9</strong> (28 reviews) &middot; Mt. Baw Baw, VIC
           </div>
 
           <div class="summary-divider"></div>
 
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span><strong>Check-in:</strong> Sat, 14 Mar 2026</span>
+            <span><strong>Check-in:</strong> <span id="summaryCheckin">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span><strong>Check-out:</strong> Wed, 18 Mar 2026</span>
+            <span><strong>Check-out:</strong> <span id="summaryCheckout">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <span><strong>Guests:</strong> 2 Adults, 0 Children</span>
+            <span><strong>Guests:</strong> <span id="summaryGuests">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>4 nights &middot; Deluxe Harbour View Room</span>
+            <span id="summaryNightsLine">Select dates to see pricing</span>
           </div>
 
           <div class="summary-divider"></div>
 
           <div class="price-breakdown">
             <div class="price-row">
-              <span>$289 x 4 nights</span>
-              <span>$1,156.00</span>
+              <span data-summary="rate-label">—</span>
+              <span data-summary="accommodation">—</span>
             </div>
             <div class="price-row">
               <span>Cleaning fee</span>
-              <span>$75.00</span>
+              <span data-summary="cleaning">$75.00</span>
             </div>
             <div class="price-row">
               <span>Service fee</span>
-              <span>$98.00</span>
+              <span data-summary="service-fee">—</span>
             </div>
             <div class="price-row">
               <span>Taxes &amp; levies</span>
-              <span>$132.90</span>
+              <span data-summary="tax">—</span>
             </div>
             <div class="price-row price-row--total">
               <span>Total</span>
-              <span>$1,461.90</span>
+              <span data-summary="total">—</span>
             </div>
           </div>
 
@@ -528,30 +542,26 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="index.html" class="logo">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M2 38 L10 18 L16 26 L22 5 L28 24 L33 14 L40 38"
-                    stroke="currentColor" stroke-width="2.5"
-                    stroke-linejoin="round" stroke-linecap="round"/>
-              <path d="M23 30 Q26 28.5 29 30" stroke="currentColor" stroke-width="1.5"
-                    fill="none" stroke-linecap="round" opacity="0.6"/>
-              <path d="M22 34 Q25.5 32.5 29 34" stroke="currentColor" stroke-width="1.5"
-                    fill="none" stroke-linecap="round" opacity="0.45"/>
-              <path d="M21 38 Q25 36.5 29 38" stroke="currentColor" stroke-width="1.5"
-                    fill="none" stroke-linecap="round" opacity="0.3"/>
+            <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 36 L15 9 L27 36Z" fill="currentColor" fill-opacity="0.42"/>
+              <path d="M17 36 L30 3 L43 36Z" fill="currentColor"/>
+              <path d="M30 3 L36.5 17 L23.5 17Z" fill="currentColor" fill-opacity="0.22"/>
+              <path d="M1 40 Q5.5 37.2 10 40 Q14.5 42.8 19 40 Q23.5 37.2 28 40 Q32.5 42.8 37 40 Q39.5 38.5 43 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
             </svg>
-            Cascade Apartment 3
+            <span class="logo-wordmark">
+              <span class="logo-wordmark-main">Cascade</span>
+              <span class="logo-wordmark-sub">Apartment 3</span>
+            </span>
           </a>
-          <p>Your trusted platform for finding and booking the perfect accommodation. From luxury hotels to cosy retreats, we connect travellers with unforgettable stays.</p>
+          <p>A premium self-contained alpine retreat at Mt Baw Baw, VIC. Ski-in/ski-out access, mountain views, wood fireplace and hot tub.</p>
         </div>
         <div>
-          <h4 class="footer-heading">Explore</h4>
+          <h4 class="footer-heading">The Apartment</h4>
           <div class="footer-links">
-            <a href="search.html?type=hotel">Hotels</a>
-            <a href="search.html?type=apartment">Apartments</a>
-            <a href="search.html?type=motel">Motels</a>
-            <a href="search.html?type=pub">Pubs & Inns</a>
-            <a href="search.html?type=caravan-park">Caravan Parks</a>
-            <a href="search.html?type=holiday-park">Holiday Parks</a>
+            <a href="property.html">About &amp; Overview</a>
+            <a href="property.html">Amenities</a>
+            <a href="property.html">Rates &amp; Pricing</a>
+            <a href="search.html">Photo Gallery</a>
           </div>
         </div>
         <div>
@@ -594,5 +604,52 @@
 
   <script src="js/app.js"></script>
   <script src="js/booking-engine.js"></script>
+  <script>
+    (function() {
+      var params   = new URLSearchParams(window.location.search);
+      var checkin  = params.get('checkin')  || '';
+      var checkout = params.get('checkout') || '';
+      var guests   = parseInt(params.get('guests')) || 0;
+
+      function fmtDate(dateStr) {
+        if (!dateStr) return '—';
+        var d = new Date(dateStr + 'T00:00:00');
+        return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      // Pre-fill form fields
+      if (checkin)  { var ci = document.getElementById('checkinDate');  if (ci)  ci.value  = checkin; }
+      if (checkout) { var co = document.getElementById('checkoutDate'); if (co)  co.value  = checkout; }
+      if (guests > 0) {
+        var adults   = Math.min(guests, 6);
+        var children = Math.max(0, guests - 6);
+        var adEl = document.getElementById('numAdults');
+        var chEl = document.getElementById('numChildren');
+        if (adEl) adEl.value = adults;
+        if (chEl) chEl.value = Math.min(children, 4);
+      }
+
+      // Update sidebar date/guest labels
+      var elCI = document.getElementById('summaryCheckin');
+      var elCO = document.getElementById('summaryCheckout');
+      var elGU = document.getElementById('summaryGuests');
+      if (elCI) elCI.textContent = checkin  ? fmtDate(checkin)  : '—';
+      if (elCO) elCO.textContent = checkout ? fmtDate(checkout) : '—';
+      if (elGU && guests > 0) elGU.textContent = guests + ' Guest' + (guests !== 1 ? 's' : '');
+
+      // Calculate and show pricing if dates are present
+      if (checkin && checkout && window.CascadeApp && window.CascadeApp.BookingEngine) {
+        var pricing = window.CascadeApp.BookingEngine.calculatePrice({
+          baseRate: 289,
+          checkin:  checkin,
+          checkout: checkout,
+          guests:   guests || 2
+        });
+        if (pricing && !pricing.error) {
+          window.CascadeApp.BookingEngine.updateSummaryUI(pricing);
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

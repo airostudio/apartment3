@@ -31,8 +31,8 @@ export default async function handler(req, res) {
   const { RESEND_API_KEY, EMAIL_FROM } = process.env;
 
   if (!RESEND_API_KEY) {
-    console.error('RESEND_API_KEY is not set');
-    return res.status(500).json({ error: 'Email service not configured' });
+    console.warn('RESEND_API_KEY is not set — returning not_configured so client can fall back to mailto');
+    return res.status(503).json({ error: 'Email service not configured', code: 'not_configured' });
   }
 
   let body;

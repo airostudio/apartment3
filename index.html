@@ -1033,19 +1033,43 @@
         errorBox.style.display = 'none';
 
         try {
-          var res = await fetch('/api/contact', {
+          var res  = await fetch('/api/contact', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ name: name, email: email, phone: phone, subject: subject, message: message }),
           });
           var data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
 
-          // Show success, hide form
-          form.style.display       = 'none';
-          successEl.style.display  = 'block';
+          if (!res.ok) {
+            // Email API not configured — open a pre-filled mailto as fallback
+            if (data.code === 'not_configured') {
+              var body = 'Name: ' + name
+                + '\nEmail: ' + email
+                + (phone ? '\nPhone: ' + phone : '')
+                + '\nSubject: ' + subject
+                + '\n\nMessage:\n' + message;
+              window.open(
+                'mailto:admin@cascadeapartment3.com.au'
+                  + '?subject=' + encodeURIComponent(subject + ' — cascadeapartment3.com.au')
+                  + '&body='    + encodeURIComponent(body)
+              );
+              form.style.display      = 'none';
+              successEl.style.display = 'block';
+              var h3 = successEl.querySelector('h3');
+              var p  = successEl.querySelector('p');
+              if (h3) h3.textContent = 'Email client opened!';
+              if (p)  p.textContent  = 'Your message has been pre-filled in your email app — just hit Send to reach us.';
+              return;
+            }
+            throw new Error(data.error || 'Something went wrong. Please try again.');
+          }
+
+          // Success via API
+          form.style.display      = 'none';
+          successEl.style.display = 'block';
         } catch (err) {
-          errorBox.textContent   = err.message || 'Could not send your message. Please email us directly at admin@cascadeapartment3.com.au';
+          errorBox.innerHTML     = (err.message || 'Could not send your message.')
+            + ' Please email us directly at <a href="mailto:admin@cascadeapartment3.com.au" style="color:#dc2626;font-weight:600;">admin@cascadeapartment3.com.au</a>';
           errorBox.style.display = 'block';
           submitBtn.disabled     = false;
           submitBtn.textContent  = 'Send Message';

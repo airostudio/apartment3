@@ -757,7 +757,7 @@
             </div>
             <div>
               <div class="contact-info-label">Email</div>
-              <div class="contact-info-value"><a href="mailto:admin@cascadeapartment3.com.au">admin@cascadeapartment3.com.au</a></div>
+              <div class="contact-info-value"><a href="mailto:hello@cascadeapartment3.com.au">hello@cascadeapartment3.com.au</a></div>
             </div>
           </div>
           <div class="contact-info-item">
@@ -1049,7 +1049,7 @@
                 + '\nSubject: ' + subject
                 + '\n\nMessage:\n' + message;
               window.open(
-                'mailto:admin@cascadeapartment3.com.au'
+                'mailto:hello@cascadeapartment3.com.au'
                   + '?subject=' + encodeURIComponent(subject + ' — cascadeapartment3.com.au')
                   + '&body='    + encodeURIComponent(body)
               );
@@ -1069,7 +1069,7 @@
           successEl.style.display = 'block';
         } catch (err) {
           errorBox.innerHTML     = (err.message || 'Could not send your message.')
-            + ' Please email us directly at <a href="mailto:admin@cascadeapartment3.com.au" style="color:#dc2626;font-weight:600;">admin@cascadeapartment3.com.au</a>';
+            + ' Please email us directly at <a href="mailto:hello@cascadeapartment3.com.au" style="color:#dc2626;font-weight:600;">hello@cascadeapartment3.com.au</a>';
           errorBox.style.display = 'block';
           submitBtn.disabled     = false;
           submitBtn.textContent  = 'Send Message';

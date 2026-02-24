@@ -2,7 +2,7 @@
  * Vercel Serverless Function — /api/contact
  *
  * Handles contact form submissions from the front page.
- * Sends an enquiry notification to admin@cascadeapartment3.com.au
+ * Sends an enquiry notification to hello@cascadeapartment3.com.au
  * and an auto-reply acknowledgement to the sender.
  *
  * Required environment variables (set in Vercel dashboard):
@@ -13,7 +13,7 @@
  */
 
 const RESEND_API   = 'https://api.resend.com/emails';
-const CONTACT_DEST = 'admin@cascadeapartment3.com.au';
+const CONTACT_DEST = 'hello@cascadeapartment3.com.au';
 
 export default async function handler(req, res) {
   // CORS preflight
@@ -166,7 +166,7 @@ export default async function handler(req, res) {
   <div class="footer">
     <p><strong>Cascade Apartment 3</strong><br>
     Baw Baw Village, Mt Baw Baw VIC 3833<br>
-    <a href="mailto:admin@cascadeapartment3.com.au">admin@cascadeapartment3.com.au</a></p>
+    <a href="mailto:hello@cascadeapartment3.com.au">hello@cascadeapartment3.com.au</a></p>
     <p style="margin-top:12px; color:#9ca3af; font-size:12px;">
       You're receiving this because you submitted a contact form at cascadeapartment3.com.au.
     </p>

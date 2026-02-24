@@ -24,7 +24,7 @@
     // then stored as hashes in localStorage. Plaintext is never re-used after that.
     var SEED = [
         {
-            email:    'admin@cascadeapartment3.com.au',
+            email:    'hello@cascadeapartment3.com.au',
             password: 'CaAdmin#2026',
             role:     'admin',
             name:     'Admin',

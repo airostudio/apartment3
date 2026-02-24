@@ -305,6 +305,90 @@
       .hero-book-field { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); width: 100%; padding: var(--space-sm) 0; }
       .hero-book-field:last-of-type { border-bottom: none; }
     }
+
+    /* ── Contact Section ─────────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: var(--space-3xl, 3rem);
+      align-items: start;
+    }
+    .contact-info-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: var(--space-xl, 1.5rem);
+    }
+    .contact-info-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--color-primary, #0f2744);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-info-icon svg { width: 18px; height: 18px; stroke: #c9a84c; fill: none; stroke-width: 2; }
+    .contact-info-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--color-gray, #6b7280); margin-bottom: 3px; }
+    .contact-info-value { font-size: 0.95rem; color: var(--color-dark, #1a1a2e); font-weight: 500; }
+    .contact-info-value a { color: var(--color-primary, #0f2744); text-decoration: none; }
+    .contact-info-value a:hover { text-decoration: underline; }
+    .contact-form-group { margin-bottom: var(--space-md, 1rem); }
+    .contact-form-group label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: var(--color-dark, #1a1a2e); margin-bottom: 5px;
+    }
+    .contact-form-group input,
+    .contact-form-group select,
+    .contact-form-group textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid #ddd; border-radius: 8px;
+      font-size: 0.9rem; font-family: inherit; color: var(--color-dark, #1a1a2e);
+      background: #fff; transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .contact-form-group input:focus,
+    .contact-form-group select:focus,
+    .contact-form-group textarea:focus {
+      outline: none; border-color: var(--color-primary, #0f2744);
+      box-shadow: 0 0 0 3px rgba(15,39,68,0.08);
+    }
+    .contact-form-group textarea { resize: vertical; min-height: 130px; }
+    .contact-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md, 1rem); }
+    .contact-form-group .field-error {
+      color: #dc2626; font-size: 0.78rem; margin-top: 4px; display: none;
+    }
+    .contact-form-group.has-error input,
+    .contact-form-group.has-error select,
+    .contact-form-group.has-error textarea { border-color: #dc2626; }
+    .contact-form-group.has-error .field-error { display: block; }
+    .contact-submit-btn {
+      width: 100%; padding: 13px;
+      background: var(--color-primary, #0f2744); color: #fff;
+      border: none; border-radius: 8px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s, opacity 0.2s;
+      font-family: inherit;
+    }
+    .contact-submit-btn:hover:not(:disabled) { background: #1a3a5c; }
+    .contact-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+    .contact-success {
+      text-align: center; padding: var(--space-2xl, 2rem) var(--space-xl, 1.5rem);
+      background: #f0fdf4; border-radius: 12px; border: 1px solid #bbf7d0;
+    }
+    .contact-success-icon {
+      width: 56px; height: 56px; border-radius: 50%; background: #059669;
+      display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;
+    }
+    .contact-success-icon svg { width: 28px; height: 28px; stroke: #fff; fill: none; stroke-width: 2.5; }
+    .contact-success h3 { color: #065f46; font-size: 1.15rem; margin: 0 0 8px; }
+    .contact-success p  { color: #047857; font-size: 0.9rem; margin: 0; }
+    .contact-form-error {
+      padding: 12px 16px; background: #fef2f2; border: 1px solid #fecaca;
+      border-radius: 8px; color: #dc2626; font-size: 0.88rem; margin-top: 12px;
+      display: none;
+    }
+    @media (max-width: 860px) {
+      .contact-grid { grid-template-columns: 1fr; gap: var(--space-2xl, 2rem); }
+      .contact-form-row { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -656,6 +740,107 @@
     </div>
   </section>
 
+  <!-- Contact Us -->
+  <section class="section section--light" id="contact">
+    <div class="container container--narrow">
+      <div class="text-center" style="margin-bottom: var(--space-2xl);">
+        <h2>Get in Touch</h2>
+        <p style="color: var(--color-gray); margin-top: var(--space-sm);">Questions about the apartment, rates, or availability? We'd love to hear from you.</p>
+      </div>
+      <div class="contact-grid">
+
+        <!-- Left: contact info -->
+        <div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-value"><a href="mailto:admin@cascadeapartment3.com.au">admin@cascadeapartment3.com.au</a></div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Address</div>
+              <div class="contact-info-value">Cascade Apartment 3<br>Baw Baw Village, Mt Baw Baw<br>VIC 3833, Australia</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Response Time</div>
+              <div class="contact-info-value">We aim to reply within 24–48 hours</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Check Availability</div>
+              <div class="contact-info-value"><a href="booking.html">Book online instantly →</a></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: contact form -->
+        <div>
+          <form id="contactForm" novalidate>
+            <div class="contact-form-row">
+              <div class="contact-form-group">
+                <label for="contactName">Full Name <span style="color:#dc2626;">*</span></label>
+                <input type="text" id="contactName" name="name" placeholder="Jane Smith" autocomplete="name">
+                <div class="field-error">Please enter your name.</div>
+              </div>
+              <div class="contact-form-group">
+                <label for="contactEmail">Email Address <span style="color:#dc2626;">*</span></label>
+                <input type="email" id="contactEmail" name="email" placeholder="jane@example.com" autocomplete="email">
+                <div class="field-error">Please enter a valid email.</div>
+              </div>
+            </div>
+            <div class="contact-form-row">
+              <div class="contact-form-group">
+                <label for="contactPhone">Phone <span style="color:#9ca3af; font-weight:400;">(optional)</span></label>
+                <input type="tel" id="contactPhone" name="phone" placeholder="+61 4xx xxx xxx" autocomplete="tel">
+              </div>
+              <div class="contact-form-group">
+                <label for="contactSubject">Subject <span style="color:#dc2626;">*</span></label>
+                <select id="contactSubject" name="subject">
+                  <option value="General Enquiry">General Enquiry</option>
+                  <option value="Booking Question">Booking Question</option>
+                  <option value="Rates &amp; Availability">Rates &amp; Availability</option>
+                  <option value="Group Booking">Group Booking</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="contact-form-group">
+              <label for="contactMessage">Message <span style="color:#dc2626;">*</span></label>
+              <textarea id="contactMessage" name="message" placeholder="Tell us about your enquiry — dates you're looking at, number of guests, any questions about the apartment…"></textarea>
+              <div class="field-error">Please enter a message.</div>
+            </div>
+            <button type="submit" class="contact-submit-btn" id="contactSubmitBtn">Send Message</button>
+            <div class="contact-form-error" id="contactFormError"></div>
+          </form>
+          <div class="contact-success" id="contactSuccess" style="display:none;">
+            <div class="contact-success-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3>Message sent!</h3>
+            <p>Thanks for reaching out. We'll be in touch within 24–48 hours.<br>A confirmation has been sent to your email.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
@@ -802,6 +987,70 @@
           window.location.href = 'booking.html?checkin=' + ci + '&checkout=' + co + '&guests=' + guests;
         }, 700);
       };
+    })();
+
+    // ── Contact Form ──────────────────────────────────────────────
+    (function() {
+      var form      = document.getElementById('contactForm');
+      var submitBtn = document.getElementById('contactSubmitBtn');
+      var errorBox  = document.getElementById('contactFormError');
+      var successEl = document.getElementById('contactSuccess');
+      if (!form) return;
+
+      function setGroupError(input, show) {
+        var group = input.closest('.contact-form-group');
+        if (!group) return;
+        if (show) group.classList.add('has-error');
+        else       group.classList.remove('has-error');
+      }
+
+      // Clear error state on input
+      form.querySelectorAll('input, select, textarea').forEach(function(el) {
+        el.addEventListener('input', function() { setGroupError(el, false); });
+        el.addEventListener('change', function() { setGroupError(el, false); });
+      });
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        var name    = document.getElementById('contactName').value.trim();
+        var email   = document.getElementById('contactEmail').value.trim();
+        var phone   = document.getElementById('contactPhone').value.trim();
+        var subject = document.getElementById('contactSubject').value;
+        var message = document.getElementById('contactMessage').value.trim();
+
+        // Client-side validation
+        var valid = true;
+        if (!name)    { setGroupError(document.getElementById('contactName'),    true); valid = false; }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        setGroupError(document.getElementById('contactEmail'),   true); valid = false; }
+        if (!message) { setGroupError(document.getElementById('contactMessage'), true); valid = false; }
+        if (!valid) return;
+
+        // Submit
+        submitBtn.disabled    = true;
+        submitBtn.textContent = 'Sending\u2026';
+        errorBox.style.display = 'none';
+
+        try {
+          var res = await fetch('/api/contact', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ name: name, email: email, phone: phone, subject: subject, message: message }),
+          });
+          var data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
+
+          // Show success, hide form
+          form.style.display       = 'none';
+          successEl.style.display  = 'block';
+        } catch (err) {
+          errorBox.textContent   = err.message || 'Could not send your message. Please email us directly at admin@cascadeapartment3.com.au';
+          errorBox.style.display = 'block';
+          submitBtn.disabled     = false;
+          submitBtn.textContent  = 'Send Message';
+        }
+      });
     })();
   </script>
 </body>

@@ -110,7 +110,7 @@ export default async function handler(req, res) {
     </div>
     <a class="cta" href="mailto:${escHtml(email)}?subject=Re: ${encodeURIComponent(subject)} — Cascade Apartment 3">Reply to ${escHtml(name)} →</a>
   </div>
-  <div class="footer">Sent via the contact form at cascadeapartment3.com.au</div>
+  <div class="footer">Sent via the contact form at mtbawbawcascade3.com</div>
 </div>
 </body>
 </html>`;
@@ -168,7 +168,7 @@ export default async function handler(req, res) {
     Baw Baw Village, Mt Baw Baw VIC 3833<br>
     <a href="mailto:hello@mtbawbawcascade3.com">hello@mtbawbawcascade3.com</a></p>
     <p style="margin-top:12px; color:#9ca3af; font-size:12px;">
-      You're receiving this because you submitted a contact form at cascadeapartment3.com.au.
+      You're receiving this because you submitted a contact form at mtbawbawcascade3.com.
     </p>
   </div>
 </div>

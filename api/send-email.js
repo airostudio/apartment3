@@ -174,7 +174,7 @@ export default async function handler(req, res) {
     Baw Baw Village, Mt Baw Baw VIC 3833<br>
     <a href="mailto:hello@mtbawbawcascade3.com">hello@mtbawbawcascade3.com</a></p>
     <p style="margin-top:16px; color:#9ca3af; font-size:12px;">
-      You're receiving this email because you made a booking at cascadeapartment3.com.au.
+      You're receiving this email because you made a booking at mtbawbawcascade3.com.
     </p>
   </div>
 </div>
@@ -215,7 +215,7 @@ export default async function handler(req, res) {
     ${nights ? `<div class="row"><span class="lbl">Nights</span><span class="val">${escHtml(String(nights))}</span></div>` : ''}
     ${guests ? `<div class="row"><span class="lbl">Guests</span><span class="val">${escHtml(String(guests))}</span></div>` : ''}
     ${totalAmount ? `<div class="row"><span class="lbl">Total</span><span class="val">${escHtml(String(totalAmount))}</span></div>` : ''}
-    <a class="cta" href="https://cascadeapartment3.com.au/admin/bookings.html">View in Admin →</a>
+    <a class="cta" href="https://mtbawbawcascade3.com/admin/bookings.html">View in Admin →</a>
   </div>
 </div>
 </body>

@@ -47,7 +47,7 @@
      * Generate an iCal export URL for a property
      */
     getExportUrl(propertyId) {
-      const baseUrl = window.location.origin || 'https://cascadeapartment3.com.au';
+      const baseUrl = window.location.origin || 'https://mtbawbawcascade3.com';
       return `${baseUrl}/ical/export/${propertyId}.ics`;
     },
 
@@ -77,7 +77,7 @@
           `DTSTART;VALUE=DATE:${this.formatICalDateOnly(checkin)}`,
           `DTEND;VALUE=DATE:${this.formatICalDateOnly(checkout)}`,
           `DTSTAMP:${timestamp}`,
-          `UID:${booking.id}@cascadeapartment3.com.au`,
+          `UID:${booking.id}@mtbawbawcascade3.com`,
           `SUMMARY:${booking.status === 'blocked' ? 'Blocked' : booking.guestName || 'Reserved'}`,
           `DESCRIPTION:Booking ref: ${booking.reference || 'N/A'}`,
           `STATUS:CONFIRMED`,

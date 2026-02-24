@@ -88,14 +88,14 @@
         url: 'https://www.airbnb.com.au/calendar/ical/YOUR_LISTING_ID.ics?s=YOUR_SECRET',
         status: 'active', lastSync: new Date(Date.now() - 28 * 60000).toISOString(),
         eventsImported: 14, frequency: '1hour',
-        exportUrl: 'https://cascadeapartment3.com.au/ical/export/cascade-apt3.ics'
+        exportUrl: 'https://mtbawbawcascade3.com/ical/export/cascade-apt3.ics'
       },
       {
         id: 'IC-002', platform: 'booking_com', label: 'Booking.com — Cascade Apt 4',
         url: 'https://admin.booking.com/hotel/hoteladmin/ical.html?t=YOUR_TOKEN',
         status: 'active', lastSync: new Date(Date.now() - 55 * 60000).toISOString(),
         eventsImported: 8, frequency: '1hour',
-        exportUrl: 'https://cascadeapartment3.com.au/ical/export/cascade-apt3.ics'
+        exportUrl: 'https://mtbawbawcascade3.com/ical/export/cascade-apt3.ics'
       }
     ];
   }

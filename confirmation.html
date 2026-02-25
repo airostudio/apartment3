@@ -370,29 +370,29 @@
           <div class="booking-details-left">
             <div class="booking-detail-item">
               <div class="booking-detail-item__label">Property</div>
-              <div class="booking-detail-item__value">The Grand Harbour Hotel</div>
+              <div class="booking-detail-item__value">Cascade Apartment 3</div>
+            </div>
+            <div class="booking-detail-item">
+              <div class="booking-detail-item__label">Location</div>
+              <div class="booking-detail-item__value">Mt Baw Baw, VIC</div>
             </div>
             <div class="booking-detail-item">
               <div class="booking-detail-item__label">Check-in</div>
-              <div class="booking-detail-item__value">Friday, 27 March 2026</div>
+              <div class="booking-detail-item__value" id="conf-checkin">—</div>
             </div>
             <div class="booking-detail-item">
               <div class="booking-detail-item__label">Check-out</div>
-              <div class="booking-detail-item__value">Sunday, 29 March 2026</div>
+              <div class="booking-detail-item__value" id="conf-checkout">—</div>
             </div>
             <div class="booking-detail-item">
               <div class="booking-detail-item__label">Guests</div>
-              <div class="booking-detail-item__value">2 Adults</div>
-            </div>
-            <div class="booking-detail-item">
-              <div class="booking-detail-item__label">Room Type</div>
-              <div class="booking-detail-item__value">Deluxe King Room - Ocean View</div>
+              <div class="booking-detail-item__value" id="conf-guests">—</div>
             </div>
           </div>
           <div class="booking-details-right">
             <div class="booking-detail-item">
               <div class="booking-detail-item__label">Booking Reference</div>
-              <div class="booking-detail-item__value">TRA-2026-00847</div>
+              <div class="booking-detail-item__value" id="conf-ref">—</div>
             </div>
             <div class="booking-detail-item">
               <div class="booking-detail-item__label">Payment Status</div>
@@ -402,7 +402,7 @@
             </div>
             <div class="booking-detail-item">
               <div class="booking-detail-item__label">Total Paid</div>
-              <div class="booking-detail-item__value total-paid-amount">$489.00</div>
+              <div class="booking-detail-item__value total-paid-amount" id="conf-total">—</div>
             </div>
           </div>
         </div>
@@ -560,20 +560,13 @@
     if (booking.totalAmount)  setText('[data-field="totalAmount"]', booking.totalAmount);
     if (booking.depositAmount)setText('[data-field="depositAmount"]', booking.depositAmount);
 
-    // Replace static booking details in the card
-    var propField   = document.querySelector('.booking-detail-item__value');
-    var checkinEl   = document.querySelectorAll('.booking-detail-item__value')[1];
-    var checkoutEl  = document.querySelectorAll('.booking-detail-item__value')[2];
-    var guestsEl    = document.querySelectorAll('.booking-detail-item__value')[3];
-    var refEl       = document.querySelectorAll('.booking-detail-item__value')[5];
-    var totalEl     = document.querySelector('.total-paid-amount');
-
-    if (propField)  propField.textContent  = 'Cascade Apartment 3';
-    if (booking.checkin  && checkinEl)  checkinEl.textContent  = fmtDate(booking.checkin)  + ', from 2:00 PM';
-    if (booking.checkout && checkoutEl) checkoutEl.textContent = fmtDate(booking.checkout) + ', by 10:00 AM';
-    if (booking.guests   && guestsEl)   guestsEl.textContent   = booking.guests + ' guest' + (booking.guests === 1 ? '' : 's');
-    if (booking.ref      && refEl)      refEl.textContent      = booking.ref;
-    if (booking.totalAmount && totalEl) totalEl.textContent    = booking.totalAmount;
+    // Populate booking details card using stable IDs
+    var el = function (id) { return document.getElementById(id); };
+    if (booking.checkin     && el('conf-checkin'))  el('conf-checkin').textContent  = fmtDate(booking.checkin)  + ', from 2:00 PM';
+    if (booking.checkout    && el('conf-checkout')) el('conf-checkout').textContent = fmtDate(booking.checkout) + ', by 10:00 AM';
+    if (booking.guests      && el('conf-guests'))   el('conf-guests').textContent   = booking.guests + ' guest' + (booking.guests === 1 ? '' : 's');
+    if (booking.ref         && el('conf-ref'))      el('conf-ref').textContent      = booking.ref;
+    if (booking.totalAmount && el('conf-total'))    el('conf-total').textContent    = booking.totalAmount;
 
     // ── Fire confirmation emails via /api/send-email ───────────────────────
     if (booking.guestEmail && booking.ref) {

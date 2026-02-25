@@ -155,10 +155,14 @@
     // 4. Mount the Payment Element (handles card, Apple Pay, Google Pay, etc.)
     const paymentElement = elements.create('payment', {
       fields: {
-        // We collect billing address in our own form and pass it via
-        // payment_method_data in confirmPayment — tell Stripe not to
-        // duplicate those fields inside the element.
-        billingDetails: { address: 'never' },
+        // We collect name and billing address in our own form fields and
+        // pass them via payment_method_data in confirmPayment.
+        // Tell Stripe not to duplicate those fields inside the element,
+        // otherwise Stripe will reject the submission as conflicting data.
+        billingDetails: {
+          name:    'never',
+          address: 'never',
+        },
       },
     });
     paymentElement.mount('#payment-element');

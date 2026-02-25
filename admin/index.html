@@ -187,15 +187,8 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="stat-card-value">1,247</div>
-                    <div class="stat-card-change stat-card-change--up">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg>
-                        +12%
-                        <span class="stat-card-change-period">vs last month</span>
-                    </div>
+                    <div class="stat-card-value" id="statTotalBookings">0</div>
+                    <div class="stat-card-change" id="statTotalBookingsChange" style="color:var(--color-gray);">No bookings yet</div>
                 </div>
 
                 <div class="stat-card">
@@ -208,15 +201,8 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="stat-card-value">$89,432</div>
-                    <div class="stat-card-change stat-card-change--up">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg>
-                        +8%
-                        <span class="stat-card-change-period">vs last month</span>
-                    </div>
+                    <div class="stat-card-value" id="statRevenue">$0</div>
+                    <div class="stat-card-change" style="color:var(--color-gray);">No revenue yet</div>
                 </div>
 
                 <div class="stat-card">
@@ -228,15 +214,8 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="stat-card-value">78%</div>
-                    <div class="stat-card-change stat-card-change--up">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg>
-                        +5%
-                        <span class="stat-card-change-period">vs last month</span>
-                    </div>
+                    <div class="stat-card-value" id="statOccupancy">0%</div>
+                    <div class="stat-card-change" style="color:var(--color-gray);">No stays yet</div>
                 </div>
 
                 <div class="stat-card">
@@ -249,15 +228,8 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="stat-card-value">$185</div>
-                    <div class="stat-card-change stat-card-change--up">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg>
-                        +5%
-                        <span class="stat-card-change-period">vs last month</span>
-                    </div>
+                    <div class="stat-card-value" id="statAvgRate">—</div>
+                    <div class="stat-card-change" style="color:var(--color-gray);">No stays yet</div>
                 </div>
             </div>
 
@@ -281,56 +253,9 @@
                                         <th>Amount</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="admin-table-guest">
-                                            <span class="guest-avatar">JD</span>
-                                            <span>John Doe</span>
-                                        </td>
-                                        <td>Feb 20, 2026</td>
-                                        <td>Feb 25, 2026</td>
-                                        <td><span class="badge badge--confirmed">Confirmed</span></td>
-                                        <td class="admin-table-amount">$1,250</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="admin-table-guest">
-                                            <span class="guest-avatar">SM</span>
-                                            <span>Sarah Miller</span>
-                                        </td>
-                                        <td>Feb 22, 2026</td>
-                                        <td>Feb 28, 2026</td>
-                                        <td><span class="badge badge--pending">Pending</span></td>
-                                        <td class="admin-table-amount">$980</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="admin-table-guest">
-                                            <span class="guest-avatar">RJ</span>
-                                            <span>Robert Johnson</span>
-                                        </td>
-                                        <td>Feb 18, 2026</td>
-                                        <td>Feb 21, 2026</td>
-                                        <td><span class="badge badge--checked-in">Checked In</span></td>
-                                        <td class="admin-table-amount">$540</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="admin-table-guest">
-                                            <span class="guest-avatar">EW</span>
-                                            <span>Emily Watson</span>
-                                        </td>
-                                        <td>Mar 1, 2026</td>
-                                        <td>Mar 5, 2026</td>
-                                        <td><span class="badge badge--confirmed">Confirmed</span></td>
-                                        <td class="admin-table-amount">$720</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="admin-table-guest">
-                                            <span class="guest-avatar">MC</span>
-                                            <span>Michael Chen</span>
-                                        </td>
-                                        <td>Feb 15, 2026</td>
-                                        <td>Feb 18, 2026</td>
-                                        <td><span class="badge badge--completed">Completed</span></td>
-                                        <td class="admin-table-amount">$1,890</td>
+                                <tbody id="recentBookingsTbody">
+                                    <tr id="recentBookingsEmpty">
+                                        <td colspan="5" style="text-align:center;padding:2rem;color:var(--color-gray);font-size:var(--font-size-sm);">No bookings yet</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -412,14 +337,14 @@
                         <div class="admin-card-body" style="display:flex;flex-direction:column;gap:var(--space-md);">
                             <div style="display:flex;justify-content:space-between;align-items:center;">
                                 <span style="font-size:var(--font-size-sm);color:var(--color-gray);">This month occupancy</span>
-                                <strong style="font-size:var(--font-size-md);">78%</strong>
+                                <strong style="font-size:var(--font-size-md);" id="propOccupancy">0%</strong>
                             </div>
                             <div class="property-mini-bar" style="width:100%;">
-                                <div class="property-mini-bar-fill" style="width:78%;"></div>
+                                <div class="property-mini-bar-fill" id="propOccupancyBar" style="width:0%;"></div>
                             </div>
                             <div style="display:flex;justify-content:space-between;font-size:var(--font-size-xs);color:var(--color-gray);">
-                                <span>Next available: Mar 8, 2026</span>
-                                <span>Nights booked: 18/23</span>
+                                <span id="propNextAvail">—</span>
+                                <span id="propNightsBooked">Nights booked: 0</span>
                             </div>
                             <a href="/admin/calendar.html" class="admin-card-footer-link" style="margin-top:var(--space-xs);">
                                 View Calendar
@@ -437,5 +362,87 @@
     <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
+    <script>
+    (function () {
+      if (!window.CA3Data) return;
+      var bookings = CA3Data.getBookings();
+      var fmt = function (n) {
+        return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', maximumFractionDigits: 0 }).format(n);
+      };
+      var fmtDate = function (str) {
+        if (!str) return '—';
+        var d = new Date(str + 'T00:00:00');
+        return isNaN(d) ? str : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+      };
+
+      // Stats
+      var confirmed = bookings.filter(function (b) { return b.status === 'confirmed'; });
+      var revenue   = confirmed.reduce(function (s, b) { return s + (b.total || 0); }, 0);
+      var avgRate   = confirmed.length ? (confirmed.reduce(function (s, b) { return s + (b.baseRate || 0); }, 0) / confirmed.length) : 0;
+
+      var totalEl = document.getElementById('statTotalBookings');
+      var revenueEl = document.getElementById('statRevenue');
+      var avgEl = document.getElementById('statAvgRate');
+      if (totalEl) totalEl.textContent = bookings.length;
+      if (revenueEl) revenueEl.textContent = revenue > 0 ? fmt(revenue) : '$0';
+      if (avgEl) avgEl.textContent = avgRate > 0 ? fmt(avgRate) : '—';
+
+      // Occupancy (current month)
+      var now = new Date();
+      var y = now.getFullYear(), m = now.getMonth();
+      var daysInMonth = new Date(y, m + 1, 0).getDate();
+      var bookedDays = 0;
+      for (var d = 1; d <= daysInMonth; d++) {
+        var ds = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+        if (CA3Data.isDateBooked(ds)) bookedDays++;
+      }
+      var occ = daysInMonth > 0 ? Math.round((bookedDays / daysInMonth) * 100) : 0;
+      var occEl = document.getElementById('statOccupancy');
+      if (occEl) occEl.textContent = occ + '%';
+      var propOcc = document.getElementById('propOccupancy');
+      var propBar = document.getElementById('propOccupancyBar');
+      var propNights = document.getElementById('propNightsBooked');
+      if (propOcc) propOcc.textContent = occ + '%';
+      if (propBar) propBar.style.width = occ + '%';
+      if (propNights) propNights.textContent = 'Nights booked: ' + bookedDays + '/' + daysInMonth;
+
+      // Next available date
+      var nextAvailEl = document.getElementById('propNextAvail');
+      if (nextAvailEl) {
+        var check = new Date();
+        check.setDate(check.getDate() + 1);
+        var found = null;
+        for (var i = 0; i < 90; i++) {
+          var ds2 = check.toISOString().split('T')[0];
+          if (!CA3Data.isDateBooked(ds2) && !CA3Data.isDateBlocked(ds2)) { found = ds2; break; }
+          check.setDate(check.getDate() + 1);
+        }
+        nextAvailEl.textContent = found ? 'Next available: ' + fmtDate(found) : 'Next available: —';
+      }
+
+      // Recent bookings table (last 5)
+      var tbody = document.getElementById('recentBookingsTbody');
+      var emptyRow = document.getElementById('recentBookingsEmpty');
+      if (tbody && bookings.length > 0) {
+        if (emptyRow) emptyRow.remove();
+        var recent = bookings.slice().sort(function (a, b) {
+          return (b.confirmedAt || b.id || '').localeCompare(a.confirmedAt || a.id || '');
+        }).slice(0, 5);
+        recent.forEach(function (b) {
+          var initials = (b.guestName || 'GU').split(' ').map(function (w) { return w[0]; }).join('').toUpperCase().slice(0, 2);
+          var badgeClass = { confirmed: 'badge--confirmed', pending: 'badge--pending', cancelled: 'badge--cancelled' }[b.status] || 'badge--pending';
+          var statusLabel = b.status ? b.status.charAt(0).toUpperCase() + b.status.slice(1) : 'Unknown';
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td class="admin-table-guest"><span class="guest-avatar">' + initials + '</span><span>' + (b.guestName || '—') + '</span></td>' +
+            '<td>' + fmtDate(b.checkIn) + '</td>' +
+            '<td>' + fmtDate(b.checkOut) + '</td>' +
+            '<td><span class="badge ' + badgeClass + '">' + statusLabel + '</span></td>' +
+            '<td class="admin-table-amount">' + fmt(b.total || 0) + '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+    })();
+    </script>
 </body>
 </html>

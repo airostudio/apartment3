@@ -323,6 +323,7 @@
       padding-top: 100px;
     }
   </style>
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <!-- Header -->
@@ -408,10 +409,11 @@
 
               <div class="form-group">
                 <label>Card Details *</label>
-                <div class="stripe-card-element" id="stripeCardElement">
+                <div class="stripe-card-element" id="stripe-card-element">
                   <!-- Stripe.js will mount the Card Element here -->
                   <span class="placeholder-text">Card number, expiry, CVC will appear here when Stripe.js loads</span>
                 </div>
+                <div id="card-errors" role="alert" style="color:#dc2626;font-size:0.875rem;margin-top:6px;min-height:1.2em;"></div>
               </div>
 
               <label class="checkbox-option">
@@ -481,6 +483,10 @@
               </div>
             </div>
 
+            <!-- Hidden: populated from sessionStorage by checkout-init script -->
+            <input type="hidden" id="bookingAmount" name="bookingAmount" value="">
+            <input type="hidden" id="bookingEmail" name="bookingEmail" value="">
+
           </form>
         </div>
 
@@ -493,8 +499,8 @@
               <!-- Property thumbnail placeholder -->
             </div>
             <div class="order-summary__property-info">
-              <div class="order-summary__property-name">The Grand Harbour Hotel</div>
-              <div class="order-summary__property-location">Darling Harbour, Sydney</div>
+              <div class="order-summary__property-name">Cascade Apartment 3</div>
+              <div class="order-summary__property-location">Mt Baw Baw, VIC</div>
             </div>
           </div>
 
@@ -502,50 +508,54 @@
 
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span><strong>Check-in:</strong> Sat, 14 Mar 2026</span>
+            <span><strong>Check-in:</strong> <span id="co-checkin">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span><strong>Check-out:</strong> Wed, 18 Mar 2026</span>
+            <span><strong>Check-out:</strong> <span id="co-checkout">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <span><strong>Guests:</strong> 2 Adults, 0 Children</span>
+            <span><strong>Guests:</strong> <span id="co-guests">—</span></span>
           </div>
           <div class="summary-detail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>4 nights &middot; Deluxe Harbour View Room</span>
+            <span id="co-nights">Cascade Apartment 3</span>
           </div>
 
           <div class="summary-divider"></div>
 
           <div class="price-breakdown">
             <div class="price-row">
-              <span>$289 x 4 nights</span>
-              <span>$1,156.00</span>
+              <span id="co-rate-label">Accommodation</span>
+              <span id="co-accommodation">—</span>
             </div>
             <div class="price-row">
               <span>Cleaning fee</span>
-              <span>$75.00</span>
+              <span id="co-cleaning">—</span>
             </div>
             <div class="price-row">
               <span>Service fee</span>
-              <span>$98.00</span>
+              <span id="co-service-fee">—</span>
             </div>
             <div class="price-row">
               <span>Taxes &amp; levies</span>
-              <span>$132.90</span>
+              <span id="co-tax">—</span>
+            </div>
+            <div class="price-row" id="co-addons-row" style="display:none;">
+              <span>Add-ons</span>
+              <span id="co-addons">—</span>
             </div>
             <div class="price-row price-row--total">
               <span>Total</span>
-              <span>$1,461.90</span>
+              <span id="co-total">—</span>
             </div>
           </div>
 
           <div class="pay-now-cta">
             <button type="submit" form="paymentForm" class="btn btn--primary btn--lg" id="payNowBtn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-              Pay Now &mdash; $1,461.90
+              Pay Now &mdash; <span id="co-pay-amount">—</span>
             </button>
           </div>
 
@@ -638,5 +648,63 @@
 
   <script src="js/app.js"></script>
   <script src="js/stripe-connect.js"></script>
+  <script>
+    // Populate order summary from sessionStorage (set on the booking page)
+    (function () {
+      var fmt = function (n) {
+        return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(n);
+      };
+      var fmtDate = function (str) {
+        if (!str) return '—';
+        var d = new Date(str + 'T00:00:00');
+        return isNaN(d) ? str : d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      };
+
+      var pending;
+      try { pending = JSON.parse(sessionStorage.getItem('ca3_pending_booking') || 'null'); } catch (e) {}
+
+      if (!pending) {
+        // No booking in session — send back to booking page
+        window.location.href = 'booking.html';
+        return;
+      }
+
+      var p = pending.pricing || {};
+
+      // Details
+      var el = function (id) { return document.getElementById(id); };
+      if (el('co-checkin'))  el('co-checkin').textContent  = fmtDate(pending.checkin);
+      if (el('co-checkout')) el('co-checkout').textContent = fmtDate(pending.checkout);
+      if (el('co-guests'))   el('co-guests').textContent   = (pending.guests || 1) + ' Guest' + (pending.guests !== 1 ? 's' : '');
+      if (el('co-nights'))   el('co-nights').textContent   = (p.nights || pending.nights || '?') + ' night' + ((p.nights || pending.nights) !== 1 ? 's' : '') + ' \u00b7 Cascade Apartment 3';
+
+      // Price rows
+      var rate = p.averageNightlyRate || 0;
+      var nights = p.nights || pending.nights || 0;
+      if (el('co-rate-label'))   el('co-rate-label').textContent   = fmt(rate) + ' \u00d7 ' + nights + ' night' + (nights !== 1 ? 's' : '');
+      if (el('co-accommodation')) el('co-accommodation').textContent = fmt(p.accommodation || 0);
+      if (el('co-cleaning'))     el('co-cleaning').textContent     = fmt(p.cleaningFee || 0);
+      if (el('co-service-fee'))  el('co-service-fee').textContent  = fmt(p.serviceFee || 0);
+      if (el('co-tax'))          el('co-tax').textContent          = fmt(p.tax || 0);
+
+      if (p.addonsTotal > 0) {
+        if (el('co-addons'))     el('co-addons').textContent = fmt(p.addonsTotal);
+        if (el('co-addons-row')) el('co-addons-row').style.display = '';
+      }
+
+      var grand = p.grandTotal || p.baseTotal || 0;
+      if (el('co-total'))      el('co-total').textContent      = fmt(grand);
+      if (el('co-pay-amount')) el('co-pay-amount').textContent = fmt(grand);
+
+      // Set hidden form inputs
+      var amountCents = Math.round(grand * 100);
+      if (el('bookingAmount')) el('bookingAmount').value = String(amountCents);
+      if (el('bookingEmail'))  el('bookingEmail').value  = pending.guestEmail || '';
+      if (el('payNowBtn') && amountCents > 0) {
+        var span = el('payNowBtn').querySelector('#co-pay-amount');
+        if (span) span.textContent = fmt(grand);
+      }
+    }());
+  </script>
 </body>
 </html>

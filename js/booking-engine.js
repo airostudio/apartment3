@@ -259,7 +259,7 @@
     /**
      * Update the booking summary UI
      */
-    updateSummaryUI(pricing) {
+    updateSummaryUI(pricing, addonsTotal = 0) {
       const formatCurrency = window.CascadeApp?.formatCurrency ||
         (amount => `$${amount.toFixed(2)}`);
 
@@ -305,13 +305,26 @@
         }
       }
 
-      // Update total
-      const totalEl = summaryEl.querySelector('[data-summary="total"]');
-      if (totalEl) totalEl.textContent = formatCurrency(pricing.total);
+      // Add-ons row
+      const addonsEl = summaryEl.querySelector('[data-summary="addons"]');
+      if (addonsEl) {
+        const addonsRow = addonsEl.closest('.price-row');
+        if (addonsTotal > 0) {
+          addonsEl.textContent = formatCurrency(addonsTotal);
+          if (addonsRow) addonsRow.style.display = '';
+        } else {
+          if (addonsRow) addonsRow.style.display = 'none';
+        }
+      }
 
-      // Update deposit
+      // Grand total (base pricing + add-ons)
+      const grandTotal = pricing.total + addonsTotal;
+      const totalEl = summaryEl.querySelector('[data-summary="total"]');
+      if (totalEl) totalEl.textContent = formatCurrency(grandTotal);
+
+      // Deposit (30% of grand total)
       const depositEl = summaryEl.querySelector('[data-summary="deposit"]');
-      if (depositEl) depositEl.textContent = formatCurrency(pricing.deposit);
+      if (depositEl) depositEl.textContent = formatCurrency(Math.round(grandTotal * 0.3 * 100) / 100);
     }
   };
 
@@ -351,20 +364,31 @@
 
       if (checkin && checkout) {
         const pricing = BookingEngine.calculatePrice({
-          baseRate: 289, // Would come from property data
+          baseRate: 289,
           checkin,
           checkout,
           guests: adults + children
         });
 
         if (!pricing.error) {
-          BookingEngine.updateSummaryUI(pricing);
+          let addonsTotal = 0;
+          document.querySelectorAll('.addon-option input[type="checkbox"]:checked').forEach(opt => {
+            const price = parseFloat(opt.value) || 0;
+            const isPerNight = opt.closest('.addon-option')
+              ?.querySelector('.addon-option__price')
+              ?.textContent.includes('/night');
+            addonsTotal += isPerNight ? price * pricing.nights : price;
+          });
+          BookingEngine.updateSummaryUI(pricing, addonsTotal);
         }
       }
     };
 
     dateInputs.forEach(input => input.addEventListener('change', recalculate));
     guestInputs.forEach(input => input.addEventListener('change', recalculate));
+    document.querySelectorAll('.addon-option input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', recalculate);
+    });
 
     // Clear error highlights when user corrects a field
     form.querySelectorAll('input, select, textarea').forEach(field => {
@@ -436,23 +460,63 @@
         return;
       }
 
-      // Save booking data for checkout + confirmation pages
-      const nights = (() => {
-        const ci = new Date(data.checkinDate || data.checkin);
-        const co = new Date(data.checkoutDate || data.checkout);
-        return isNaN(ci) || isNaN(co) ? null : Math.round((co - ci) / 86400000);
-      })();
+      // Calculate final pricing to persist for checkout
       const adults   = parseInt(data.numAdults)   || 1;
       const children = parseInt(data.numChildren) || 0;
+      const ci = data.checkinDate || data.checkin || '';
+      const co = data.checkoutDate || data.checkout || '';
+      const nights = (() => {
+        const d1 = new Date(ci), d2 = new Date(co);
+        return isNaN(d1) || isNaN(d2) ? null : Math.round((d2 - d1) / 86400000);
+      })();
+
+      const finalPricing = BookingEngine.calculatePrice({
+        baseRate: 289,
+        checkin: ci,
+        checkout: co,
+        guests: adults + children
+      });
+
+      let addonsTotal = 0;
+      const selectedAddons = [];
+      document.querySelectorAll('.addon-option input[type="checkbox"]:checked').forEach(opt => {
+        const price = parseFloat(opt.value) || 0;
+        const label = opt.closest('.addon-option')?.querySelector('.addon-option__label')?.textContent?.trim() || opt.id;
+        const isPerNight = opt.closest('.addon-option')
+          ?.querySelector('.addon-option__price')
+          ?.textContent.includes('/night');
+        const total = isPerNight ? price * (finalPricing.nights || 0) : price;
+        addonsTotal += total;
+        selectedAddons.push({ id: opt.id, label, price, perNight: isPerNight, total });
+      });
+
+      const grandTotal = (finalPricing.total || 0) + addonsTotal;
+
+      // Save booking data for checkout + confirmation pages
       sessionStorage.setItem('ca3_pending_booking', JSON.stringify({
         guestName:  ((data.firstName || '') + ' ' + (data.lastName || '')).trim(),
         guestEmail: data.email || '',
         guestPhone: data.phone || '',
-        checkin:    data.checkinDate  || data.checkin  || '',
-        checkout:   data.checkoutDate || data.checkout || '',
-        nights:     nights,
+        checkin:    ci,
+        checkout:   co,
+        nights,
         guests:     adults + children,
         specialRequests: data.specialRequests || '',
+        pricing: {
+          accommodation:      finalPricing.accommodation      || 0,
+          cleaningFee:        finalPricing.cleaningFee        || 0,
+          serviceFee:         finalPricing.serviceFee         || 0,
+          tax:                finalPricing.tax                || 0,
+          discount:           finalPricing.discount           || 0,
+          discountLabel:      finalPricing.discountLabel      || '',
+          baseTotal:          finalPricing.total              || 0,
+          addonsTotal,
+          addons:             selectedAddons,
+          grandTotal,
+          averageNightlyRate: finalPricing.averageNightlyRate || 0,
+          nights:             finalPricing.nights             || nights,
+          currency:           'AUD',
+        }
       }));
 
       // Proceed to checkout
@@ -464,21 +528,8 @@
   // Additional Booking Options
   // ============================================
   function initBookingOptions() {
-    document.querySelectorAll('.booking-option input[type="checkbox"]').forEach(checkbox => {
-      checkbox.addEventListener('change', () => {
-        // Recalculate with options
-        const checkin = document.querySelector('[name="checkin"]')?.value;
-        const checkout = document.querySelector('[name="checkout"]')?.value;
-
-        if (checkin && checkout) {
-          let addOns = 0;
-          document.querySelectorAll('.booking-option input:checked').forEach(opt => {
-            addOns += parseFloat(opt.dataset.price) || 0;
-          });
-          // Add-on total would be included in the summary
-        }
-      });
-    });
+    // Add-on change listeners are wired inside initBookingForm
+    // (where they share the recalculate closure).
   }
 
   // ============================================

@@ -95,11 +95,27 @@
     },
 
     /**
-     * Initialize Stripe
+     * Initialize Stripe — fetches publishable key from /api/stripe-config
      */
-    init() {
+    async init() {
       if (typeof Stripe === 'undefined') {
         console.warn('Stripe.js not loaded. Payment processing unavailable.');
+        this.showPlaceholder();
+        return;
+      }
+
+      try {
+        const resp = await fetch('/api/stripe-config');
+        if (resp.ok) {
+          const cfg = await resp.json();
+          if (cfg.publishableKey) this.config.publishableKey = cfg.publishableKey;
+        }
+      } catch (_) {
+        // Fallback to hardcoded key (useful for local dev with vercel dev)
+      }
+
+      if (!this.config.publishableKey || this.config.publishableKey.startsWith('pk_test_your')) {
+        console.warn('Stripe publishable key not configured. Add STRIPE_PUBLISHABLE_KEY to your environment.');
         this.showPlaceholder();
         return;
       }
@@ -152,7 +168,7 @@
     },
 
     /**
-     * Show placeholder when Stripe is not loaded
+     * Show placeholder when Stripe is not loaded or not configured
      */
     showPlaceholder() {
       const cardContainer = document.getElementById('stripe-card-element');
@@ -185,14 +201,8 @@
      */
     async processPayment(bookingData) {
       if (!this.stripe || !this.cardElement) {
-        throw new Error('Stripe not initialized');
+        throw new Error('Payment system is still loading. Please wait a moment and try again.');
       }
-
-      const managementFeePct = bookingData.managementFeePct || 0.15; // 15% default
-      const ownerConnectedAccountId = bookingData.ownerConnectedAccountId || 'acct_conn_9ZyXwVuTsRq';
-
-      const applicationFeeAmount = Math.round(bookingData.amount * managementFeePct);
-      const ownerTransferAmount  = bookingData.amount - applicationFeeAmount;
 
       const billingDetails = {
         name: bookingData.cardholderName,
@@ -206,48 +216,42 @@
         }
       };
 
-      // Production server call would look like:
-      //
-      // const response = await fetch('/api/create-payment-intent', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     amount: bookingData.amount,          // in cents
-      //     currency: this.config.currency,
-      //     application_fee_amount: applicationFeeAmount,
-      //     transfer_destination: ownerConnectedAccountId,
-      //     booking_id: bookingData.bookingId,
-      //     metadata: { property: 'Cascade Apartment 3' }
-      //   }),
-      // });
-      // const { clientSecret } = await response.json();
-      //
-      // const result = await this.stripe.confirmCardPayment(clientSecret, {
-      //   payment_method: {
-      //     card: this.cardElement,
-      //     billing_details: billingDetails,
-      //   },
-      // });
-      // if (result.error) throw new Error(result.error.message);
-
-      console.log('Stripe Connect Destination Charge (simulated):', {
-        amount: bookingData.amount,
-        currency: this.config.currency,
-        application_fee_amount: applicationFeeAmount,
-        'transfer_data.destination': ownerConnectedAccountId,
-        adminKeeps: applicationFeeAmount,
-        ownerReceives: ownerTransferAmount,
-        billingDetails
+      // 1. Create a PaymentIntent on the server
+      const response = await fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: bookingData.amount,       // in cents
+          currency: this.config.currency,
+          bookingId: bookingData.bookingId || '',
+          email: bookingData.email,
+        }),
       });
 
-      // Simulate successful payment
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Could not create payment session. Please try again.');
+      }
+
+      const { clientSecret } = await response.json();
+
+      // 2. Confirm the card payment with Stripe
+      const result = await this.stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: this.cardElement,
+          billing_details: billingDetails,
+        },
+        receipt_email: bookingData.email,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+
       return {
         success: true,
-        paymentIntentId: 'pi_simulated_' + Date.now(),
-        status: 'succeeded',
-        applicationFeeAmount,
-        ownerTransferAmount,
-        ownerConnectedAccountId
+        paymentIntentId: result.paymentIntent.id,
+        status: result.paymentIntent.status,
       };
     },
 
@@ -316,56 +320,62 @@
   // Checkout Form Handler
   // ============================================
   function initCheckoutForm() {
-    const form = document.getElementById('checkoutForm');
+    const form = document.getElementById('paymentForm');
     if (!form) return;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const originalText = submitBtn?.textContent;
+      const submitBtn = document.getElementById('payNowBtn');
+      const originalHTML = submitBtn?.innerHTML;
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Processing...';
+        submitBtn.innerHTML = '<span style="opacity:.7">Processing payment…</span>';
       }
+
+      // Clear any previous card error
+      const errorEl = document.getElementById('card-errors');
+      if (errorEl) errorEl.textContent = '';
 
       try {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData);
 
+        // Read pending booking for email + bookingId
+        let pending = {};
+        try { pending = JSON.parse(sessionStorage.getItem('ca3_pending_booking') || '{}'); } catch (_) {}
+
         const result = await StripeConnect.processPayment({
-          cardholderName: data.cardholderName,
-          email: data.email,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          postcode: data.postcode,
-          country: data.country,
-          amount: parseInt(data.amount) || 0
+          cardholderName: data.cardHolderName,
+          email:          data.bookingEmail  || pending.guestEmail || '',
+          address:        data.billingStreet,
+          city:           data.billingCity,
+          state:          data.billingState,
+          postcode:       data.billingPostcode,
+          country:        data.billingCountry || 'AU',
+          amount:         parseInt(data.bookingAmount) || 0,
+          bookingId:      pending.ref || '',
         });
 
         if (result.success) {
           window.CascadeApp?.showToast('Payment successful!', 'success');
 
-          // Merge guest data (from booking form) with payment data, save for confirmation
-          const ref = window.CascadeApp?.BookingEngine?.generateReference() || 'CA3-' + Date.now();
-          const pending = JSON.parse(sessionStorage.getItem('ca3_pending_booking') || '{}');
-          const amountCents = parseInt(data.amount) || 0;
+          const ref = (window.CascadeApp?.BookingEngine?.generateReference
+            ? window.CascadeApp.BookingEngine.generateReference()
+            : 'TRA-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 99999)).padStart(5, '0'));
+
+          const amountCents = parseInt(data.bookingAmount) || 0;
           const totalFormatted = amountCents
             ? new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(amountCents / 100)
-            : '';
-          const depositCents = Math.round(amountCents * 0.3);
-          const depositFormatted = depositCents
-            ? new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(depositCents / 100)
             : '';
 
           const confirmedBooking = {
             ...pending,
             ref,
-            guestName:    pending.guestName  || data.cardholderName || 'Guest',
-            guestEmail:   pending.guestEmail || data.email || '',
+            paymentIntentId: result.paymentIntentId,
+            guestName:    pending.guestName  || data.cardHolderName || 'Guest',
+            guestEmail:   pending.guestEmail || data.bookingEmail    || '',
             totalAmount:  totalFormatted,
-            depositAmount: depositFormatted,
             paymentStatus: 'paid',
             confirmedAt:  new Date().toISOString(),
           };
@@ -374,11 +384,13 @@
           window.location.href = 'confirmation.html?ref=' + encodeURIComponent(ref);
         }
       } catch (error) {
-        window.CascadeApp?.showToast(error.message || 'Payment failed. Please try again.', 'error');
+        const msg = error.message || 'Payment failed. Please try again.';
+        if (errorEl) errorEl.textContent = msg;
+        window.CascadeApp?.showToast(msg, 'error');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
+          submitBtn.innerHTML = originalHTML;
         }
       }
     });

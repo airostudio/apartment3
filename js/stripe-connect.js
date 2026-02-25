@@ -174,14 +174,19 @@
       const cardContainer = document.getElementById('stripe-card-element');
       if (cardContainer) {
         cardContainer.innerHTML = `
-          <div style="padding: 16px; border: 2px dashed var(--color-light); border-radius: 8px; text-align: center; color: var(--color-gray);">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 8px;">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-            <p style="font-size: 14px; margin-bottom: 4px;">Stripe Payment Element</p>
-            <p style="font-size: 12px; opacity: 0.7;">Connect your Stripe account to enable payments</p>
+          <div style="padding: 16px; border: 2px dashed #e5e7eb; border-radius: 8px; color: #6b7280; font-family: Inter, sans-serif;">
+            <p style="font-size: 14px; font-weight: 500; margin: 0 0 4px;">Stripe not configured</p>
+            <p style="font-size: 12px; margin: 0; line-height: 1.5;">Add <code style="background:#f3f4f6;padding:1px 4px;border-radius:3px;">STRIPE_PUBLISHABLE_KEY</code> and <code style="background:#f3f4f6;padding:1px 4px;border-radius:3px;">STRIPE_SECRET_KEY</code> in Vercel → Settings → Environment Variables, then redeploy.</p>
           </div>
         `;
+      }
+      // Disable the Pay button so users get a clear message rather than a JS error
+      const payBtn = document.getElementById('payNowBtn');
+      if (payBtn) {
+        payBtn.disabled = true;
+        payBtn.style.opacity = '0.45';
+        payBtn.style.cursor = 'not-allowed';
+        payBtn.title = 'Add Stripe API keys in Vercel environment variables to enable payments';
       }
     },
 

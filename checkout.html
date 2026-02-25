@@ -530,6 +530,10 @@
               <span id="co-rate-label">Accommodation</span>
               <span id="co-accommodation">—</span>
             </div>
+            <div class="price-row" id="co-extra-guest-row" style="display:none;">
+              <span>Extra guests</span>
+              <span id="co-extra-guest">—</span>
+            </div>
             <div class="price-row">
               <span>Cleaning fee</span>
               <span id="co-cleaning">—</span>
@@ -683,6 +687,12 @@
       var nights = p.nights || pending.nights || 0;
       if (el('co-rate-label'))   el('co-rate-label').textContent   = fmt(rate) + ' \u00d7 ' + nights + ' night' + (nights !== 1 ? 's' : '');
       if (el('co-accommodation')) el('co-accommodation').textContent = fmt(p.accommodation || 0);
+
+      if (p.extraGuestFee > 0) {
+        if (el('co-extra-guest'))     el('co-extra-guest').textContent = fmt(p.extraGuestFee);
+        if (el('co-extra-guest-row')) el('co-extra-guest-row').style.display = '';
+      }
+
       if (el('co-cleaning'))     el('co-cleaning').textContent     = fmt(p.cleaningFee || 0);
       if (el('co-service-fee'))  el('co-service-fee').textContent  = fmt(p.serviceFee || 0);
       if (el('co-tax'))          el('co-tax').textContent          = fmt(p.tax || 0);

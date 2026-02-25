@@ -41,7 +41,11 @@
         checkin,
         checkout,
         guests = 2,
+        adults,          // optional: number of adults
+        children = 0,    // optional: number of children
         extraGuestFee = 0,
+        extraAdultFee = 0,   // extra fee per adult per night beyond maxBaseGuests
+        extraChildFee = 0,   // extra fee per child per night beyond remaining base slots
         maxBaseGuests = 2,
         seasonalRates = [],
         specialRules = [],
@@ -101,9 +105,21 @@
         totalAccommodation += nightRate;
       }
 
-      // Extra guest fees
-      const extraGuests = Math.max(0, guests - maxBaseGuests);
-      const totalExtraGuestFee = extraGuests * extraGuestFee * nights;
+      // Extra guest fees — adults fill base slots first, children cover remainder
+      let totalExtraGuestFee = 0;
+      if (adults !== undefined && (extraAdultFee > 0 || extraChildFee > 0)) {
+        const a = parseInt(adults)   || 0;
+        const c = parseInt(children) || 0;
+        const remainingBase = Math.max(0, maxBaseGuests - a);
+        const extraAdults   = Math.max(0, a - maxBaseGuests);
+        const extraChildren = Math.max(0, c - remainingBase);
+        totalExtraGuestFee  = (extraAdults * extraAdultFee + extraChildren * extraChildFee) * nights;
+      } else {
+        const totalGuests  = adults !== undefined
+          ? (parseInt(adults) || 0) + (parseInt(children) || 0)
+          : guests;
+        totalExtraGuestFee = Math.max(0, totalGuests - maxBaseGuests) * extraGuestFee * nights;
+      }
 
       // Apply special pricing rules
       let discount = 0;
@@ -282,6 +298,18 @@
       const accomEl = summaryEl.querySelector('[data-summary="accommodation"]');
       if (accomEl) accomEl.textContent = formatCurrency(pricing.accommodation);
 
+      // Extra guest fee row (hidden when zero)
+      const extraGuestEl = summaryEl.querySelector('[data-summary="extra-guest"]');
+      if (extraGuestEl) {
+        const extraGuestRow = extraGuestEl.closest('.price-row');
+        if (pricing.extraGuestFee > 0) {
+          extraGuestEl.textContent = formatCurrency(pricing.extraGuestFee);
+          if (extraGuestRow) extraGuestRow.style.display = '';
+        } else {
+          if (extraGuestRow) extraGuestRow.style.display = 'none';
+        }
+      }
+
       // Update cleaning fee
       const cleaningEl = summaryEl.querySelector('[data-summary="cleaning"]');
       if (cleaningEl) cleaningEl.textContent = formatCurrency(pricing.cleaningFee);
@@ -367,7 +395,12 @@
           baseRate: 289,
           checkin,
           checkout,
-          guests: adults + children
+          adults,
+          children,
+          guests: adults + children,
+          extraAdultFee: 50,
+          extraChildFee: 25,
+          maxBaseGuests: 2,
         });
 
         if (!pricing.error) {
@@ -474,7 +507,12 @@
         baseRate: 289,
         checkin: ci,
         checkout: co,
-        guests: adults + children
+        adults,
+        children,
+        guests: adults + children,
+        extraAdultFee: 50,
+        extraChildFee: 25,
+        maxBaseGuests: 2,
       });
 
       let addonsTotal = 0;
@@ -504,6 +542,7 @@
         specialRequests: data.specialRequests || '',
         pricing: {
           accommodation:      finalPricing.accommodation      || 0,
+          extraGuestFee:      finalPricing.extraGuestFee      || 0,
           cleaningFee:        finalPricing.cleaningFee        || 0,
           serviceFee:         finalPricing.serviceFee         || 0,
           tax:                finalPricing.tax                || 0,

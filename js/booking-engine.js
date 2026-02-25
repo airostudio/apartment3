@@ -245,6 +245,14 @@
         if (nights > this.defaults.maxStay) {
           errors.push({ field: 'checkout', message: `Maximum stay is ${this.defaults.maxStay} nights` });
         }
+
+        // Weekend minimum stay: Fri/Sat/Sun check-in requires 2 nights minimum
+        if (nights === 1) {
+          const dow = checkinDate.getDay(); // 0=Sun, 5=Fri, 6=Sat
+          if (dow === 5 || dow === 6 || dow === 0) {
+            errors.push({ field: 'checkout', message: 'Weekend stays (Fri, Sat & Sun) require a minimum of 2 nights' });
+          }
+        }
       }
 
       // Guest validation
@@ -417,8 +425,37 @@
       }
     };
 
-    dateInputs.forEach(input => input.addEventListener('change', recalculate));
+    // Click anywhere on a date input opens the native calendar picker
+    dateInputs.forEach(input => {
+      input.addEventListener('change', recalculate);
+      input.addEventListener('click', function() {
+        try { this.showPicker(); } catch(e) {}
+      });
+    });
     guestInputs.forEach(input => input.addEventListener('change', recalculate));
+
+    // When check-in is picked: enforce weekend minimum, set checkout min, auto-advance
+    const checkinEl  = form.querySelector('[name="checkinDate"]') || form.querySelector('[name="checkin"]');
+    const checkoutEl = form.querySelector('[name="checkoutDate"]') || form.querySelector('[name="checkout"]');
+    if (checkinEl && checkoutEl) {
+      checkinEl.addEventListener('change', function() {
+        if (!this.value) return;
+        const d   = new Date(this.value + 'T00:00:00');
+        const dow = d.getDay();
+        const minNights = (dow === 5 || dow === 6 || dow === 0) ? 2 : 1;
+        const minDate   = new Date(d);
+        minDate.setDate(minDate.getDate() + minNights);
+        const minStr = minDate.toISOString().split('T')[0];
+        checkoutEl.min = minStr;
+        // Advance checkout if it is now too early
+        if (!checkoutEl.value || checkoutEl.value < minStr) {
+          checkoutEl.value = minStr;
+          checkoutEl.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        // Auto-open checkout picker so the user can pick the end date immediately
+        try { checkoutEl.showPicker(); } catch(e) { checkoutEl.focus(); }
+      });
+    }
     document.querySelectorAll('.addon-option input[type="checkbox"]').forEach(cb => {
       cb.addEventListener('change', recalculate);
     });

@@ -917,19 +917,39 @@
         heroCheckout.min = tom.toISOString().split('T')[0];
       }
 
-      // Auto-check when check-in changes
+      // Click anywhere on a date field opens the calendar picker
+      document.querySelectorAll('.hero-book-field input[type="date"]').forEach(function(input) {
+        input.addEventListener('click', function() {
+          try { this.showPicker(); } catch(e) {}
+        });
+      });
+
+      // Returns true if day-of-week is Fri (5), Sat (6), or Sun (0)
+      function isWeekendDow(dow) { return dow === 5 || dow === 6 || dow === 0; }
+
+      // Returns the minimum checkout date string for a given checkin string
+      function minCheckoutFor(checkinStr) {
+        var d = new Date(checkinStr + 'T00:00:00');
+        var minNights = isWeekendDow(d.getDay()) ? 2 : 1;
+        var out = new Date(d);
+        out.setDate(out.getDate() + minNights);
+        return out.toISOString().split('T')[0];
+      }
+
+      // When check-in changes: update checkout minimum and auto-open checkout
       if (heroCheckin) {
         heroCheckin.addEventListener('change', function() {
+          if (!this.value) return;
           if (heroCheckout) {
-            var next = new Date(this.value + 'T00:00:00');
-            next.setDate(next.getDate() + 1);
-            var nextStr = next.toISOString().split('T')[0];
-            heroCheckout.min = nextStr;
-            if (heroCheckout.value && heroCheckout.value <= this.value) {
-              heroCheckout.value = '';
+            var minStr = minCheckoutFor(this.value);
+            heroCheckout.min = minStr;
+            // If checkout is empty or no longer valid, advance it to the minimum
+            if (!heroCheckout.value || heroCheckout.value < minStr) {
+              heroCheckout.value = minStr;
               hideHeroMsg();
-              return;
             }
+            // Auto-open checkout picker so user picks the end date immediately
+            try { heroCheckout.showPicker(); } catch(e) { heroCheckout.focus(); }
           }
           autoShowAvail();
         });
@@ -950,6 +970,15 @@
         msg.style.display = 'block';
       }
 
+      function weekendMinError(d1, nights) {
+        var dow = d1.getDay();
+        if (nights === 1 && isWeekendDow(dow)) {
+          showHeroMsg('\u26a0 Weekend stays (Fri, Sat & Sun) require a 2-night minimum.', false);
+          return true;
+        }
+        return false;
+      }
+
       function autoShowAvail() {
         var ci = heroCheckin && heroCheckin.value;
         var co = heroCheckout && heroCheckout.value;
@@ -959,6 +988,7 @@
         var now = new Date(); now.setHours(0,0,0,0);
         if (d1 >= now && d2 > d1) {
           var nights = Math.round((d2 - d1) / 86400000);
+          if (weekendMinError(d1, nights)) return;
           showHeroMsg('\u2713 Available for ' + nights + ' night' + (nights !== 1 ? 's' : '') + ' \u2014 click to book', true);
         }
       }
@@ -981,6 +1011,8 @@
         if (d2 <= d1)  { showHeroMsg('\u26a0 Check-out must be after check-in.', false); return; }
 
         var nights = Math.round((d2 - d1) / 86400000);
+        if (weekendMinError(d1, nights)) return;
+
         showHeroMsg('\u2713 Available! ' + nights + ' night' + (nights !== 1 ? 's' : '') + ' \u2014 taking you to book\u2026', true);
 
         setTimeout(function() {

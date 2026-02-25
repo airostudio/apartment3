@@ -226,10 +226,13 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: bookingData.amount,       // in cents
-          currency: this.config.currency,
+          amount:    bookingData.amount,       // in cents
+          currency:  this.config.currency,
           bookingId: bookingData.bookingId || '',
-          email: bookingData.email,
+          email:     bookingData.email,
+          checkin:   bookingData.checkin  || '',
+          checkout:  bookingData.checkout || '',
+          guests:    bookingData.guests   || '',
         }),
       });
 
@@ -360,6 +363,9 @@
           country:        data.billingCountry || 'AU',
           amount:         parseInt(data.bookingAmount) || 0,
           bookingId:      pending.ref || '',
+          checkin:        pending.checkin  || '',
+          checkout:       pending.checkout || '',
+          guests:         pending.guests   || '',
         });
 
         if (result.success) {
@@ -385,6 +391,30 @@
             confirmedAt:  new Date().toISOString(),
           };
           sessionStorage.setItem('ca3_confirmed_booking', JSON.stringify(confirmedBooking));
+
+          // Persist booking to CA3Data (localStorage) so admin panel + calendar reflect it
+          if (window.CA3Data) {
+            const bookingRecord = {
+              id:         ref,
+              ref:        ref,
+              guestName:  confirmedBooking.guestName,
+              guestEmail: confirmedBooking.guestEmail,
+              guestPhone: pending.guestPhone || '',
+              checkIn:    pending.checkin  || '',
+              checkOut:   pending.checkout || '',
+              nights:     pending.nights   || 0,
+              guests:     pending.guests   || 1,
+              status:     'confirmed',
+              source:     'direct',
+              baseRate:   pending.pricing?.averageNightlyRate || 0,
+              total:      amountCents / 100,
+              paid:       amountCents / 100,
+              deposit:    0,
+              paymentIntentId: result.paymentIntentId,
+              notes:      pending.specialRequests || '',
+            };
+            window.CA3Data.addBooking(bookingRecord);
+          }
 
           window.location.href = 'confirmation.html?ref=' + encodeURIComponent(ref);
         }

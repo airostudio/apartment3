@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Payment processing is not configured.' });
   }
 
-  const { amount, currency = 'aud', bookingId, email } = req.body;
+  const { amount, currency = 'aud', bookingId, email, checkin, checkout, guests } = req.body;
 
   if (!amount || typeof amount !== 'number' || amount < 50) {
     return res.status(400).json({ error: 'Invalid payment amount.' });
@@ -48,6 +48,9 @@ export default async function handler(req, res) {
       'payment_method_types[]':     'card',
       'metadata[booking_id]':       bookingId || '',
       'metadata[property]':         'Cascade Apartment 3',
+      'metadata[checkin]':          checkin  || '',
+      'metadata[checkout]':         checkout || '',
+      'metadata[guests]':           String(guests || ''),
     });
 
     if (email) {

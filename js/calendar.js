@@ -138,9 +138,9 @@
         dayEl.classList.add('calendar-day--today');
       }
 
-      // Check if booked
+      // Check if booked (red — NOT available)
       if (this.options.bookedDates.includes(dateStr)) {
-        dayEl.classList.add('calendar-day--unavailable');
+        dayEl.classList.add('calendar-day--booked');
       }
 
       // Check if blocked
@@ -202,7 +202,7 @@
       legend.className = 'calendar-legend';
       legend.innerHTML = `
         <div class="legend-item"><div class="legend-dot legend-dot--available"></div> Available</div>
-        <div class="legend-item"><div class="legend-dot legend-dot--booked"></div> Booked</div>
+        <div class="legend-item"><div class="legend-dot legend-dot--booked"></div> Not Available</div>
         <div class="legend-item"><div class="legend-dot legend-dot--blocked"></div> Blocked</div>
       `;
       return legend;
@@ -222,6 +222,7 @@
         // Day selection
         const dayEl = e.target.closest('.calendar-day');
         if (dayEl && !dayEl.classList.contains('calendar-day--unavailable') &&
+            !dayEl.classList.contains('calendar-day--booked') &&
             !dayEl.classList.contains('calendar-day--blocked') &&
             !dayEl.classList.contains('calendar-day--other-month')) {
           this.handleDayClick(new Date(dayEl.dataset.date));

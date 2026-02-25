@@ -1154,6 +1154,19 @@ h6 { font-size: var(--font-size-md); }
   background: transparent;
 }
 
+/* Confirmed booking — clearly red so users see it is NOT available */
+.calendar-day--booked {
+  background: #fee2e2;
+  color: #991b1b;
+  text-decoration: line-through;
+  cursor: not-allowed;
+  font-weight: 500;
+}
+
+.calendar-day--booked:hover {
+  background: #fecaca;
+}
+
 .calendar-day--blocked {
   background: repeating-linear-gradient(
     45deg,

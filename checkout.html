@@ -409,23 +409,16 @@
 
               <div class="form-group">
                 <label>Card Details *</label>
-                <div class="stripe-card-element" id="stripe-card-element">
-                  <!-- Stripe.js will mount the Card Element here -->
-                  <span class="placeholder-text">Card number, expiry, CVC will appear here when Stripe.js loads</span>
-                </div>
-                <div id="card-errors" role="alert" style="color:#dc2626;font-size:0.875rem;margin-top:6px;min-height:1.2em;"></div>
+                <!-- Stripe Payment Element mounts here -->
+                <div id="payment-element"></div>
+                <div id="payment-errors" role="alert" style="color:#dc2626;font-size:0.875rem;margin-top:6px;min-height:1.2em;"></div>
               </div>
-
-              <label class="checkbox-option">
-                <input type="checkbox" id="saveCard" name="saveCard">
-                <span>Save this card for future bookings</span>
-              </label>
 
               <div class="stripe-notice">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                 </svg>
-                <p>Your payment is securely processed by <strong>Stripe Connect</strong>. Cascade Apartment 3 never stores your full card details. Funds are transferred directly to the property host via Stripe's secure payment platform.</p>
+                <p>Your payment is securely processed by <strong>Stripe</strong>. Cascade Apartment 3 never sees or stores your card details — they are handled entirely within Stripe's PCI-certified environment.</p>
               </div>
             </div>
 
@@ -482,10 +475,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Hidden: populated from sessionStorage by checkout-init script -->
-            <input type="hidden" id="bookingAmount" name="bookingAmount" value="">
-            <input type="hidden" id="bookingEmail" name="bookingEmail" value="">
 
           </form>
         </div>
@@ -706,15 +695,6 @@
       var grand = p.grandTotal || p.baseTotal || 0;
       if (el('co-total'))      el('co-total').textContent      = fmt(grand);
       if (el('co-pay-amount')) el('co-pay-amount').textContent = fmt(grand);
-
-      // Set hidden form inputs
-      var amountCents = Math.round(grand * 100);
-      if (el('bookingAmount')) el('bookingAmount').value = String(amountCents);
-      if (el('bookingEmail'))  el('bookingEmail').value  = pending.guestEmail || '';
-      if (el('payNowBtn') && amountCents > 0) {
-        var span = el('payNowBtn').querySelector('#co-pay-amount');
-        if (span) span.textContent = fmt(grand);
-      }
     }());
   </script>
 </body>

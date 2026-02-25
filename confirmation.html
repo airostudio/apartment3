@@ -522,10 +522,76 @@
     </div>
   </footer>
 
+  <script src="js/data.js"></script>
   <script src="js/app.js"></script>
   <script>
   (function () {
     'use strict';
+
+    // ── Handle Stripe 3DS redirect return ─────────────────────────────────
+    // When Stripe redirects the browser back after 3D Secure authentication
+    // the URL contains payment_intent, payment_intent_client_secret and
+    // redirect_status. We reconstruct the confirmed booking from the
+    // ca3_checkout_state that was saved before confirmPayment was called.
+    var params          = new URLSearchParams(window.location.search);
+    var paymentIntentId = params.get('payment_intent');
+    var redirectStatus  = params.get('redirect_status');
+
+    if (paymentIntentId && redirectStatus) {
+      if (redirectStatus !== 'succeeded') {
+        // 3DS failed or was cancelled — send back to checkout
+        window.location.replace('checkout.html');
+        return;
+      }
+
+      var stateRaw = sessionStorage.getItem('ca3_checkout_state');
+      if (stateRaw) {
+        try {
+          var state       = JSON.parse(stateRaw);
+          var pending     = state.pending     || {};
+          var ref         = state.ref         || ('CA3-' + new Date().getFullYear() + '-00000');
+          var amountCents = state.amountCents || 0;
+
+          var totalFormatted = new Intl.NumberFormat('en-AU', {
+            style: 'currency', currency: 'AUD',
+          }).format(amountCents / 100);
+
+          var confirmedBooking = Object.assign({}, pending, {
+            ref:             ref,
+            paymentIntentId: paymentIntentId,
+            guestName:       pending.guestName  || 'Guest',
+            guestEmail:      pending.guestEmail || '',
+            totalAmount:     totalFormatted,
+            paymentStatus:   'paid',
+            confirmedAt:     new Date().toISOString(),
+          });
+
+          sessionStorage.setItem('ca3_confirmed_booking', JSON.stringify(confirmedBooking));
+
+          if (window.CA3Data) {
+            window.CA3Data.addBooking({
+              id:              ref,
+              ref:             ref,
+              guestName:       confirmedBooking.guestName,
+              guestEmail:      confirmedBooking.guestEmail,
+              guestPhone:      pending.guestPhone || '',
+              checkIn:         pending.checkin    || '',
+              checkOut:        pending.checkout   || '',
+              nights:          pending.nights     || 0,
+              guests:          pending.guests     || 1,
+              status:          'confirmed',
+              source:          'direct',
+              baseRate:        (pending.pricing && pending.pricing.averageNightlyRate) || 0,
+              total:           amountCents / 100,
+              paid:            amountCents / 100,
+              deposit:         0,
+              paymentIntentId: paymentIntentId,
+              notes:           pending.specialRequests || '',
+            });
+          }
+        } catch (_) { /* continue to show whatever is in sessionStorage */ }
+      }
+    }
 
     // ── Read confirmed booking from sessionStorage ─────────────────────────
     var booking = {};
@@ -534,7 +600,7 @@
     } catch (e) { /* ignore */ }
 
     // Fallback: ref from URL query string
-    var urlRef = new URLSearchParams(window.location.search).get('ref');
+    var urlRef = params.get('ref');
     if (!booking.ref && urlRef) booking.ref = urlRef;
 
     // ── Update DOM with real booking data ──────────────────────────────────

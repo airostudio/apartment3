@@ -388,22 +388,6 @@
             <div class="booking-form-section">
               <h2 class="booking-form-section__title">Stay Details</h2>
 
-              <!-- Availability Calendar -->
-              <div id="availabilityCalendarWrap" style="margin-bottom:1.25rem;">
-                <p style="font-size:0.8125rem;color:#6b7280;margin:0 0 0.5rem;">
-                  Select your dates below. <span style="display:inline-flex;align-items:center;gap:4px;">
-                    <span style="width:12px;height:12px;border-radius:2px;background:#fee2e2;display:inline-block;"></span>
-                    <strong style="color:#991b1b;">Red = Not Available</strong>
-                  </span>
-                </p>
-                <div id="bookingAvailCalendar"></div>
-              </div>
-
-              <!-- Availability alert (shown when selected range overlaps booked dates) -->
-              <div id="availabilityAlert" role="alert" style="display:none;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:1rem;color:#991b1b;font-size:0.875rem;font-weight:500;">
-                ⚠ These dates are <strong>not available</strong>. Please choose different dates.
-              </div>
-
               <div class="form-row">
                 <div class="form-group">
                   <label for="checkinDate">Check-in Date *</label>
@@ -629,7 +613,6 @@
 
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/calendar.js"></script>
   <script src="js/booking-engine.js"></script>
   <script>
     (function() {
@@ -644,80 +627,7 @@
         return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
       }
 
-      // ── Build booked + blocked date arrays from CA3Data ──────────────────
-      function getBookedDateStrings() {
-        var dates = [];
-        if (!window.CA3Data) return dates;
-        var bookings = window.CA3Data.getBookings() || [];
-        bookings.forEach(function(b) {
-          if (!b.checkIn || !b.checkOut) return;
-          if (b.status === 'cancelled') return;
-          var d = new Date(b.checkIn + 'T00:00:00');
-          var end = new Date(b.checkOut + 'T00:00:00');
-          while (d < end) {
-            dates.push(d.toISOString().split('T')[0]);
-            d.setDate(d.getDate() + 1);
-          }
-        });
-        return dates;
-      }
 
-      function getBlockedDateStrings() {
-        var dates = [];
-        if (!window.CA3Data) return dates;
-        var blocked = window.CA3Data.getBlocked() || [];
-        blocked.forEach(function(bl) {
-          if (!bl.startDate || !bl.endDate) return;
-          var d = new Date(bl.startDate + 'T00:00:00');
-          var end = new Date(bl.endDate + 'T00:00:00');
-          while (d <= end) {
-            dates.push(d.toISOString().split('T')[0]);
-            d.setDate(d.getDate() + 1);
-          }
-        });
-        return dates;
-      }
-
-      var bookedDates  = getBookedDateStrings();
-      var blockedDates = getBlockedDateStrings();
-
-      // ── Availability Calendar ─────────────────────────────────────────────
-      var calContainer = document.getElementById('bookingAvailCalendar');
-      if (calContainer && window.CascadeApp && window.CascadeApp.AvailabilityCalendar) {
-        new window.CascadeApp.AvailabilityCalendar(calContainer, {
-          mode:         'display',
-          monthsToShow: 2,
-          bookedDates:  bookedDates,
-          blockedDates: blockedDates,
-          showLegend:   true,
-        });
-      }
-
-      // ── Availability check on date input change ───────────────────────────
-      var allUnavailable = bookedDates.concat(blockedDates);
-      var alertEl = document.getElementById('availabilityAlert');
-
-      function checkDateAvailability() {
-        if (!alertEl) return;
-        var ciEl = document.getElementById('checkinDate');
-        var coEl = document.getElementById('checkoutDate');
-        var ci   = ciEl ? ciEl.value : '';
-        var co   = coEl ? coEl.value : '';
-        if (!ci || !co) { alertEl.style.display = 'none'; return; }
-        var d   = new Date(ci  + 'T00:00:00');
-        var end = new Date(co  + 'T00:00:00');
-        var conflict = false;
-        while (d < end) {
-          if (allUnavailable.includes(d.toISOString().split('T')[0])) { conflict = true; break; }
-          d.setDate(d.getDate() + 1);
-        }
-        alertEl.style.display = conflict ? '' : 'none';
-      }
-
-      var ciEl2 = document.getElementById('checkinDate');
-      var coEl2 = document.getElementById('checkoutDate');
-      if (ciEl2)  ciEl2.addEventListener('change',  checkDateAvailability);
-      if (coEl2)  coEl2.addEventListener('change',  checkDateAvailability);
 
       // ── Pre-fill form fields ──────────────────────────────────────────────
       if (checkin)  { var ci = document.getElementById('checkinDate');  if (ci)  ci.value  = checkin; }

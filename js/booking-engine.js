@@ -373,7 +373,7 @@
 
     // Auto-calculate price on date/guest change
     const dateInputs = form.querySelectorAll('input[type="date"]');
-    const guestInputs = form.querySelectorAll('select[name*="guest"], select[name*="adult"], select[name*="children"], input[name*="guest"]');
+    const guestInputs = form.querySelectorAll('select[name*="guest" i], select[name*="adult" i], select[name*="children" i], input[name*="guest" i]');
 
     const recalculate = () => {
       const checkin  = (form.querySelector('[name="checkinDate"]')  || form.querySelector('[name="checkin"]'))?.value;

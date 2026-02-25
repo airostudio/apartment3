@@ -962,12 +962,18 @@
         if (msg) msg.style.display = 'none';
       }
 
-      function showHeroMsg(text, ok) {
+      function showHeroMsg(text, ok, bookingUrl) {
         var msg = document.getElementById('heroAvailMsg');
         if (!msg) return;
-        msg.textContent = text;
         msg.className = 'hero-avail-msg ' + (ok ? 'hero-avail-msg--available' : 'hero-avail-msg--error');
-        msg.style.display = 'block';
+        if (ok && bookingUrl) {
+          msg.innerHTML = '<span>' + text + '</span>'
+            + '<a href="' + bookingUrl + '" style="display:inline-flex;align-items:center;gap:5px;padding:5px 16px;border:1.5px solid rgba(134,239,172,0.8);border-radius:6px;color:#86efac;font-size:0.8rem;font-weight:600;text-decoration:none;white-space:nowrap;flex-shrink:0;">Book Now &#8594;</a>';
+          msg.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;';
+        } else {
+          msg.textContent = text;
+          msg.style.cssText = 'display:block;';
+        }
       }
 
       function weekendMinError(d1, nights) {
@@ -989,7 +995,9 @@
         if (d1 >= now && d2 > d1) {
           var nights = Math.round((d2 - d1) / 86400000);
           if (weekendMinError(d1, nights)) return;
-          showHeroMsg('\u2713 Available for ' + nights + ' night' + (nights !== 1 ? 's' : '') + ' \u2014 click to book', true);
+          var guests = (document.getElementById('heroGuests') || {}).value || '2';
+          var url = 'booking.html?checkin=' + ci + '&checkout=' + co + '&guests=' + guests;
+          showHeroMsg('\u2713 Available for ' + nights + ' night' + (nights !== 1 ? 's' : ''), true, url);
         }
       }
 
@@ -1013,11 +1021,8 @@
         var nights = Math.round((d2 - d1) / 86400000);
         if (weekendMinError(d1, nights)) return;
 
-        showHeroMsg('\u2713 Available! ' + nights + ' night' + (nights !== 1 ? 's' : '') + ' \u2014 taking you to book\u2026', true);
-
-        setTimeout(function() {
-          window.location.href = 'booking.html?checkin=' + ci + '&checkout=' + co + '&guests=' + guests;
-        }, 700);
+        var url = 'booking.html?checkin=' + ci + '&checkout=' + co + '&guests=' + guests;
+        showHeroMsg('\u2713 Available for ' + nights + ' night' + (nights !== 1 ? 's' : ''), true, url);
       };
     })();
 

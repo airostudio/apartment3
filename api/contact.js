@@ -184,7 +184,7 @@ export default async function handler(req, res) {
         from:     fromAddress,
         to:       CONTACT_DEST,
         replyTo:  email,
-        subject:  `New enquiry: ${subject} — from ${name}`,
+        subject:  `New enquiry from ${name} <${email}>: ${subject}`,
         html:     adminHtml,
       }),
       sendEmail({

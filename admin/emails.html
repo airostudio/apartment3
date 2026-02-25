@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emails — Cascade Apartment 3 Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script src="../js/auth.js"></script>
+    <script>/* Immediate auth guard */
+    (function(){if(!sessionStorage.getItem('ca3_session')){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}}());</script>
+    <style>
+        /* ── Emails Page ─────────────────────────────────────────── */
+        .emails-summary-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+        .summary-stat {
+            background: var(--color-white);
+            border: 1px solid var(--color-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+        }
+        .summary-stat-value {
+            font-family: var(--font-primary);
+            font-size: 2rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--color-darker);
+            line-height: 1;
+            margin-bottom: var(--space-xs);
+        }
+        .summary-stat-label { font-size: var(--font-size-xs); color: var(--color-gray); }
+
+        /* Enquiry card */
+        .enquiry-card {
+            background: var(--color-white);
+            border-top: 1px solid var(--color-light);
+            transition: background var(--transition-fast);
+            overflow: hidden;
+        }
+        .enquiry-card:first-child { border-top: none; }
+        .enquiry-card--unread { border-left: 3px solid var(--color-secondary); }
+
+        .enquiry-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: var(--space-xl);
+            gap: var(--space-md);
+            cursor: pointer;
+            user-select: none;
+        }
+        .enquiry-card-header:hover { background: var(--color-off-white); }
+
+        .enquiry-sender { display: flex; align-items: center; gap: var(--space-md); flex: 1; min-width: 0; }
+        .sender-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-full);
+            background: var(--color-primary);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            flex-shrink: 0;
+        }
+        .sender-name {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            color: var(--color-darker);
+        }
+        .sender-meta {
+            font-size: var(--font-size-xs);
+            color: var(--color-gray);
+            margin-top: 2px;
+        }
+        .sender-meta a { color: var(--color-primary); text-decoration: none; }
+        .sender-meta a:hover { text-decoration: underline; }
+        .enquiry-subject-preview {
+            font-size: var(--font-size-xs);
+            color: var(--color-gray);
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 360px;
+        }
+        .enquiry-meta-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: var(--space-xs);
+            flex-shrink: 0;
+        }
+        .enquiry-date {
+            font-size: var(--font-size-xs);
+            color: var(--color-gray);
+            white-space: nowrap;
+        }
+        .badge-unread {
+            background: rgba(201,168,76,0.15);
+            color: #9a6f00;
+            font-size: 10px;
+            font-weight: var(--font-weight-bold);
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            vertical-align: middle;
+        }
+        .badge-delivered {
+            background: rgba(34,197,94,0.1);
+            color: #15803d;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+        .badge-bounced {
+            background: rgba(239,68,68,0.1);
+            color: #dc2626;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        /* Expanded message area */
+        .enquiry-body {
+            border-top: 1px solid var(--color-light);
+            display: none;
+            background: var(--color-off-white);
+        }
+        .enquiry-body.open { display: block; }
+
+        .enquiry-body-loading {
+            padding: var(--space-xl);
+            color: var(--color-gray);
+            font-size: var(--font-size-sm);
+            text-align: center;
+        }
+
+        .enquiry-body-content { padding: var(--space-xl); }
+
+        .enquiry-iframe-wrap {
+            border: 1px solid var(--color-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--space-lg);
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+        .enquiry-iframe-wrap iframe {
+            width: 100%;
+            border: none;
+            min-height: 280px;
+            display: block;
+        }
+
+        .enquiry-actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; align-items: center; }
+        .enquiry-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-light);
+            background: var(--color-white);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-dark);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .enquiry-btn:hover { background: var(--color-off-white); border-color: var(--color-primary); color: var(--color-primary); }
+        .enquiry-btn svg { width: 13px; height: 13px; }
+        .enquiry-btn--primary { background: var(--color-primary); color: var(--color-white); border-color: var(--color-primary); }
+        .enquiry-btn--primary:hover { opacity: 0.9; background: var(--color-primary); color: var(--color-white); }
+
+        /* Loading / empty / error states */
+        .state-box {
+            background: var(--color-white);
+            border: 1px solid var(--color-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-3xl) var(--space-xl);
+            text-align: center;
+        }
+        .state-box-icon { font-size: 2.5rem; margin-bottom: var(--space-md); }
+        .state-box-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-darker); margin-bottom: var(--space-sm); }
+        .state-box-desc { font-size: var(--font-size-sm); color: var(--color-gray); line-height: 1.6; max-width: 480px; margin: 0 auto; }
+
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-light);
+            background: var(--color-white);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-dark);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .refresh-btn:hover { background: var(--color-off-white); border-color: var(--color-primary); color: var(--color-primary); }
+        .refresh-btn svg { width: 14px; height: 14px; }
+
+        .chevron-icon { width: 16px; height: 16px; transition: transform 0.2s; flex-shrink: 0; color: var(--color-gray); }
+        .chevron-icon.open { transform: rotate(180deg); }
+
+        @media (max-width: 768px) {
+            .emails-summary-bar { grid-template-columns: 1fr; }
+            .enquiry-card-header { flex-direction: column; }
+            .enquiry-meta-right { align-items: flex-start; flex-direction: row; gap: var(--space-sm); }
+            .enquiry-subject-preview { max-width: 100%; }
+        }
+    </style>
+    <script src="../js/admin-auth.js"></script>
+</head>
+<body class="admin-body">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <a href="/admin/index.html" class="sidebar-logo">
+                <span class="logo-text">Cascade Apartment 3</span>
+                <span class="logo-badge">Admin</span>
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <!-- MAIN -->
+            <div class="nav-section">
+                <span class="nav-section-title">MAIN</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/admin/index.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/bookings.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/calendar.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- MANAGEMENT -->
+            <div class="nav-section">
+                <span class="nav-section-title">MANAGEMENT</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/admin/rates.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Rates &amp; Pricing</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/guests.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Guests</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/reviews.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span>Reviews</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="/admin/emails.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <span>Emails</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- INTEGRATIONS -->
+            <div class="nav-section">
+                <span class="nav-section-title">INTEGRATIONS</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/admin/ical-sync.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            <span>iCal Sync</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/stripe-connect.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Stripe Connect</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM -->
+            <div class="nav-section">
+                <span class="nav-section-title">SYSTEM</span>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/admin/settings.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/reports.html" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <div class="admin-main">
+
+        <!-- Top Bar -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button class="topbar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <nav class="breadcrumb" aria-label="Breadcrumb">
+                    <a href="/admin/index.html" class="breadcrumb-link">Dashboard</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-current">Emails</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <button class="refresh-btn" id="refreshBtn" title="Refresh">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                    Refresh
+                </button>
+                <div class="topbar-user">
+                    <span class="topbar-user-avatar">AD</span>
+                    <span class="topbar-user-name">Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="admin-content">
+
+            <!-- Page Header -->
+            <div class="admin-page-header" style="margin-bottom: var(--space-2xl);">
+                <div>
+                    <h1 class="page-title">Contact Enquiries</h1>
+                    <p class="page-subtitle">Messages received via the website contact form — click any row to read and reply</p>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="emails-summary-bar">
+                <div class="summary-stat">
+                    <div class="summary-stat-value" id="statTotal">—</div>
+                    <div class="summary-stat-label">Total Enquiries</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="summary-stat-value" id="statUnread" style="color: var(--color-secondary);">—</div>
+                    <div class="summary-stat-label">Unread</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="summary-stat-value" id="statLatest" style="font-size: 1rem; padding-top: 0.4rem;">—</div>
+                    <div class="summary-stat-label">Most Recent</div>
+                </div>
+            </div>
+
+            <!-- Email list -->
+            <div id="emailsContainer">
+                <div class="state-box">
+                    <div class="state-box-icon">📬</div>
+                    <div class="state-box-title">Loading enquiries…</div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        var READ_KEY = 'ca3_read_contacts';
+
+        function getReadIds()   { try { return JSON.parse(localStorage.getItem(READ_KEY)) || []; } catch { return []; } }
+        function markRead(id)   { var ids = getReadIds(); if (!ids.includes(id)) { ids.push(id); localStorage.setItem(READ_KEY, JSON.stringify(ids)); } }
+        function markUnread(id) { localStorage.setItem(READ_KEY, JSON.stringify(getReadIds().filter(function(i){ return i !== id; }))); }
+        function isRead(id)     { return getReadIds().includes(id); }
+
+        var AVATAR_COLOURS = ['#1a6fa3','#16a085','#8e44ad','#e67e22','#c0392b','#2980b9','#27ae60','#d35400'];
+
+        function initials(name) {
+            var parts = String(name || '?').trim().split(/\s+/);
+            return ((parts[0][0] || '') + (parts[1] ? parts[1][0] : '')).toUpperCase() || '??';
+        }
+
+        function avatarColour(str) {
+            var h = 0; for (var i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h);
+            return AVATAR_COLOURS[Math.abs(h) % AVATAR_COLOURS.length];
+        }
+
+        function fmtDate(iso) {
+            try { return new Date(iso).toLocaleString('en-AU', { timeZone:'Australia/Melbourne', dateStyle:'medium', timeStyle:'short' }); }
+            catch { return iso || ''; }
+        }
+
+        function fmtDateShort(iso) {
+            try { return new Date(iso).toLocaleDateString('en-AU', { timeZone:'Australia/Melbourne', day:'numeric', month:'short', year:'numeric' }); }
+            catch { return ''; }
+        }
+
+        function escHtml(str) {
+            return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function statusBadge(s) {
+            if (!s || s === 'sent') return '';
+            return s === 'delivered'
+                ? '<span class="badge-delivered">Delivered</span>'
+                : s === 'bounced' || s === 'complained'
+                    ? '<span class="badge-bounced">' + escHtml(s) + '</span>'
+                    : '';
+        }
+
+        function renderCard(c) {
+            var read = isRead(c.id);
+            var ini  = initials(c.name);
+            var col  = avatarColour(c.email || c.name || c.id);
+            return '<div class="enquiry-card' + (read ? '' : ' enquiry-card--unread') + '" data-id="' + escHtml(c.id) + '">'
+                + '<div class="enquiry-card-header js-toggle-card">'
+                +   '<div class="enquiry-sender">'
+                +     '<div class="sender-avatar" style="background:' + col + ';">' + escHtml(ini) + '</div>'
+                +     '<div style="min-width:0;overflow:hidden;">'
+                +       '<div class="sender-name">' + escHtml(c.name) + (!read ? '&nbsp;<span class="badge-unread">NEW</span>' : '') + '</div>'
+                +       '<div class="sender-meta"><a href="mailto:' + escHtml(c.email) + '" onclick="event.stopPropagation();">' + escHtml(c.email) + '</a></div>'
+                +       '<div class="enquiry-subject-preview">' + escHtml(c.subject) + '</div>'
+                +     '</div>'
+                +   '</div>'
+                +   '<div class="enquiry-meta-right">'
+                +     '<span class="enquiry-date">' + escHtml(fmtDate(c.receivedAt)) + '</span>'
+                +     statusBadge(c.status)
+                +   '</div>'
+                +   '<svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'
+                + '</div>'
+                + '<div class="enquiry-body" id="body-' + escHtml(c.id) + '">'
+                +   '<div class="enquiry-body-loading">Loading message…</div>'
+                + '</div>'
+                + '</div>';
+        }
+
+        function updateUnreadStat() {
+            var readIds = getReadIds();
+            var u = (window._ca3Contacts || []).filter(function(c){ return !readIds.includes(c.id); }).length;
+            document.getElementById('statUnread').textContent = u;
+        }
+
+        function renderList(contacts) {
+            var container = document.getElementById('emailsContainer');
+
+            document.getElementById('statTotal').textContent  = contacts.length;
+            document.getElementById('statLatest').textContent = contacts.length ? fmtDateShort(contacts[0].receivedAt) : '—';
+            updateUnreadStat();
+
+            if (!contacts.length) {
+                container.innerHTML = '<div class="state-box">'
+                    + '<div class="state-box-icon">📭</div>'
+                    + '<div class="state-box-title">No enquiries yet</div>'
+                    + '<div class="state-box-desc">Contact form submissions from your website will appear here once someone gets in touch.</div>'
+                    + '</div>';
+                return;
+            }
+
+            container.innerHTML = '<div class="admin-card"><div class="admin-card-body" style="padding:0;">'
+                + contacts.map(renderCard).join('')
+                + '</div></div>';
+
+            container.querySelectorAll('.js-toggle-card').forEach(function(header) {
+                header.addEventListener('click', function() {
+                    var card    = header.closest('.enquiry-card');
+                    var id      = card.dataset.id;
+                    var body    = card.querySelector('.enquiry-body');
+                    var chevron = header.querySelector('.chevron-icon');
+                    var isOpen  = body.classList.contains('open');
+
+                    if (isOpen) {
+                        body.classList.remove('open');
+                        chevron.classList.remove('open');
+                    } else {
+                        body.classList.add('open');
+                        chevron.classList.add('open');
+                        markRead(id);
+                        card.classList.remove('enquiry-card--unread');
+                        var badgeEl = header.querySelector('.badge-unread');
+                        if (badgeEl) badgeEl.remove();
+                        updateUnreadStat();
+                        loadBody(id, body);
+                    }
+                });
+            });
+        }
+
+        var bodyCache = {};
+
+        function loadBody(id, bodyEl) {
+            if (bodyCache[id]) { renderBody(bodyCache[id], bodyEl, id); return; }
+            bodyEl.innerHTML = '<div class="enquiry-body-loading">Loading message…</div>';
+            fetch('/api/email-detail?id=' + encodeURIComponent(id))
+                .then(function(r){ return r.json(); })
+                .then(function(data) {
+                    if (data.error) throw new Error(data.error);
+                    bodyCache[id] = data;
+                    renderBody(data, bodyEl, id);
+                })
+                .catch(function(err) {
+                    bodyEl.innerHTML = '<div class="enquiry-body-content" style="color:#dc2626;">Failed to load: ' + escHtml(err.message) + '</div>';
+                });
+        }
+
+        function renderBody(data, bodyEl, id) {
+            var contact  = (window._ca3Contacts || []).find(function(c){ return c.id === id; }) || {};
+            var replyTo  = data.replyTo || contact.email || '';
+            var subject  = contact.subject || '';
+            var replyUri = replyTo
+                ? 'mailto:' + encodeURIComponent(replyTo)
+                  + '?subject=' + encodeURIComponent('Re: ' + subject + ' — Cascade Apartment 3')
+                  + '&body=' + encodeURIComponent('\n\nHi ' + (contact.name || '') + ',\n\nThank you for your enquiry about Cascade Apartment 3.\n\n')
+                : '';
+
+            var html = '<div class="enquiry-body-content">';
+
+            if (data.html) {
+                html += '<div class="enquiry-iframe-wrap">'
+                     +    '<iframe id="frame-' + escHtml(id) + '" sandbox="allow-same-origin" title="Email preview"></iframe>'
+                     + '</div>';
+            }
+
+            html += '<div class="enquiry-actions">';
+            if (replyUri) {
+                html += '<a href="' + escHtml(replyUri) + '" class="enquiry-btn enquiry-btn--primary">'
+                     +    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>'
+                     +    'Reply to ' + escHtml(contact.name || replyTo)
+                     + '</a>';
+            }
+            html += '<button class="enquiry-btn js-mark-unread" data-id="' + escHtml(id) + '">'
+                 +    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+                 +    'Mark as unread'
+                 + '</button>';
+            html += '</div></div>';
+
+            bodyEl.innerHTML = html;
+
+            if (data.html) {
+                var frame = document.getElementById('frame-' + id);
+                if (frame) {
+                    var doc = frame.contentDocument || frame.contentWindow.document;
+                    doc.open(); doc.write(data.html); doc.close();
+                    setTimeout(function(){
+                        try { frame.style.height = (doc.body.scrollHeight + 24) + 'px'; } catch(e){}
+                    }, 250);
+                }
+            }
+
+            bodyEl.querySelector('.js-mark-unread').addEventListener('click', function() {
+                var cid  = this.dataset.id;
+                var card = document.querySelector('[data-id="' + cid + '"]');
+                markUnread(cid);
+                if (card) card.classList.add('enquiry-card--unread');
+                updateUnreadStat();
+            });
+        }
+
+        function showError(msg) {
+            document.getElementById('emailsContainer').innerHTML =
+                '<div class="state-box"><div class="state-box-icon">⚠️</div>'
+                + '<div class="state-box-title">Could not load enquiries</div>'
+                + '<div class="state-box-desc">' + escHtml(msg) + '</div></div>';
+            ['statTotal','statUnread','statLatest'].forEach(function(sid){ document.getElementById(sid).textContent = '—'; });
+        }
+
+        async function loadEmails() {
+            document.getElementById('emailsContainer').innerHTML =
+                '<div class="state-box"><div class="state-box-icon">📬</div><div class="state-box-title">Loading enquiries…</div></div>';
+            try {
+                var res  = await fetch('/api/emails');
+                var data = await res.json();
+                if (!res.ok) {
+                    if (data.code === 'not_configured') {
+                        document.getElementById('emailsContainer').innerHTML =
+                            '<div class="state-box"><div class="state-box-icon">🔧</div>'
+                            + '<div class="state-box-title">Resend API key not configured</div>'
+                            + '<div class="state-box-desc">Set <strong>RESEND_API_KEY</strong> in your Vercel project settings and redeploy.</div></div>';
+                        ['statTotal','statUnread','statLatest'].forEach(function(sid){ document.getElementById(sid).textContent = '—'; });
+                        return;
+                    }
+                    showError(data.error || 'Server error ' + res.status);
+                    return;
+                }
+                window._ca3Contacts = data.contacts || [];
+                renderList(window._ca3Contacts);
+            } catch (err) {
+                showError('Network error — ' + err.message);
+            }
+        }
+
+        loadEmails();
+        document.getElementById('refreshBtn').addEventListener('click', function(){ bodyCache = {}; loadEmails(); });
+    })();
+    </script>
+</body>
+</html>

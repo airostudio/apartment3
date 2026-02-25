@@ -1216,19 +1216,6 @@
               <input type="date" id="checkout">
             </div>
           </div>
-          <div class="booking-form-field" style="border-top:1px solid #ddd;">
-            <label for="guests">Guests</label>
-            <select id="guests">
-              <option value="1">1 Guest</option>
-              <option value="2" selected>2 Guests</option>
-              <option value="3">3 Guests</option>
-              <option value="4">4 Guests</option>
-              <option value="5">5 Guests</option>
-              <option value="6">6 Guests</option>
-              <option value="7">7 Guests</option>
-              <option value="8">8 Guests</option>
-            </select>
-          </div>
         </div>
 
         <button class="btn-book">Book Now</button>
@@ -1436,8 +1423,6 @@
         coEl.addEventListener('change', updateSidebar);
       }
 
-      document.getElementById('guests') && document.getElementById('guests').addEventListener('change', updateSidebar);
-
       // Run on load with the default dates already in the inputs
       updateSidebar();
     })();
@@ -1446,12 +1431,10 @@
     document.querySelector('.btn-book').addEventListener('click', function() {
       var ci     = document.getElementById('checkin').value;
       var co     = document.getElementById('checkout').value;
-      var guests = document.getElementById('guests').value || '2';
-      var url    = 'booking.html';
-      var p      = [];
+      var url = 'booking.html';
+      var p   = [];
       if (ci) p.push('checkin=' + ci);
       if (co) p.push('checkout=' + co);
-      p.push('guests=' + guests);
       window.location.href = url + (p.length ? '?' + p.join('&') : '');
     });
 

@@ -461,19 +461,6 @@
           <label for="heroCheckout">Check Out</label>
           <input type="date" id="heroCheckout">
         </div>
-        <div class="hero-book-field">
-          <label for="heroGuests">Guests</label>
-          <select id="heroGuests">
-            <option value="1">1 Guest</option>
-            <option value="2" selected>2 Guests</option>
-            <option value="3">3 Guests</option>
-            <option value="4">4 Guests</option>
-            <option value="5">5 Guests</option>
-            <option value="6">6 Guests</option>
-            <option value="7">7 Guests</option>
-            <option value="8">8 Guests</option>
-          </select>
-        </div>
         <button type="button" class="btn btn--primary" style="white-space:nowrap;flex-shrink:0;" onclick="heroCheckAvailability()">Check Availability</button>
       </div>
       <div id="heroAvailMsg" class="hero-avail-msg"></div>
@@ -995,8 +982,7 @@
         if (d1 >= now && d2 > d1) {
           var nights = Math.round((d2 - d1) / 86400000);
           if (weekendMinError(d1, nights)) return;
-          var guests = (document.getElementById('heroGuests') || {}).value || '2';
-          var url = 'booking.html?checkin=' + ci + '&checkout=' + co + '&guests=' + guests;
+          var url = 'booking.html?checkin=' + ci + '&checkout=' + co;
           showHeroMsg('\u2713 Available for ' + nights + ' night' + (nights !== 1 ? 's' : ''), true, url);
         }
       }
@@ -1004,8 +990,6 @@
       window.heroCheckAvailability = function() {
         var ci  = heroCheckin  && heroCheckin.value;
         var co  = heroCheckout && heroCheckout.value;
-        var guests = (document.getElementById('heroGuests') || {}).value || '2';
-
         if (!ci || !co) {
           showHeroMsg('\u26a0 Please select check-in and check-out dates.', false);
           return;
@@ -1021,7 +1005,7 @@
         var nights = Math.round((d2 - d1) / 86400000);
         if (weekendMinError(d1, nights)) return;
 
-        var url = 'booking.html?checkin=' + ci + '&checkout=' + co + '&guests=' + guests;
+        var url = 'booking.html?checkin=' + ci + '&checkout=' + co;
         showHeroMsg('\u2713 Available for ' + nights + ' night' + (nights !== 1 ? 's' : ''), true, url);
       };
     })();

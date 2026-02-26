@@ -631,6 +631,27 @@
             margin-left: 8px;
         }
 
+        /* ========== Copy Button ========== */
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            background: #fff;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            padding: 0;
+        }
+        .copy-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
         /* ========== Responsive ========== */
         @media (max-width: 1024px) {
             .sidebar {
@@ -795,6 +816,7 @@
                 <button class="settings-tab active" data-tab="general">General</button>
                 <button class="settings-tab" data-tab="booking-rules">Booking Rules</button>
                 <button class="settings-tab" data-tab="notifications">Notifications</button>
+                <button class="settings-tab" data-tab="email-dns">Email &amp; DNS</button>
                 <button class="settings-tab" data-tab="appearance">Appearance</button>
                 <button class="settings-tab" data-tab="users">Users</button>
             </div>
@@ -1232,6 +1254,159 @@
                 </div>
             </div>
 
+            <!-- ==================== EMAIL & DNS TAB ==================== -->
+            <div class="tab-content" id="tab-email-dns">
+
+                <!-- Google Workspace MX Record -->
+                <div class="settings-section">
+                    <h3>Google Workspace — MX Record Setup</h3>
+                    <p style="font-size:13px;color:var(--gray-500);margin-bottom:20px;line-height:1.6;">
+                        Add the following DNS record to your domain registrar (e.g. Cloudflare, GoDaddy, Namecheap) to route
+                        all email for <strong>mtbawbawcascade3.com</strong> through Google Workspace.
+                        Once added, DNS changes typically propagate within 24–48 hours.
+                    </p>
+
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="background:var(--gray-100);">
+                                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:var(--gray-600);text-transform:uppercase;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--gray-200);">Field</th>
+                                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:var(--gray-600);text-transform:uppercase;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--gray-200);">Value</th>
+                                    <th style="text-align:center;padding:10px 14px;font-weight:600;color:var(--gray-600);text-transform:uppercase;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--gray-200);width:90px;">Copy</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dnsRecordTable">
+                                <tr style="border-bottom:1px solid var(--gray-100);">
+                                    <td style="padding:12px 14px;font-weight:600;color:var(--gray-700);">Type</td>
+                                    <td style="padding:12px 14px;"><code id="dns-type" style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:13px;color:var(--gray-800);">MX</code></td>
+                                    <td style="padding:12px 14px;text-align:center;"><button class="copy-btn" data-copy="MX" title="Copy">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    </button></td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--gray-100);">
+                                    <td style="padding:12px 14px;font-weight:600;color:var(--gray-700);">Name / Host</td>
+                                    <td style="padding:12px 14px;"><code id="dns-name" style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:13px;color:var(--gray-800);">@</code>
+                                        <span style="font-size:12px;color:var(--gray-400);margin-left:8px;">(root domain)</span>
+                                    </td>
+                                    <td style="padding:12px 14px;text-align:center;"><button class="copy-btn" data-copy="@" title="Copy">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    </button></td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--gray-100);">
+                                    <td style="padding:12px 14px;font-weight:600;color:var(--gray-700);">Value / Mail Server</td>
+                                    <td style="padding:12px 14px;"><code id="dns-value" style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:13px;color:var(--gray-800);">SMTP.GOOGLE.COM</code></td>
+                                    <td style="padding:12px 14px;text-align:center;"><button class="copy-btn" data-copy="SMTP.GOOGLE.COM" title="Copy">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    </button></td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--gray-100);">
+                                    <td style="padding:12px 14px;font-weight:600;color:var(--gray-700);">Priority</td>
+                                    <td style="padding:12px 14px;"><code id="dns-priority" style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:13px;color:var(--gray-800);">1</code></td>
+                                    <td style="padding:12px 14px;text-align:center;"><button class="copy-btn" data-copy="1" title="Copy">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    </button></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:12px 14px;font-weight:600;color:var(--gray-700);">TTL</td>
+                                    <td style="padding:12px 14px;"><code id="dns-ttl" style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:13px;color:var(--gray-800);">3600</code>
+                                        <span style="font-size:12px;color:var(--gray-400);margin-left:8px;">(1 hour)</span>
+                                    </td>
+                                    <td style="padding:12px 14px;text-align:center;"><button class="copy-btn" data-copy="3600" title="Copy">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    </button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top:20px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <div style="font-size:13px;color:#92400e;line-height:1.6;">
+                            <strong>Important:</strong> If your domain already has existing MX records (e.g. from a previous email provider), remove them before adding this one. Only one MX record should point to <code style="background:#fef3c7;padding:2px 6px;border-radius:3px;">SMTP.GOOGLE.COM</code> at priority 1.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Where to add DNS records -->
+                <div class="settings-section">
+                    <h3>Where to Add This Record</h3>
+                    <p style="font-size:13px;color:var(--gray-500);margin-bottom:16px;line-height:1.6;">
+                        Log in to your domain registrar or DNS provider and navigate to the DNS management section. Common providers:
+                    </p>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;">
+                        <div style="border:1px solid var(--gray-200);border-radius:8px;padding:14px 16px;">
+                            <div style="font-weight:600;font-size:13px;color:var(--gray-800);margin-bottom:4px;">Cloudflare</div>
+                            <div style="font-size:12px;color:var(--gray-500);">DNS &rarr; Records &rarr; Add record</div>
+                        </div>
+                        <div style="border:1px solid var(--gray-200);border-radius:8px;padding:14px 16px;">
+                            <div style="font-weight:600;font-size:13px;color:var(--gray-800);margin-bottom:4px;">GoDaddy</div>
+                            <div style="font-size:12px;color:var(--gray-500);">My Products &rarr; DNS &rarr; Add</div>
+                        </div>
+                        <div style="border:1px solid var(--gray-200);border-radius:8px;padding:14px 16px;">
+                            <div style="font-weight:600;font-size:13px;color:var(--gray-800);margin-bottom:4px;">Namecheap</div>
+                            <div style="font-size:12px;color:var(--gray-500);">Domain List &rarr; Manage &rarr; Advanced DNS</div>
+                        </div>
+                        <div style="border:1px solid var(--gray-200);border-radius:8px;padding:14px 16px;">
+                            <div style="font-weight:600;font-size:13px;color:var(--gray-800);margin-bottom:4px;">Google Domains</div>
+                            <div style="font-size:12px;color:var(--gray-500);">DNS &rarr; Custom Records</div>
+                        </div>
+                        <div style="border:1px solid var(--gray-200);border-radius:8px;padding:14px 16px;">
+                            <div style="font-weight:600;font-size:13px;color:var(--gray-800);margin-bottom:4px;">Route 53 (AWS)</div>
+                            <div style="font-size:12px;color:var(--gray-500);">Hosted Zones &rarr; Create Record</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outbound email (Resend) sender config -->
+                <div class="settings-section">
+                    <h3>Outbound Email Configuration (Resend)</h3>
+                    <p style="font-size:13px;color:var(--gray-500);margin-bottom:20px;line-height:1.6;">
+                        Your booking confirmation and marketing emails are sent via <strong>Resend</strong>.
+                        These environment variables must be set in your <strong>Vercel project settings</strong> under
+                        Settings &rarr; Environment Variables.
+                    </p>
+
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="background:var(--gray-100);">
+                                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:var(--gray-600);text-transform:uppercase;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--gray-200);">Variable</th>
+                                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:var(--gray-600);text-transform:uppercase;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--gray-200);">Example Value</th>
+                                    <th style="text-align:left;padding:10px 14px;font-weight:600;color:var(--gray-600);text-transform:uppercase;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--gray-200);">Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom:1px solid var(--gray-100);">
+                                    <td style="padding:12px 14px;"><code style="background:var(--gray-100);padding:3px 8px;border-radius:4px;">RESEND_API_KEY</code></td>
+                                    <td style="padding:12px 14px;color:var(--gray-500);font-style:italic;">re_xxxxxxxxxxxxxxxx</td>
+                                    <td style="padding:12px 14px;font-size:13px;color:var(--gray-600);">API key from resend.com dashboard</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--gray-100);">
+                                    <td style="padding:12px 14px;"><code style="background:var(--gray-100);padding:3px 8px;border-radius:4px;">EMAIL_FROM</code></td>
+                                    <td style="padding:12px 14px;"><code style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:12px;">Cascade Apartment 3 &lt;hello@mtbawbawcascade3.com&gt;</code></td>
+                                    <td style="padding:12px 14px;font-size:13px;color:var(--gray-600);">The "From" name and address shown in emails</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:12px 14px;"><code style="background:var(--gray-100);padding:3px 8px;border-radius:4px;">ADMIN_EMAIL</code></td>
+                                    <td style="padding:12px 14px;"><code style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:12px;">hello@mtbawbawcascade3.com</code></td>
+                                    <td style="padding:12px 14px;font-size:13px;color:var(--gray-600);">Admin inbox that receives new booking alerts</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top:20px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <div style="font-size:13px;color:#1e40af;line-height:1.6;">
+                            Before using <code style="background:#dbeafe;padding:2px 6px;border-radius:3px;">hello@mtbawbawcascade3.com</code> as the sender, you must verify this domain in your
+                            <a href="https://resend.com/domains" target="_blank" rel="noopener" style="color:#2563eb;font-weight:500;">Resend Domains</a> dashboard by adding their SPF, DKIM, and DMARC DNS records
+                            (separate from the Google Workspace MX record above).
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <!-- ==================== APPEARANCE TAB ==================== -->
             <div class="tab-content" id="tab-appearance">
 
@@ -1421,6 +1596,21 @@
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
     <script>
+        // Copy-to-clipboard buttons (DNS records)
+        document.querySelectorAll('.copy-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var text = this.dataset.copy;
+                navigator.clipboard.writeText(text).then(function() {
+                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+                    setTimeout(function() {
+                        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+                    }, 1800);
+                }).catch(function() {
+                    prompt('Copy this value:', text);
+                });
+            });
+        });
+
         // Tab switching
         document.querySelectorAll('.settings-tab').forEach(function(tab) {
             tab.addEventListener('click', function() {

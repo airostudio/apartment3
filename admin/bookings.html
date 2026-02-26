@@ -202,6 +202,12 @@
                             <span>Emails</span>
                         </a>
                     </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/admin/email-templates.html" class="sidebar-nav-link">
+                            <svg class="sidebar-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                            <span>Email Templates</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -365,7 +371,7 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="bookingsTable">
+                            <tbody id="bookingsTbody">
                                 <tr id="bookingsEmptyRow">
                                     <td colspan="7" style="text-align:center;padding:2.5rem;color:var(--color-gray);font-size:var(--font-size-sm);">No bookings yet. Bookings from guests will appear here.</td>
                                 </tr>
@@ -580,9 +586,11 @@
 
         var currentEditId = null;
 
-        /* ---- helpers ---- */
+        /* ── helpers ── */
         function fmtDate(iso) {
-            var d = new Date(iso + 'T00:00:00');
+            if (!iso) return '';
+            var str = String(iso);
+            var d = new Date(str.length <= 10 ? str + 'T00:00:00' : str);
             if (isNaN(d)) return iso;
             return d.toLocaleDateString('en-AU', { month: 'short', day: 'numeric', year: 'numeric' });
         }
@@ -600,13 +608,7 @@
 
         function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
 
-        function nextId() {
-            var ids = Array.from(document.querySelectorAll('#bookingsTable tbody tr[data-id]'))
-                .map(function (r) { return parseInt(r.dataset.id.replace('BK-', '')) || 0; });
-            return 'BK-' + (Math.max.apply(null, ids.length ? ids : [0]) + 1);
-        }
-
-        /* ---- overlay ---- */
+        /* ── overlay ── */
         function showOverlay() { document.getElementById('bkOverlay').hidden = false; }
 
         function hideOverlay() {
@@ -617,18 +619,18 @@
             currentEditId = null;
         }
 
-        /* ---- stats ---- */
+        /* ── stats ── */
         function updateStats() {
-            var rows = Array.from(document.querySelectorAll('#bookingsTable tbody tr[data-id]'));
+            var rows = Array.from(document.querySelectorAll('#bookingsTbody tr[data-id]'));
             var counts = { confirmed: 0, pending: 0, cancelled: 0 };
             rows.forEach(function (r) { counts[r.dataset.status] = (counts[r.dataset.status] || 0) + 1; });
-            document.getElementById('statTotal').textContent      = rows.length;
-            document.getElementById('statConfirmed').textContent  = counts.confirmed || 0;
-            document.getElementById('statPending').textContent    = counts.pending   || 0;
-            document.getElementById('statCancelled').textContent  = counts.cancelled || 0;
+            document.getElementById('statTotal').textContent     = rows.length;
+            document.getElementById('statConfirmed').textContent = counts.confirmed || 0;
+            document.getElementById('statPending').textContent   = counts.pending   || 0;
+            document.getElementById('statCancelled').textContent = counts.cancelled || 0;
         }
 
-        /* ---- row HTML helper ---- */
+        /* ── row HTML ── */
         function buildRowHTML(d) {
             var badgeClass = 'admin-badge--' + d.status;
             var eyeSVG  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
@@ -654,10 +656,80 @@
                 '</div></td>';
         }
 
-        /* ---- CREATE ---- */
+        /* ── load all bookings from localStorage on page load ── */
+        function loadBookings() {
+            if (!window.CA3Data) return;
+            var bookings = window.CA3Data.getBookings();
+            var tbody = document.getElementById('bookingsTbody');
+            tbody.innerHTML = '';
+
+            if (!bookings.length) {
+                tbody.innerHTML = '<tr id="bookingsEmptyRow"><td colspan="7" style="text-align:center;padding:2.5rem;color:var(--color-gray);font-size:var(--font-size-sm);">No bookings yet. Bookings from guests will appear here.</td></tr>';
+                updateStats();
+                return;
+            }
+
+            bookings.sort(function (a, b) {
+                return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+            });
+
+            bookings.forEach(function (b) {
+                var totalRaw = (typeof b.total === 'number') ? b.total : parseFloat(String(b.total || '0').replace(/[^0-9.]/g, '')) || 0;
+                var data = {
+                    id:       b.id || b.ref || '',
+                    name:     b.guestName  || b.name     || '',
+                    email:    b.guestEmail || b.email    || '',
+                    checkin:  b.checkIn    || b.checkin  || '',
+                    checkout: b.checkOut   || b.checkout || '',
+                    guests:   b.guests || 1,
+                    status:   b.status || 'pending',
+                    total:    fmtMoney(totalRaw)
+                };
+                var tr = document.createElement('tr');
+                tr.dataset.id       = data.id;
+                tr.dataset.name     = data.name;
+                tr.dataset.email    = data.email;
+                tr.dataset.checkin  = data.checkin;
+                tr.dataset.checkout = data.checkout;
+                tr.dataset.guests   = data.guests;
+                tr.dataset.status   = data.status;
+                tr.dataset.total    = data.total;
+                tr.innerHTML = buildRowHTML(data);
+                tbody.appendChild(tr);
+            });
+            updateStats();
+        }
+
+        /* ── send confirmation email ── */
+        function sendConfirmationEmail(data) {
+            if (!data.email || !data.id) return;
+            var nights = (data.checkin && data.checkout)
+                ? Math.round((new Date(data.checkout) - new Date(data.checkin)) / 86400000)
+                : 0;
+            fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ref:         data.id,
+                    guestName:   data.name,
+                    guestEmail:  data.email,
+                    checkin:     data.checkin,
+                    checkout:    data.checkout,
+                    nights:      nights,
+                    guests:      data.guests,
+                    totalAmount: data.total
+                })
+            }).catch(function (err) {
+                console.warn('[CA3] Could not send confirmation email:', err);
+            });
+        }
+
+        /* ── CREATE ── */
         function openCreate() {
             document.getElementById('bkCreateForm').reset();
-            document.getElementById('bkCreateId').textContent = '#' + nextId();
+            var newId = window.CA3Data ? window.CA3Data.generateId('CA3') : 'CA3-' + Date.now();
+            document.getElementById('bkCreateId').textContent = '#' + newId;
+            document.getElementById('bkCreateId').dataset.pendingId = newId;
             document.getElementById('bkCreateModal').hidden = false;
             showOverlay();
         }
@@ -673,9 +745,11 @@
                 alert('Check-out must be after check-in.');
                 return;
             }
-            var id   = nextId();
+            var newId    = document.getElementById('bkCreateId').dataset.pendingId || (window.CA3Data ? window.CA3Data.generateId('CA3') : 'CA3-' + Date.now());
+            var nights   = Math.round((new Date(f.bkCheckout.value) - new Date(f.bkCheckin.value)) / 86400000);
+            var totalNum = parseFloat(f.bkTotal.value) || 0;
             var data = {
-                id:       id,
+                id:       newId,
                 name:     f.bkName.value.trim(),
                 email:    f.bkEmail.value.trim(),
                 checkin:  f.bkCheckin.value,
@@ -684,6 +758,35 @@
                 status:   f.bkStatus.value,
                 total:    fmtMoney(f.bkTotal.value)
             };
+
+            if (window.CA3Data) {
+                window.CA3Data.addBooking({
+                    id:         newId,
+                    ref:        newId,
+                    guestName:  data.name,
+                    guestEmail: data.email,
+                    guestPhone: '',
+                    checkIn:    data.checkin,
+                    checkOut:   data.checkout,
+                    nights:     nights,
+                    guests:     parseInt(data.guests) || 1,
+                    status:     data.status,
+                    source:     'admin',
+                    total:      totalNum,
+                    paid:       data.status === 'confirmed' ? totalNum : 0,
+                    deposit:    0,
+                    notes:      '',
+                    createdAt:  new Date().toISOString()
+                });
+            }
+
+            if (data.status === 'confirmed') {
+                sendConfirmationEmail(data);
+            }
+
+            var emptyRow = document.getElementById('bookingsEmptyRow');
+            if (emptyRow) emptyRow.remove();
+
             var tr = document.createElement('tr');
             tr.dataset.id       = data.id;
             tr.dataset.name     = data.name;
@@ -693,23 +796,23 @@
             tr.dataset.guests   = data.guests;
             tr.dataset.status   = data.status;
             tr.dataset.total    = data.total;
-            tr.innerHTML        = buildRowHTML(data);
-            document.querySelector('#bookingsTable tbody').prepend(tr);
+            tr.innerHTML = buildRowHTML(data);
+            document.getElementById('bookingsTbody').prepend(tr);
             updateStats();
             hideOverlay();
         });
 
-        /* ---- VIEW ---- */
+        /* ── VIEW ── */
         function openView(row) {
             var d = row.dataset;
-            document.getElementById('bkViewId').textContent      = '#' + d.id;
-            document.getElementById('bkViewName').textContent    = d.name;
-            document.getElementById('bkViewEmail').textContent   = d.email;
-            document.getElementById('bkViewCheckin').textContent = fmtDate(d.checkin);
-            document.getElementById('bkViewCheckout').textContent= fmtDate(d.checkout);
-            document.getElementById('bkViewDuration').textContent= nightsBetween(d.checkin, d.checkout);
-            document.getElementById('bkViewGuests').textContent  = d.guests + (d.guests === '1' ? ' guest' : ' guests');
-            document.getElementById('bkViewTotal').textContent   = d.total;
+            document.getElementById('bkViewId').textContent       = '#' + d.id;
+            document.getElementById('bkViewName').textContent     = d.name;
+            document.getElementById('bkViewEmail').textContent    = d.email;
+            document.getElementById('bkViewCheckin').textContent  = fmtDate(d.checkin);
+            document.getElementById('bkViewCheckout').textContent = fmtDate(d.checkout);
+            document.getElementById('bkViewDuration').textContent = nightsBetween(d.checkin, d.checkout);
+            document.getElementById('bkViewGuests').textContent   = d.guests + (d.guests === '1' ? ' guest' : ' guests');
+            document.getElementById('bkViewTotal').textContent    = d.total;
             var badge = document.getElementById('bkViewStatus');
             badge.textContent = cap(d.status);
             badge.className   = 'admin-badge admin-badge--' + d.status;
@@ -722,20 +825,20 @@
             openEdit(this.dataset.rowId);
         });
 
-        /* ---- EDIT ---- */
+        /* ── EDIT ── */
         function openEdit(bookingId) {
-            var row = document.querySelector('#bookingsTable tr[data-id="' + bookingId + '"]');
+            var row = document.querySelector('#bookingsTbody tr[data-id="' + bookingId + '"]');
             if (!row) return;
             var d = row.dataset;
             currentEditId = bookingId;
-            document.getElementById('bkEditId').textContent         = '#' + d.id;
-            document.getElementById('bkEditName').value             = d.name;
-            document.getElementById('bkEditEmail').value            = d.email;
-            document.getElementById('bkEditCheckin').value          = d.checkin;
-            document.getElementById('bkEditCheckout').value         = d.checkout;
-            document.getElementById('bkEditGuests').value           = d.guests;
-            document.getElementById('bkEditStatus').value           = d.status;
-            document.getElementById('bkEditTotal').value            = String(d.total).replace(/[^0-9]/g, '');
+            document.getElementById('bkEditId').textContent      = '#' + d.id;
+            document.getElementById('bkEditName').value          = d.name;
+            document.getElementById('bkEditEmail').value         = d.email;
+            document.getElementById('bkEditCheckin').value       = d.checkin;
+            document.getElementById('bkEditCheckout').value      = d.checkout;
+            document.getElementById('bkEditGuests').value        = d.guests;
+            document.getElementById('bkEditStatus').value        = d.status;
+            document.getElementById('bkEditTotal').value         = String(d.total).replace(/[^0-9]/g, '');
             document.getElementById('bkViewModal').hidden = true;
             document.getElementById('bkEditModal').hidden = false;
             showOverlay();
@@ -743,9 +846,10 @@
 
         document.getElementById('bkEditForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            var row = document.querySelector('#bookingsTable tr[data-id="' + currentEditId + '"]');
+            var row = document.querySelector('#bookingsTbody tr[data-id="' + currentEditId + '"]');
             if (!row) { hideOverlay(); return; }
-            var f    = e.target;
+            var f        = e.target;
+            var totalNum = parseFloat(f.bkEditTotal.value) || 0;
             var data = {
                 id:       currentEditId,
                 name:     f.bkEditName.value.trim(),
@@ -756,6 +860,19 @@
                 status:   f.bkEditStatus.value,
                 total:    fmtMoney(f.bkEditTotal.value)
             };
+
+            if (window.CA3Data) {
+                window.CA3Data.updateBooking(currentEditId, {
+                    guestName:  data.name,
+                    guestEmail: data.email,
+                    checkIn:    data.checkin,
+                    checkOut:   data.checkout,
+                    guests:     parseInt(data.guests) || 1,
+                    status:     data.status,
+                    total:      totalNum
+                });
+            }
+
             row.dataset.name     = data.name;
             row.dataset.email    = data.email;
             row.dataset.checkin  = data.checkin;
@@ -763,33 +880,44 @@
             row.dataset.guests   = data.guests;
             row.dataset.status   = data.status;
             row.dataset.total    = data.total;
-            row.innerHTML        = buildRowHTML(data);
+            row.innerHTML = buildRowHTML(data);
             updateStats();
             hideOverlay();
         });
 
-        /* ---- CANCEL ---- */
+        /* ── CANCEL ── */
         function cancelBooking(row) {
             if (!confirm('Cancel booking for ' + row.dataset.name + '?\nThis will update the booking status to Cancelled.')) return;
             row.dataset.status = 'cancelled';
-            var badge = row.querySelector('.admin-badge');
-            if (badge) { badge.textContent = 'Cancelled'; badge.className = 'admin-badge admin-badge--cancelled'; }
+            if (window.CA3Data) {
+                window.CA3Data.updateBooking(row.dataset.id, { status: 'cancelled' });
+            }
+            row.innerHTML = buildRowHTML({
+                id:       row.dataset.id,
+                name:     row.dataset.name,
+                email:    row.dataset.email,
+                checkin:  row.dataset.checkin,
+                checkout: row.dataset.checkout,
+                guests:   row.dataset.guests,
+                status:   'cancelled',
+                total:    row.dataset.total
+            });
             updateStats();
         }
 
-        /* ---- TABLE DELEGATION ---- */
-        document.querySelector('#bookingsTable tbody').addEventListener('click', function (e) {
+        /* ── TABLE DELEGATION ── */
+        document.getElementById('bookingsTbody').addEventListener('click', function (e) {
             var btn = e.target.closest('[data-action]');
             if (!btn) return;
             var row = btn.closest('tr');
             switch (btn.dataset.action) {
-                case 'view':   openView(row);             break;
-                case 'edit':   openEdit(row.dataset.id);  break;
-                case 'cancel': cancelBooking(row);        break;
+                case 'view':   openView(row);            break;
+                case 'edit':   openEdit(row.dataset.id); break;
+                case 'cancel': cancelBooking(row);       break;
             }
         });
 
-        /* ---- FILTERS ---- */
+        /* ── FILTERS ── */
         document.querySelectorAll('.admin-filter-btn[data-filter]').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 document.querySelectorAll('.admin-filter-btn[data-filter]').forEach(function (b) {
@@ -797,22 +925,22 @@
                 });
                 btn.classList.add('admin-filter-btn--active');
                 var filter = btn.dataset.filter;
-                document.querySelectorAll('#bookingsTable tbody tr[data-id]').forEach(function (row) {
+                document.querySelectorAll('#bookingsTbody tr[data-id]').forEach(function (row) {
                     row.style.display = (filter === 'all' || row.dataset.status === filter) ? '' : 'none';
                 });
             });
         });
 
-        /* ---- SEARCH ---- */
+        /* ── SEARCH ── */
         document.getElementById('bookingSearch').addEventListener('input', function () {
             var q = this.value.toLowerCase();
-            document.querySelectorAll('#bookingsTable tbody tr[data-id]').forEach(function (row) {
+            document.querySelectorAll('#bookingsTbody tr[data-id]').forEach(function (row) {
                 var text = (row.dataset.id + ' ' + row.dataset.name + ' ' + row.dataset.email).toLowerCase();
                 row.style.display = text.includes(q) ? '' : 'none';
             });
         });
 
-        /* ---- CLOSE HANDLERS ---- */
+        /* ── CLOSE HANDLERS ── */
         document.querySelectorAll('[data-close-modal]').forEach(function (el) {
             el.addEventListener('click', hideOverlay);
         });
@@ -823,11 +951,11 @@
             if (e.key === 'Escape') hideOverlay();
         });
 
-        /* ---- CREATE BUTTON ---- */
+        /* ── CREATE BUTTON ── */
         document.getElementById('openCreateBtn').addEventListener('click', openCreate);
 
-        /* initial stats */
-        updateStats();
+        /* ── INITIAL LOAD ── */
+        loadBookings();
 
     }());
     </script>

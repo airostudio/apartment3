@@ -258,27 +258,45 @@
     // Persist for confirmation.html to read
     sessionStorage.setItem('ca3_confirmed_booking', JSON.stringify(confirmedBooking));
 
-    // Add real booking to the local data store (admin panel / calendar)
+    // Upgrade the pending booking that was written on booking.html to 'confirmed',
+    // or add a new confirmed booking if no pending entry is found.
     if (window.CA3Data) {
-      window.CA3Data.addBooking({
-        id:              ref,
-        ref,
-        guestName:       confirmedBooking.guestName,
-        guestEmail:      confirmedBooking.guestEmail,
-        guestPhone:      pending.guestPhone || '',
-        checkIn:         pending.checkin    || '',
-        checkOut:        pending.checkout   || '',
-        nights:          pending.nights     || 0,
-        guests:          pending.guests     || 1,
-        status:          'confirmed',
-        source:          'direct',
-        baseRate:        (pending.pricing && pending.pricing.averageNightlyRate) || 0,
-        total:           amountCents / 100,
-        paid:            amountCents / 100,
-        deposit:         0,
-        paymentIntentId: paymentIntent.id,
-        notes:           pending.specialRequests || '',
-      });
+      const pendingId = sessionStorage.getItem('ca3_pending_id');
+      if (pendingId) {
+        window.CA3Data.updateBooking(pendingId, {
+          id:              ref,
+          ref,
+          guestName:       confirmedBooking.guestName,
+          guestEmail:      confirmedBooking.guestEmail,
+          status:          'confirmed',
+          total:           amountCents / 100,
+          paid:            amountCents / 100,
+          paymentIntentId: paymentIntent.id,
+          confirmedAt:     confirmedBooking.confirmedAt,
+        });
+        sessionStorage.removeItem('ca3_pending_id');
+      } else {
+        // Fallback: no pending booking found — add a fresh confirmed booking
+        window.CA3Data.addBooking({
+          id:              ref,
+          ref,
+          guestName:       confirmedBooking.guestName,
+          guestEmail:      confirmedBooking.guestEmail,
+          guestPhone:      pending.guestPhone || '',
+          checkIn:         pending.checkin    || '',
+          checkOut:        pending.checkout   || '',
+          nights:          pending.nights     || 0,
+          guests:          pending.guests     || 1,
+          status:          'confirmed',
+          source:          'direct',
+          baseRate:        (pending.pricing && pending.pricing.averageNightlyRate) || 0,
+          total:           amountCents / 100,
+          paid:            amountCents / 100,
+          deposit:         0,
+          paymentIntentId: paymentIntent.id,
+          notes:           pending.specialRequests || '',
+        });
+      }
     }
 
     window.location.href = 'confirmation.html?ref=' + encodeURIComponent(ref);

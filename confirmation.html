@@ -359,7 +359,7 @@
           </svg>
         </div>
         <h1>Booking Confirmed!</h1>
-        <div class="confirmation-success__ref">TRA-2026-00847</div>
+        <div class="confirmation-success__ref" id="conf-ref-hero">—</div>
         <p>A confirmation email has been sent to your email address.</p>
       </div>
 
@@ -569,25 +569,41 @@
           sessionStorage.setItem('ca3_confirmed_booking', JSON.stringify(confirmedBooking));
 
           if (window.CA3Data) {
-            window.CA3Data.addBooking({
-              id:              ref,
-              ref:             ref,
-              guestName:       confirmedBooking.guestName,
-              guestEmail:      confirmedBooking.guestEmail,
-              guestPhone:      pending.guestPhone || '',
-              checkIn:         pending.checkin    || '',
-              checkOut:        pending.checkout   || '',
-              nights:          pending.nights     || 0,
-              guests:          pending.guests     || 1,
-              status:          'confirmed',
-              source:          'direct',
-              baseRate:        (pending.pricing && pending.pricing.averageNightlyRate) || 0,
-              total:           amountCents / 100,
-              paid:            amountCents / 100,
-              deposit:         0,
-              paymentIntentId: paymentIntentId,
-              notes:           pending.specialRequests || '',
-            });
+            var pendingId3ds = sessionStorage.getItem('ca3_pending_id');
+            if (pendingId3ds) {
+              window.CA3Data.updateBooking(pendingId3ds, {
+                id:              ref,
+                ref:             ref,
+                guestName:       confirmedBooking.guestName,
+                guestEmail:      confirmedBooking.guestEmail,
+                status:          'confirmed',
+                total:           amountCents / 100,
+                paid:            amountCents / 100,
+                paymentIntentId: paymentIntentId,
+                confirmedAt:     confirmedBooking.confirmedAt,
+              });
+              sessionStorage.removeItem('ca3_pending_id');
+            } else {
+              window.CA3Data.addBooking({
+                id:              ref,
+                ref:             ref,
+                guestName:       confirmedBooking.guestName,
+                guestEmail:      confirmedBooking.guestEmail,
+                guestPhone:      pending.guestPhone || '',
+                checkIn:         pending.checkin    || '',
+                checkOut:        pending.checkout   || '',
+                nights:          pending.nights     || 0,
+                guests:          pending.guests     || 1,
+                status:          'confirmed',
+                source:          'direct',
+                baseRate:        (pending.pricing && pending.pricing.averageNightlyRate) || 0,
+                total:           amountCents / 100,
+                paid:            amountCents / 100,
+                deposit:         0,
+                paymentIntentId: paymentIntentId,
+                notes:           pending.specialRequests || '',
+              });
+            }
           }
         } catch (_) { /* continue to show whatever is in sessionStorage */ }
       }
@@ -617,7 +633,7 @@
       } catch (e) { return d; }
     }
 
-    if (booking.ref)          setText('.confirmation-success__ref, [data-field="ref"]', booking.ref);
+    if (booking.ref)          setText('.confirmation-success__ref, #conf-ref-hero, [data-field="ref"]', booking.ref);
     if (booking.guestName)    setText('[data-field="guestName"]', booking.guestName);
     if (booking.checkin)      setText('[data-field="checkin"]',   fmtDate(booking.checkin));
     if (booking.checkout)     setText('[data-field="checkout"]',  fmtDate(booking.checkout));

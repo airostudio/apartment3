@@ -676,6 +676,45 @@
         return;
       }
 
+      // ── Reserve dates immediately in CA3Data ──────────────────────────────
+      // Writing a 'pending' booking now ensures the dates are blocked while
+      // the guest is on the checkout page. Without this step, dates appear
+      // free until Stripe payment completes, making double-booking possible.
+      // The pending booking is upgraded to 'confirmed' after successful payment,
+      // or automatically cleaned up the next time booking.html loads (30-min TTL).
+      if (window.CA3Data) {
+        // Remove any stale pending bookings left over from previous abandoned sessions
+        window.CA3Data.saveBookings(
+          window.CA3Data.getBookings().filter(function(b) {
+            if (b.status !== 'pending') return true;
+            var age = Date.now() - (new Date(b.createdAt || 0).getTime());
+            return age < 30 * 60 * 1000;
+          })
+        );
+        // Write a fresh pending booking to hold the dates
+        var pendingBookingId = window.CA3Data.generateId('PENDING');
+        window.CA3Data.addBooking({
+          id:        pendingBookingId,
+          ref:       pendingBookingId,
+          guestName: ((data.firstName || '') + ' ' + (data.lastName || '')).trim() || 'Guest',
+          guestEmail: data.email || '',
+          guestPhone: data.phone || '',
+          checkIn:   ci,
+          checkOut:  co,
+          nights:    nights,
+          guests:    adults + children,
+          status:    'pending',
+          source:    'direct',
+          total:     grandTotal,
+          paid:      0,
+          deposit:   0,
+          notes:     data.specialRequests || '',
+          createdAt: new Date().toISOString(),
+        });
+        // Persist the pending ID so checkout/confirmation can upgrade it
+        sessionStorage.setItem('ca3_pending_id', pendingBookingId);
+      }
+
       // Proceed to checkout
       window.location.href = 'checkout.html';
     });

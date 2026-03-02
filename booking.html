@@ -644,6 +644,19 @@
       if (ciInp) ciInp.min = todayStr;
       if (coInp) coInp.min = todayStr;
 
+      // Clean up expired pending bookings (older than 30 min) so a guest who
+      // abandoned the checkout page can return and re-book the same dates.
+      if (window.CA3Data) {
+        var nowMs = Date.now();
+        window.CA3Data.saveBookings(
+          window.CA3Data.getBookings().filter(function(b) {
+            if (b.status !== 'pending') return true;
+            var age = nowMs - (new Date(b.createdAt || 0).getTime());
+            return age < 30 * 60 * 1000;
+          })
+        );
+      }
+
       var params   = new URLSearchParams(window.location.search);
       var checkin  = params.get('checkin')  || '';
       var checkout = params.get('checkout') || '';

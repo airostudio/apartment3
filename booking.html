@@ -282,6 +282,23 @@
       font-size: 0.8rem;
       margin-top: 4px;
     }
+
+    /* ── Availability error banner ── */
+    #availabilityError {
+      display: none;
+      background: #fef2f2;
+      border: 2px solid #ef4444;
+      border-radius: var(--radius-md, 8px);
+      padding: var(--space-md, 1rem);
+      color: #b91c1c;
+      font-size: var(--font-size-sm, 0.875rem);
+      line-height: 1.6;
+      margin-top: var(--space-md, 1rem);
+    }
+    #continueToPayment:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -398,6 +415,10 @@
                   <input type="date" id="checkoutDate" name="checkoutDate" required>
                 </div>
               </div>
+
+              <!-- Availability check — shown when selected dates overlap an existing booking -->
+              <div id="availabilityError" role="alert"></div>
+
               <div class="form-row">
                 <div class="form-group">
                   <label for="numAdults">Number of Adults *</label>
@@ -616,6 +637,13 @@
   <script src="js/booking-engine.js"></script>
   <script>
     (function() {
+      // Prevent selection of past dates
+      var todayStr = new Date().toISOString().split('T')[0];
+      var ciInp = document.getElementById('checkinDate');
+      var coInp = document.getElementById('checkoutDate');
+      if (ciInp) ciInp.min = todayStr;
+      if (coInp) coInp.min = todayStr;
+
       var params   = new URLSearchParams(window.location.search);
       var checkin  = params.get('checkin')  || '';
       var checkout = params.get('checkout') || '';
@@ -659,6 +687,36 @@
         });
         if (pricing && !pricing.error) {
           window.CascadeApp.BookingEngine.updateSummaryUI(pricing);
+        }
+      }
+
+      // ── Availability check for pre-filled dates (URL params) ──────────────
+      // Runs after booking-engine.js has initialised (DOMContentLoaded fires
+      // before this script runs synchronously, so we defer slightly).
+      if (checkin && checkout && window.CA3Data) {
+        var errEl = document.getElementById('availabilityError');
+        var ctaBtn = document.getElementById('continueToPayment');
+        if (errEl) {
+          var bad = [];
+          var ci2 = new Date(checkin + 'T00:00:00');
+          var co2 = new Date(checkout + 'T00:00:00');
+          var nts = Math.ceil((co2 - ci2) / 86400000);
+          for (var ni = 0; ni < nts; ni++) {
+            var nd = new Date(ci2);
+            nd.setDate(nd.getDate() + ni);
+            var ds = nd.toISOString().split('T')[0];
+            if (window.CA3Data.isDateBooked(ds) || window.CA3Data.isDateBlocked(ds)) bad.push(ds);
+          }
+          if (bad.length > 0) {
+            var fmtD = function(s) {
+              return new Date(s + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+            };
+            errEl.innerHTML = '<strong>\u26a0 UNAVAILABLE \u2014 These dates are already booked.</strong><br>' +
+              'The following date(s) in your selected range are not available: <strong>' + bad.map(fmtD).join(', ') + '</strong>.<br>' +
+              'Please select different dates to continue.';
+            errEl.style.display = 'block';
+            if (ctaBtn) ctaBtn.disabled = true;
+          }
         }
       }
     })();

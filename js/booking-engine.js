@@ -371,6 +371,66 @@
     const form = document.getElementById('bookingForm');
     if (!form) return;
 
+    const continueBtn = document.getElementById('continueToPayment');
+
+    // ── STRICT AVAILABILITY ENFORCEMENT ──────────────────────────────────────
+    // Returns array of date strings (YYYY-MM-DD) that are already booked/blocked
+    // within the requested check-in → check-out range.
+    function getUnavailableNights(checkin, checkout) {
+      if (!checkin || !checkout || !window.CA3Data) return [];
+      const ci = new Date(checkin + 'T00:00:00');
+      const co = new Date(checkout + 'T00:00:00');
+      const nights = Math.ceil((co - ci) / 86400000);
+      if (nights <= 0) return [];
+      const bad = [];
+      for (let i = 0; i < nights; i++) {
+        const d = new Date(ci);
+        d.setDate(d.getDate() + i);
+        const ds = d.toISOString().split('T')[0];
+        if (window.CA3Data.isDateBooked(ds) || window.CA3Data.isDateBlocked(ds)) {
+          bad.push(ds);
+        }
+      }
+      return bad;
+    }
+
+    // Updates the #availabilityError banner and enables/disables the CTA button.
+    // Returns true if the dates are available, false if not.
+    function refreshAvailability(checkin, checkout) {
+      const errEl = document.getElementById('availabilityError');
+      if (!errEl) return true; // UI element missing — don't block
+
+      if (!checkin || !checkout) {
+        errEl.style.display = 'none';
+        if (continueBtn) continueBtn.disabled = false;
+        return true;
+      }
+
+      const bad = getUnavailableNights(checkin, checkout);
+
+      if (bad.length === 0) {
+        errEl.style.display = 'none';
+        if (continueBtn) continueBtn.disabled = false;
+        return true;
+      }
+
+      const fmt = ds => new Date(ds + 'T00:00:00')
+        .toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+
+      errEl.innerHTML =
+        '<strong>\u26a0 UNAVAILABLE \u2014 These dates are already booked.</strong><br>' +
+        'The following date(s) in your selected range are not available: ' +
+        '<strong>' + bad.map(fmt).join(', ') + '</strong>.<br>' +
+        'Please select different dates to continue.';
+      errEl.style.display = 'block';
+      if (continueBtn) continueBtn.disabled = true;
+
+      // Scroll the banner into view so the user sees it immediately
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return false;
+    }
+    // ── END AVAILABILITY ENFORCEMENT ─────────────────────────────────────────
+
     // Auto-calculate price on date/guest change
     const dateInputs = form.querySelectorAll('input[type="date"]');
     const guestInputs = form.querySelectorAll('select[name*="guest" i], select[name*="adult" i], select[name*="children" i], input[name*="guest" i]');
@@ -397,6 +457,9 @@
         const total = adults + children;
         summaryGuests.textContent = total + ' Guest' + (total !== 1 ? 's' : '');
       }
+
+      // Always refresh availability whenever dates change
+      refreshAvailability(checkin, checkout);
 
       if (checkin && checkout) {
         const pricing = BookingEngine.calculatePrice({
@@ -594,6 +657,15 @@
           currency:           'AUD',
         }
       }));
+
+      // Hard availability gate — prevent double-booking even if client-side
+      // state somehow got out of sync between date selection and submission.
+      if (!refreshAvailability(ci, co)) {
+        window.CascadeApp?.showToast('Selected dates are not available. Please choose different dates.', 'error');
+        const staySection = form.querySelector('[name="checkinDate"]')?.closest('.booking-form-section');
+        if (staySection) staySection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
 
       // Proceed to checkout
       window.location.href = 'checkout.html';

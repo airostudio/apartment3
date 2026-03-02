@@ -384,9 +384,18 @@
       if (nights <= 0) return [];
       const bad = [];
       for (let i = 0; i < nights; i++) {
+        // Build date string using LOCAL components to avoid UTC-offset issues
+        // (toISOString() returns UTC which is the previous calendar day in UTC+10/11)
         const d = new Date(ci);
         d.setDate(d.getDate() + i);
-        const ds = d.toISOString().split('T')[0];
+        const ds = [
+          d.getFullYear(),
+          String(d.getMonth() + 1).padStart(2, '0'),
+          String(d.getDate()).padStart(2, '0')
+        ].join('-');
+        // Note: the checkout date of an existing booking is intentionally excluded
+        // from this loop (i < nights, not i <= nights) so same-day turnovers are
+        // always allowed — previous guest checks out at 11am, new guest at 3pm.
         if (window.CA3Data.isDateBooked(ds) || window.CA3Data.isDateBlocked(ds)) {
           bad.push(ds);
         }

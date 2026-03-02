@@ -704,7 +704,9 @@
           for (var ni = 0; ni < nts; ni++) {
             var nd = new Date(ci2);
             nd.setDate(nd.getDate() + ni);
-            var ds = nd.toISOString().split('T')[0];
+            var ds = nd.getFullYear() + '-' +
+              String(nd.getMonth() + 1).padStart(2, '0') + '-' +
+              String(nd.getDate()).padStart(2, '0');
             if (window.CA3Data.isDateBooked(ds) || window.CA3Data.isDateBlocked(ds)) bad.push(ds);
           }
           if (bad.length > 0) {

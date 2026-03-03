@@ -339,11 +339,10 @@
                 </div>
             </div>
 
-            <!-- Stripe Connected Account -->
+            <!-- Stripe Payments -->
             <div class="owner-card">
                 <div class="owner-card-header">
-                    <h2>My Stripe Account</h2>
-                    <span class="badge badge--success" style="font-size:0.75rem;">Connected</span>
+                    <h2>Stripe Payments</h2>
                 </div>
                 <div class="owner-card-body" style="padding:1.25rem;">
                     <div class="stripe-account-card">
@@ -353,57 +352,20 @@
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
                                 </div>
                                 <div>
-                                    <div class="stripe-account-name">Cascade Apartment 3 Owner</div>
-                                    <div class="stripe-account-email">typhoon.tall69@gmail.com</div>
+                                    <div class="stripe-account-name">Direct Stripe Payments</div>
+                                    <div class="stripe-account-email">Guest payments go directly to your Stripe account</div>
                                 </div>
-                            </div>
-                            <div class="stripe-account-meta">
-                                <span><strong>Account ID:</strong> acct_conn_9ZyXwVuTsRq</span>
-                                <span><strong>Type:</strong> Express (Connected)</span>
-                                <span><strong>Connected:</strong> 15 Jan 2026</span>
                             </div>
                         </div>
                         <div class="stripe-account-actions">
-                            <a href="https://connect.stripe.com/express_login" target="_blank" class="btn-white">
+                            <a href="https://dashboard.stripe.com" target="_blank" class="btn-white">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                                 Stripe Dashboard
                             </a>
                         </div>
                     </div>
-
-                    <!-- Royalty rate explanation -->
-                    <div class="royalty-info">
-                        <div class="royalty-rate">
-                            <div class="royalty-rate-value">1.7%</div>
-                            <div class="royalty-rate-label">Your royalty</div>
-                        </div>
-                        <div class="royalty-divider"></div>
-                        <div class="royalty-desc">
-                            <p>For every guest payment received, <strong>1.7%</strong> is automatically transferred to your Stripe account. Stripe processing fees are charged to the guest on top of the booking price — your 1.7% is always calculated from the <strong>base booking amount</strong> before any fees.</p>
-                        </div>
-                    </div>
-
-                    <!-- Example calculation -->
-                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;padding:1rem 1.25rem;">
-                        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#94a3b8;margin-bottom:0.75rem;">Example — $1,000 booking</div>
-                        <div style="display:flex;flex-direction:column;gap:0.375rem;">
-                            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;">
-                                <span style="color:#64748b;">Base booking price (set by admin)</span>
-                                <span style="font-weight:600;">$1,000.00</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;">
-                                <span style="color:#64748b;">Stripe fee added to guest price (2.9% + 30¢)</span>
-                                <span style="font-weight:600;color:#94a3b8;">+ $29.30</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;">
-                                <span style="color:#64748b;">Guest pays total</span>
-                                <span style="font-weight:600;">$1,029.30</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;padding:0.375rem 0;border-top:2px solid #e2e8f0;margin-top:0.125rem;">
-                                <span style="font-weight:700;color:#0f172a;">Your transfer (1.7% of $1,000)</span>
-                                <span style="font-weight:700;color:#635bff;font-size:1rem;">$17.00</span>
-                            </div>
-                        </div>
+                    <div style="margin-top:1rem;padding:0.875rem 1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;font-size:0.8125rem;color:#64748b;line-height:1.6;">
+                        All guest payments are processed directly through your Stripe account. To configure your API keys or check your connection status, visit <a href="/admin/payments.html" style="color:#6366f1;font-weight:500;">Admin → Payments</a>.
                     </div>
                 </div>
             </div>
@@ -414,7 +376,7 @@
                 <!-- Transfer history -->
                 <div class="owner-card" style="margin-bottom:0;">
                     <div class="owner-card-header">
-                        <h2>Transfer History</h2>
+                        <h2>Payment History</h2>
                     </div>
                     <div style="overflow-x:auto;">
                         <table class="transfer-table">
@@ -422,10 +384,9 @@
                                 <tr>
                                     <th>Date</th>
                                     <th>Booking</th>
-                                    <th>Base Amount</th>
-                                    <th>Your Transfer (1.7%)</th>
+                                    <th>Guest</th>
+                                    <th>Amount</th>
                                     <th>Status</th>
-                                    <th>Transfer ID</th>
                                 </tr>
                             </thead>
                             <tbody id="owner-transfers-tbody">
@@ -493,11 +454,11 @@
                 if (b.status === 'cancelled') return;
                 if (b.paid > 0) {
                     rows.push({
-                        date:     b.checkIn,
-                        guest:    b.guestName,
-                        base:     b.paid,
-                        status:   b.status === 'confirmed' ? 'completed' : 'pending',
-                        transferId: 'tr_' + b.id.toLowerCase().replace('-', '')
+                        date:   b.checkIn,
+                        ref:    b.ref || b.id,
+                        guest:  b.guestName,
+                        amount: b.paid,
+                        status: b.status === 'confirmed' ? 'confirmed' : 'pending',
                     });
                 }
             });
@@ -505,26 +466,22 @@
             rows.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
 
             if (rows.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="color:#94a3b8;padding:20px;text-align:center;">No transfers yet.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="color:#94a3b8;padding:20px;text-align:center;">No payments yet.</td></tr>';
                 return;
             }
 
-            var OWNER_PCT = 0.017; // 1.7%
-
             tbody.innerHTML = rows.map(function (r) {
                 var d = new Date(r.date + 'T00:00:00');
-                var dateStr  = d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
-                var ownerAmt = (r.base * OWNER_PCT).toFixed(2);
-                var statusBadge = r.status === 'completed'
-                    ? '<span class="badge badge--success" style="font-size:0.7rem;">Transferred</span>'
+                var dateStr = d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+                var statusBadge = r.status === 'confirmed'
+                    ? '<span class="badge badge--success" style="font-size:0.7rem;">Confirmed</span>'
                     : '<span class="badge badge--warning" style="font-size:0.7rem;">Pending</span>';
                 return '<tr>' +
                     '<td>' + dateStr + '</td>' +
+                    '<td>' + r.ref + '</td>' +
                     '<td>' + r.guest + '</td>' +
-                    '<td>$' + r.base.toFixed(2) + '</td>' +
-                    '<td class="transfer-amount-owner">$' + ownerAmt + '</td>' +
+                    '<td>$' + r.amount.toFixed(2) + '</td>' +
                     '<td>' + statusBadge + '</td>' +
-                    '<td><span class="transfer-stripe-id">' + r.transferId + '...</span></td>' +
                     '</tr>';
             }).join('');
         });

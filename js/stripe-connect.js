@@ -14,9 +14,9 @@
  * ca3_checkout_state (saved before confirmPayment is called) is used to
  * complete the booking record.
  *
- * Stripe Connect (optional):
- *   Set STRIPE_OWNER_ACCOUNT_ID in Vercel env vars to enable automatic
- *   destination charges — funds split between platform and property owner.
+ * Environment variables (set in Vercel → Settings → Environment Variables):
+ *   STRIPE_PUBLISHABLE_KEY — pk_live_... or pk_test_...
+ *   STRIPE_SECRET_KEY      — sk_live_... or sk_test_...
  */
 
 (function () {
@@ -302,37 +302,9 @@
     window.location.href = 'confirmation.html?ref=' + encodeURIComponent(ref);
   }
 
-  // ── Admin panel handlers ───────────────────────────────────────────
-  function initAdminHandlers() {
-    // Stripe Connect onboarding — calls the real server endpoint
-    const connectBtn = el('stripeConnectBtn');
-    if (connectBtn) {
-      connectBtn.addEventListener('click', async function () {
-        try {
-          const res = await fetch('/api/create-connect-account', { method: 'POST' });
-          if (!res.ok) throw new Error('Could not start onboarding.');
-          const { url } = await res.json();
-          if (url) window.location.href = url;
-        } catch (e) {
-          window.CascadeApp && window.CascadeApp.showToast(e.message, 'error');
-        }
-      });
-    }
-
-    const disconnectBtn = el('stripeDisconnectBtn');
-    if (disconnectBtn) {
-      disconnectBtn.addEventListener('click', function () {
-        if (confirm('Are you sure you want to disconnect your Stripe account?')) {
-          window.CascadeApp && window.CascadeApp.showToast('Stripe account disconnected', 'warning');
-        }
-      });
-    }
-  }
-
   // ── Boot ───────────────────────────────────────────────────────────
   function boot() {
     init();
-    initAdminHandlers();
   }
 
   if (document.readyState === 'loading') {

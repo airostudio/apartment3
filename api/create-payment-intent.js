@@ -6,11 +6,8 @@
  * Payment Element (stripe.confirmPayment).
  *
  * Required environment variables (set in Vercel dashboard):
- *   STRIPE_SECRET_KEY  — sk_live_... or sk_test_... from Stripe Dashboard
- *
- * Optional (Stripe Connect — owner payout splitting):
- *   STRIPE_OWNER_ACCOUNT_ID — acct_... connected account of the property owner
- *   STRIPE_PLATFORM_FEE_PCT — management fee percentage (default: 15)
+ *   STRIPE_SECRET_KEY      — sk_live_... or sk_test_... from Stripe Dashboard
+ *   STRIPE_PUBLISHABLE_KEY — pk_live_... or pk_test_... from Stripe Dashboard
  */
 
 export default async function handler(req, res) {
@@ -25,7 +22,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { STRIPE_SECRET_KEY, STRIPE_OWNER_ACCOUNT_ID, STRIPE_PLATFORM_FEE_PCT } = process.env;
+  const { STRIPE_SECRET_KEY } = process.env;
 
   if (!STRIPE_SECRET_KEY) {
     console.error('STRIPE_SECRET_KEY is not set');
@@ -59,14 +56,6 @@ export default async function handler(req, res) {
 
     if (email) {
       params.set('receipt_email', email);
-    }
-
-    // Stripe Connect — destination charge (optional owner payout splitting)
-    if (STRIPE_OWNER_ACCOUNT_ID) {
-      const feePct = parseFloat(STRIPE_PLATFORM_FEE_PCT || '15') / 100;
-      const applicationFee = Math.round(amountCents * feePct);
-      params.set('application_fee_amount', String(applicationFee));
-      params.set('transfer_data[destination]', STRIPE_OWNER_ACCOUNT_ID);
     }
 
     const stripeResponse = await fetch('https://api.stripe.com/v1/payment_intents', {

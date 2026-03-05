@@ -61,75 +61,6 @@
         .stripe-status-dot.connected { background: #16a34a; }
         .stripe-status-dot.disconnected { background: #ea580c; }
 
-        /* ── Setup steps ── */
-        .setup-steps { counter-reset: step; }
-        .setup-step {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        .setup-step:last-child { margin-bottom: 0; }
-        .setup-step-num {
-            counter-increment: step;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #6366f1;
-            color: #fff;
-            font-size: 0.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-        .setup-step-body { flex: 1; }
-        .setup-step-body h4 { font-size: 0.9375rem; font-weight: 600; color: #0f172a; margin: 0 0 4px; }
-        .setup-step-body p  { font-size: 0.875rem; color: #64748b; margin: 0 0 8px; line-height: 1.5; }
-
-        /* ── Env var table ── */
-        .env-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-        .env-table th {
-            background: #f8fafc;
-            padding: 0.625rem 1rem;
-            text-align: left;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #64748b;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .env-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: top;
-        }
-        .env-table tr:last-child td { border-bottom: none; }
-        .env-table code {
-            background: #f1f5f9;
-            color: #0f172a;
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8125rem;
-        }
-        .env-table .desc { color: #64748b; font-size: 0.8125rem; }
-
-        /* ── Key input rows ── */
-        .key-row { display: flex; gap: 0.5rem; align-items: center; }
-        .key-input {
-            flex: 1;
-            padding: 0.6rem 0.875rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-family: 'Courier New', monospace;
-            color: #64748b;
-            background: #f8fafc;
-        }
-
         /* ── Transaction table ── */
         .txn-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
         .txn-table th {
@@ -158,17 +89,6 @@
         .badge-confirmed { display: inline-block; background: #dcfce7; color: #15803d; font-size: 0.75rem; font-weight: 600; padding: 2px 10px; border-radius: 9999px; }
         .badge-pending   { display: inline-block; background: #ffedd5; color: #c2410c; font-size: 0.75rem; font-weight: 600; padding: 2px 10px; border-radius: 9999px; }
 
-        /* ── Test button ── */
-        #testBtn { min-width: 140px; }
-        #testResult {
-            display: none;
-            margin-top: 0.75rem;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-        }
-        #testResult.ok    { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
-        #testResult.error { background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c; }
     </style>
 </head>
 <body class="admin-body">
@@ -322,118 +242,6 @@
                 </span>
             </div>
 
-            <!-- ── Two-column layout ── -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;">
-
-                <!-- Setup card -->
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        <h2 class="admin-card-title">Setup &amp; Configuration</h2>
-                    </div>
-                    <div class="admin-card-body">
-
-                        <div class="setup-steps">
-
-                            <div class="setup-step">
-                                <div class="setup-step-num"></div>
-                                <div class="setup-step-body">
-                                    <h4>Create or log in to your Stripe account</h4>
-                                    <p>Go to <a href="https://stripe.com" target="_blank" rel="noopener" style="color:#6366f1;font-weight:500;">stripe.com</a> and sign in. If you don't have an account, create one — it's free to sign up.</p>
-                                </div>
-                            </div>
-
-                            <div class="setup-step">
-                                <div class="setup-step-num"></div>
-                                <div class="setup-step-body">
-                                    <h4>Get your API keys</h4>
-                                    <p>In the Stripe Dashboard go to <strong>Developers → API keys</strong>. Copy your <em>Publishable key</em> (<code>pk_live_…</code>) and <em>Secret key</em> (<code>sk_live_…</code>).<br>Use test keys (<code>pk_test_…</code> / <code>sk_test_…</code>) while testing.</p>
-                                </div>
-                            </div>
-
-                            <div class="setup-step">
-                                <div class="setup-step-num"></div>
-                                <div class="setup-step-body">
-                                    <h4>Add keys to Vercel environment variables</h4>
-                                    <p>In your Vercel project go to <strong>Settings → Environment Variables</strong> and add both keys below, then redeploy.</p>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <table class="env-table" style="margin-top:1.25rem;">
-                            <thead>
-                                <tr>
-                                    <th>Variable name</th>
-                                    <th>Example value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><code>STRIPE_PUBLISHABLE_KEY</code></td>
-                                    <td class="desc"><code>pk_live_…</code> or <code>pk_test_…</code></td>
-                                </tr>
-                                <tr>
-                                    <td><code>STRIPE_SECRET_KEY</code></td>
-                                    <td class="desc"><code>sk_live_…</code> or <code>sk_test_…</code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div style="margin-top:1.25rem;">
-                            <button class="admin-btn admin-btn--primary" id="testBtn" onclick="testConnection()">
-                                Test Connection
-                            </button>
-                            <div id="testResult"></div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Key reference card -->
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        <h2 class="admin-card-title">Current Keys (read-only)</h2>
-                    </div>
-                    <div class="admin-card-body">
-                        <p style="font-size:0.8125rem;color:#64748b;margin:0 0 1rem;">These are the keys currently configured in your Vercel environment. To change them, update the environment variables in the Vercel dashboard and redeploy.</p>
-
-                        <div style="margin-bottom:1rem;">
-                            <label style="display:block;font-size:0.8125rem;font-weight:600;color:#374151;margin-bottom:0.375rem;">Publishable Key (STRIPE_PUBLISHABLE_KEY)</label>
-                            <div class="key-row">
-                                <input class="key-input" id="pkDisplay" type="text" readonly placeholder="Not configured — set in Vercel env vars" value="">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label style="display:block;font-size:0.8125rem;font-weight:600;color:#374151;margin-bottom:0.375rem;">Secret Key (STRIPE_SECRET_KEY)</label>
-                            <div class="key-row">
-                                <input class="key-input" id="skDisplay" type="text" readonly placeholder="Hidden — set in Vercel env vars" value="sk_••••••••••••••••••••••••">
-                            </div>
-                        </div>
-
-                        <div style="margin-top:1.25rem;padding:1rem;background:#f8fafc;border-radius:0.5rem;border:1px solid #e2e8f0;">
-                            <p style="font-size:0.8125rem;color:#64748b;margin:0;line-height:1.6;">
-                                <strong style="color:#374151;">Note:</strong> Stripe keys are stored securely as Vercel environment variables — never in code or the browser. The secret key is never exposed to the client.
-                            </p>
-                        </div>
-
-                        <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;">
-                            <a href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noopener"
-                               class="admin-btn admin-btn--outline" style="display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;justify-content:center;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                Get keys from Stripe Dashboard
-                            </a>
-                            <a href="https://vercel.com/docs/environment-variables" target="_blank" rel="noopener"
-                               class="admin-btn admin-btn--ghost" style="display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;justify-content:center;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                                Vercel env var docs
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
             <!-- ── Transaction history ── -->
             <div class="admin-card">
                 <div class="admin-card-header">
@@ -466,58 +274,30 @@
     <script src="../js/admin.js"></script>
     <script>
     (function () {
-        // ── Stripe connection test ────────────────────────────────────────────
-        window.testConnection = function () {
-            var btn = document.getElementById('testBtn');
-            var res = document.getElementById('testResult');
-            btn.disabled = true;
-            btn.textContent = 'Testing…';
-            res.style.display = 'none';
-
-            fetch('/api/stripe-config')
-                .then(function (r) { return r.json(); })
-                .then(function (d) {
-                    var key = d.publishableKey || '';
-                    if (key && !key.startsWith('pk_test_your') && key.length > 10) {
-                        showBanner(true, 'Connected — ' + key.substring(0, 14) + '…');
-                        res.className = 'ok';
-                        res.textContent = 'Stripe is configured and ready to accept payments.';
-                        document.getElementById('pkDisplay').value = key.substring(0, 14) + '…';
-                    } else {
-                        showBanner(false, 'STRIPE_PUBLISHABLE_KEY is not set in Vercel.');
-                        res.className = 'error';
-                        res.textContent = 'No publishable key found. Add STRIPE_PUBLISHABLE_KEY in Vercel → Settings → Environment Variables.';
-                    }
-                    res.style.display = 'block';
-                })
-                .catch(function () {
-                    showBanner(false, 'Could not reach the API. Check your deployment.');
-                    res.className = 'error';
-                    res.textContent = 'API request failed. Make sure the site is deployed on Vercel.';
-                    res.style.display = 'block';
-                })
-                .finally(function () {
-                    btn.disabled = false;
-                    btn.textContent = 'Test Connection';
-                });
-        };
-
-        function showBanner(ok, msg) {
-            var banner = document.getElementById('stripeBanner');
-            var badge  = document.getElementById('bannerBadge');
-            var dot    = badge.querySelector('.stripe-status-dot');
-            document.getElementById('bannerMsg').textContent = msg;
-            if (ok) {
-                banner.className = 'stripe-status-banner connected';
-                badge.className  = 'stripe-status-badge connected';
-                dot.className    = 'stripe-status-dot connected';
-                badge.innerHTML  = '<span class="stripe-status-dot connected"></span> Connected';
-            } else {
-                banner.className = 'stripe-status-banner disconnected';
-                badge.className  = 'stripe-status-badge disconnected';
-                badge.innerHTML  = '<span class="stripe-status-dot disconnected"></span> Not configured';
-            }
-        }
+        // ── Stripe connection status ──────────────────────────────────────────
+        fetch('/api/stripe-config')
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                var key = d.publishableKey || '';
+                var ok = key && !key.startsWith('pk_test_your') && key.length > 10;
+                var banner = document.getElementById('stripeBanner');
+                var badge  = document.getElementById('bannerBadge');
+                document.getElementById('bannerMsg').textContent = ok
+                    ? 'Connected — ' + key.substring(0, 14) + '…'
+                    : 'STRIPE_PUBLISHABLE_KEY is not set in Vercel.';
+                if (ok) {
+                    banner.className = 'stripe-status-banner connected';
+                    badge.className  = 'stripe-status-badge connected';
+                    badge.innerHTML  = '<span class="stripe-status-dot connected"></span> Connected';
+                } else {
+                    banner.className = 'stripe-status-banner disconnected';
+                    badge.className  = 'stripe-status-badge disconnected';
+                    badge.innerHTML  = '<span class="stripe-status-dot disconnected"></span> Not configured';
+                }
+            })
+            .catch(function () {
+                document.getElementById('bannerMsg').textContent = 'Could not reach the API. Check your deployment.';
+            });
 
         // ── Transaction table from CA3Data ────────────────────────────────────
         function loadTransactions() {
@@ -560,8 +340,6 @@
             }).join('');
         }
 
-        // Run connection test automatically on page load
-        window.testConnection();
         loadTransactions();
     })();
     </script>

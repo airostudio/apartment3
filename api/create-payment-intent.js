@@ -42,9 +42,14 @@ export default async function handler(req, res) {
     // payment methods enabled in your Stripe Dashboard for this currency.
     // allow_redirects=never restricts to card-only (no redirect-based methods
     // like Klarna/Afterpay), keeping the checkout flow fully on-page.
+    const description = bookingId
+      ? `Cascade Apartment 3 — Booking ${bookingId}`
+      : 'Cascade Apartment 3 — Direct Booking';
+
     const params = new URLSearchParams({
       amount:                                      String(amountCents),
       currency:                                    currency.toLowerCase(),
+      description,
       'automatic_payment_methods[enabled]':        'true',
       'automatic_payment_methods[allow_redirects]': 'never',
       'metadata[booking_id]':                      bookingId || '',

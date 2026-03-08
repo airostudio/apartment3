@@ -620,6 +620,7 @@
                 }
                 window._ca3Contacts = data.contacts || [];
                 renderList(window._ca3Contacts);
+                if (window.CA3Notify) CA3Notify.markEmailsSeen(window._ca3Contacts.length);
             } catch (err) {
                 showError('Network error — ' + err.message);
             }

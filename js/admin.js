@@ -393,3 +393,100 @@
   window.CascadeApp = window.CascadeApp || {};
   window.CascadeApp.Admin = Admin;
 })();
+
+/* ── Admin notification badges ──────────────────────────────────────────────
+ * Shows a green pulsing dot on sidebar nav items when there is unseen
+ * activity: new confirmed bookings (bookings.html) or new enquiry emails
+ * (emails.html).
+ *
+ * localStorage keys:
+ *   ca3_bookings_seen_at    — ISO timestamp; updated when admin visits bookings.html
+ *   ca3_emails_seen_count   — integer; updated when admin visits emails.html
+ * sessionStorage key:
+ *   ca3_emails_api_cache    — { count, ts } JSON; caches /api/emails for 5 min
+ * ────────────────────────────────────────────────────────────────────────── */
+(function () {
+  'use strict';
+
+  var BOOKINGS_SEEN_KEY = 'ca3_bookings_seen_at';
+  var EMAILS_SEEN_KEY   = 'ca3_emails_seen_count';
+  var EMAILS_CACHE_KEY  = 'ca3_emails_api_cache';
+  var EMAILS_CACHE_TTL  = 5 * 60 * 1000; // 5 minutes
+
+  var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+  /* Find a sidebar nav link by href substring */
+  function findNavLink(hrefFragment) {
+    return document.querySelector('.admin-sidebar a[href*="' + hrefFragment + '"]');
+  }
+
+  /* Append a green dot to a nav link (idempotent) */
+  function addDot(link) {
+    if (!link || link.querySelector('.nav-notify-dot')) return;
+    var dot = document.createElement('span');
+    dot.className = 'nav-notify-dot';
+    link.appendChild(dot);
+  }
+
+  /* ── Booking badge ──────────────────────────────────────────────────────── */
+  function applyBookingBadge() {
+    if (!window.CA3Data) return;
+    var seenTs = new Date(localStorage.getItem(BOOKINGS_SEEN_KEY) || 0).getTime();
+    var hasNew = window.CA3Data.getBookings().some(function (b) {
+      if (b.status === 'cancelled' || b.status === 'pending') return false;
+      var ts = new Date(b.confirmedAt || b.createdAt || 0).getTime();
+      return ts > seenTs;
+    });
+    if (hasNew) addDot(findNavLink('bookings.html'));
+  }
+
+  /* When admin opens the bookings page, mark all as seen */
+  if (currentPage === 'bookings.html') {
+    localStorage.setItem(BOOKINGS_SEEN_KEY, new Date().toISOString());
+  }
+
+  /* ── Email badge ────────────────────────────────────────────────────────── */
+  function applyEmailBadge() {
+    var seenCount = parseInt(localStorage.getItem(EMAILS_SEEN_KEY) || '0', 10);
+
+    /* Try sessionStorage cache first */
+    try {
+      var cached = JSON.parse(sessionStorage.getItem(EMAILS_CACHE_KEY) || 'null');
+      if (cached && (Date.now() - cached.ts) < EMAILS_CACHE_TTL) {
+        if (cached.count > seenCount) addDot(findNavLink('emails.html'));
+        return;
+      }
+    } catch (_) {}
+
+    /* Fetch fresh count from API */
+    fetch('/api/emails')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data) return;
+        var count = Array.isArray(data.contacts) ? data.contacts.length : 0;
+        sessionStorage.setItem(EMAILS_CACHE_KEY, JSON.stringify({ count: count, ts: Date.now() }));
+        if (count > seenCount) addDot(findNavLink('emails.html'));
+      })
+      .catch(function () { /* fail silently — Resend may not be configured */ });
+  }
+
+  /* ── Public API (used by emails.html after loading enquiries) ───────────── */
+  window.CA3Notify = {
+    markEmailsSeen: function (count) {
+      localStorage.setItem(EMAILS_SEEN_KEY, String(count));
+      sessionStorage.setItem(EMAILS_CACHE_KEY, JSON.stringify({ count: count, ts: Date.now() }));
+    },
+  };
+
+  /* ── Apply badges on DOMContentLoaded ───────────────────────────────────── */
+  function applyBadges() {
+    applyBookingBadge();
+    if (currentPage !== 'emails.html') applyEmailBadge();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyBadges);
+  } else {
+    applyBadges();
+  }
+})();

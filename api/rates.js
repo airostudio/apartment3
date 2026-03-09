@@ -81,13 +81,23 @@ async function kvSet(url, token, key, value) {
   return r.ok;
 }
 
+function findKvEnv(suffix) {
+  for (const [key, val] of Object.entries(process.env)) {
+    if (key !== suffix && key.endsWith('_' + suffix) && val) return val;
+  }
+  return null;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const { KV_REST_API_URL, KV_REST_API_TOKEN } = process.env;
+  // Support both standard Vercel KV names and custom-prefixed store names
+  // (e.g. MYSTORE_KV_REST_API_URL when the KV store was created with a custom name)
+  const KV_REST_API_URL   = process.env.KV_REST_API_URL   || findKvEnv('KV_REST_API_URL');
+  const KV_REST_API_TOKEN = process.env.KV_REST_API_TOKEN || findKvEnv('KV_REST_API_TOKEN');
   const kvConfigured = !!(KV_REST_API_URL && KV_REST_API_TOKEN);
 
   /* ── GET ── */

@@ -446,9 +446,15 @@
             </div>
 
             <!-- Storage status banner -->
-            <div id="kv-banner" style="display:none;align-items:center;gap:0.75rem;padding:0.875rem 1.25rem;border-radius:0.75rem;margin-bottom:1.5rem;font-size:0.875rem;border:1px solid #fed7aa;background:#fff7ed;color:#92400e;">
-                <svg style="width:18px;height:18px;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <span>Rates are <strong>not saved to the server</strong> — Vercel KV is not configured. Changes will be lost on refresh. To persist rates for all users, add a <strong>Vercel KV</strong> store to your project under Storage in the Vercel dashboard.</span>
+            <div id="kv-banner" style="display:none;flex-direction:column;gap:0.5rem;padding:0.875rem 1.25rem;border-radius:0.75rem;margin-bottom:1.5rem;font-size:0.875rem;border:1px solid #fed7aa;background:#fff7ed;color:#92400e;">
+                <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+                    <svg style="width:18px;height:18px;flex-shrink:0;margin-top:1px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div>
+                        <span id="kv-banner-msg">Rates are <strong>not saved to the server</strong> — Vercel KV is not configured. Changes will be lost on refresh.</span>
+                        <button onclick="runKvDiagnostic()" style="margin-left:0.75rem;font-size:0.8rem;text-decoration:underline;background:none;border:none;cursor:pointer;color:#92400e;padding:0;">Run diagnostic</button>
+                    </div>
+                </div>
+                <pre id="kv-diag-output" style="display:none;margin:0;font-size:0.75rem;background:#fef3c7;border-radius:0.4rem;padding:0.5rem 0.75rem;white-space:pre-wrap;word-break:break-all;color:#78350f;"></pre>
             </div>
 
             <!-- Base Rates Card -->
@@ -1064,6 +1070,27 @@
                 if (el('base-weekly-display'))  el('base-weekly-display').textContent  = r.base.weeklyDiscount + '% off';
                 if (el('base-monthly-display')) el('base-monthly-display').textContent = r.base.monthlyDiscount + '% off';
             }
+        }
+
+        function runKvDiagnostic() {
+            var out = document.getElementById('kv-diag-output');
+            out.style.display = 'block';
+            out.textContent = 'Running diagnostic…';
+            fetch('/api/kv-status')
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    var lines = ['configured: ' + d.configured];
+                    if (d.kvVars && Object.keys(d.kvVars).length) {
+                        lines.push('env vars found:');
+                        for (var k in d.kvVars) lines.push('  ' + k + ' = ' + d.kvVars[k]);
+                    } else {
+                        lines.push('env vars found: none matching KV_REST_API*');
+                    }
+                    if (d.url) lines.push('url (masked): ' + d.url);
+                    if (d.pingResult) lines.push('ping result: ' + JSON.stringify(d.pingResult));
+                    out.textContent = lines.join('\n');
+                })
+                .catch(function (e) { out.textContent = 'Diagnostic fetch failed: ' + e.message; });
         }
 
         function loadRates() {

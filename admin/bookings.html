@@ -734,7 +734,7 @@
             showOverlay();
         }
 
-        document.getElementById('bkCreateForm').addEventListener('submit', function (e) {
+        document.getElementById('bkCreateForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             var f = e.target;
             if (!f.bkName.value.trim() || !f.bkCheckin.value || !f.bkCheckout.value || !f.bkTotal.value) {
@@ -759,47 +759,56 @@
                 total:    fmtMoney(f.bkTotal.value)
             };
 
-            if (window.CA3Data) {
-                window.CA3Data.addBooking({
-                    id:         newId,
-                    ref:        newId,
-                    guestName:  data.name,
-                    guestEmail: data.email,
-                    guestPhone: '',
-                    checkIn:    data.checkin,
-                    checkOut:   data.checkout,
-                    nights:     nights,
-                    guests:     parseInt(data.guests) || 1,
-                    status:     data.status,
-                    source:     'admin',
-                    total:      totalNum,
-                    paid:       data.status === 'confirmed' ? totalNum : 0,
-                    deposit:    0,
-                    notes:      '',
-                    createdAt:  new Date().toISOString()
-                });
+            var btn = f.querySelector('button[type="submit"]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+
+            try {
+                if (window.CA3Data) {
+                    await CA3Data.addBooking({
+                        id:         newId,
+                        ref:        newId,
+                        guestName:  data.name,
+                        guestEmail: data.email,
+                        guestPhone: '',
+                        checkIn:    data.checkin,
+                        checkOut:   data.checkout,
+                        nights:     nights,
+                        guests:     parseInt(data.guests) || 1,
+                        status:     data.status,
+                        source:     'admin',
+                        total:      totalNum,
+                        paid:       data.status === 'confirmed' ? totalNum : 0,
+                        deposit:    0,
+                        notes:      '',
+                        createdAt:  new Date().toISOString()
+                    });
+                }
+
+                if (data.status === 'confirmed') {
+                    sendConfirmationEmail(data);
+                }
+
+                var emptyRow = document.getElementById('bookingsEmptyRow');
+                if (emptyRow) emptyRow.remove();
+
+                var tr = document.createElement('tr');
+                tr.dataset.id       = data.id;
+                tr.dataset.name     = data.name;
+                tr.dataset.email    = data.email;
+                tr.dataset.checkin  = data.checkin;
+                tr.dataset.checkout = data.checkout;
+                tr.dataset.guests   = data.guests;
+                tr.dataset.status   = data.status;
+                tr.dataset.total    = data.total;
+                tr.innerHTML = buildRowHTML(data);
+                document.getElementById('bookingsTbody').prepend(tr);
+                updateStats();
+                hideOverlay();
+            } catch (err) {
+                // Toast already shown by CA3Data; no double alert needed
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = 'Create Booking'; }
             }
-
-            if (data.status === 'confirmed') {
-                sendConfirmationEmail(data);
-            }
-
-            var emptyRow = document.getElementById('bookingsEmptyRow');
-            if (emptyRow) emptyRow.remove();
-
-            var tr = document.createElement('tr');
-            tr.dataset.id       = data.id;
-            tr.dataset.name     = data.name;
-            tr.dataset.email    = data.email;
-            tr.dataset.checkin  = data.checkin;
-            tr.dataset.checkout = data.checkout;
-            tr.dataset.guests   = data.guests;
-            tr.dataset.status   = data.status;
-            tr.dataset.total    = data.total;
-            tr.innerHTML = buildRowHTML(data);
-            document.getElementById('bookingsTbody').prepend(tr);
-            updateStats();
-            hideOverlay();
         });
 
         /* ── VIEW ── */
@@ -844,7 +853,7 @@
             showOverlay();
         }
 
-        document.getElementById('bkEditForm').addEventListener('submit', function (e) {
+        document.getElementById('bkEditForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             var row = document.querySelector('#bookingsTbody tr[data-id="' + currentEditId + '"]');
             if (!row) { hideOverlay(); return; }
@@ -861,48 +870,61 @@
                 total:    fmtMoney(f.bkEditTotal.value)
             };
 
-            if (window.CA3Data) {
-                window.CA3Data.updateBooking(currentEditId, {
-                    guestName:  data.name,
-                    guestEmail: data.email,
-                    checkIn:    data.checkin,
-                    checkOut:   data.checkout,
-                    guests:     parseInt(data.guests) || 1,
-                    status:     data.status,
-                    total:      totalNum
-                });
-            }
+            var btn = f.querySelector('button[type="submit"]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
 
-            row.dataset.name     = data.name;
-            row.dataset.email    = data.email;
-            row.dataset.checkin  = data.checkin;
-            row.dataset.checkout = data.checkout;
-            row.dataset.guests   = data.guests;
-            row.dataset.status   = data.status;
-            row.dataset.total    = data.total;
-            row.innerHTML = buildRowHTML(data);
-            updateStats();
-            hideOverlay();
+            try {
+                if (window.CA3Data) {
+                    await CA3Data.updateBooking(currentEditId, {
+                        guestName:  data.name,
+                        guestEmail: data.email,
+                        checkIn:    data.checkin,
+                        checkOut:   data.checkout,
+                        guests:     parseInt(data.guests) || 1,
+                        status:     data.status,
+                        total:      totalNum
+                    });
+                }
+
+                row.dataset.name     = data.name;
+                row.dataset.email    = data.email;
+                row.dataset.checkin  = data.checkin;
+                row.dataset.checkout = data.checkout;
+                row.dataset.guests   = data.guests;
+                row.dataset.status   = data.status;
+                row.dataset.total    = data.total;
+                row.innerHTML = buildRowHTML(data);
+                updateStats();
+                hideOverlay();
+            } catch (err) {
+                // Toast shown by CA3Data
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = 'Save Changes'; }
+            }
         });
 
         /* ── CANCEL ── */
-        function cancelBooking(row) {
+        async function cancelBooking(row) {
             if (!confirm('Cancel booking for ' + row.dataset.name + '?\nThis will update the booking status to Cancelled.')) return;
-            row.dataset.status = 'cancelled';
-            if (window.CA3Data) {
-                window.CA3Data.updateBooking(row.dataset.id, { status: 'cancelled' });
+            try {
+                if (window.CA3Data) {
+                    await CA3Data.updateBooking(row.dataset.id, { status: 'cancelled' });
+                }
+                row.dataset.status = 'cancelled';
+                row.innerHTML = buildRowHTML({
+                    id:       row.dataset.id,
+                    name:     row.dataset.name,
+                    email:    row.dataset.email,
+                    checkin:  row.dataset.checkin,
+                    checkout: row.dataset.checkout,
+                    guests:   row.dataset.guests,
+                    status:   'cancelled',
+                    total:    row.dataset.total
+                });
+                updateStats();
+            } catch (err) {
+                // Toast shown by CA3Data
             }
-            row.innerHTML = buildRowHTML({
-                id:       row.dataset.id,
-                name:     row.dataset.name,
-                email:    row.dataset.email,
-                checkin:  row.dataset.checkin,
-                checkout: row.dataset.checkout,
-                guests:   row.dataset.guests,
-                status:   'cancelled',
-                total:    row.dataset.total
-            });
-            updateStats();
         }
 
         /* ── TABLE DELEGATION ── */

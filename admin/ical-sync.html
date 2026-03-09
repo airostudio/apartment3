@@ -894,20 +894,28 @@
             renderSyncLog();
         }
 
-        function removeConnection(id) {
+        async function removeConnection(id) {
             if (!confirm('Remove this iCal connection?')) return;
-            if (window.CA3Data) CA3Data.removeIcal(id);
-            renderConnections();
+            try {
+                if (window.CA3Data) await CA3Data.removeIcal(id);
+                renderConnections();
+            } catch (err) {
+                // Toast shown by CA3Data
+            }
         }
 
         /* ── Add Feed ── */
-        document.querySelector('.btn-add-feed').addEventListener('click', function() {
+        document.querySelector('.btn-add-feed').addEventListener('click', async function() {
             const platform = document.getElementById('import-platform').value;
             const url = document.getElementById('import-url').value.trim();
             if (!platform || !url) {
                 alert('Please select a platform and enter an iCal URL.');
                 return;
             }
+            const btn = document.querySelector('.btn-add-feed');
+            const origText = btn.textContent;
+            btn.disabled = true; btn.textContent = 'Saving…';
+
             const labels = { airbnb: 'Airbnb', booking_com: 'Booking.com', vrbo: 'VRBO', google: 'Google Calendar', other: 'Custom' };
             const conn = {
                 id: window.CA3Data ? CA3Data.generateId('IC') : 'IC-' + Date.now(),
@@ -920,11 +928,17 @@
                 frequency: '1hour',
                 exportUrl: 'https://mtbawbawcascade3.com/ical/export/cascade-apt3.ics'
             };
-            if (window.CA3Data) CA3Data.addIcal(conn);
-            document.getElementById('import-platform').value = '';
-            document.getElementById('import-url').value = '';
-            renderConnections();
-            renderSyncLog();
+            try {
+                if (window.CA3Data) await CA3Data.addIcal(conn);
+                document.getElementById('import-platform').value = '';
+                document.getElementById('import-url').value = '';
+                renderConnections();
+                renderSyncLog();
+            } catch (err) {
+                // Toast shown by CA3Data
+            } finally {
+                btn.disabled = false; btn.textContent = origText;
+            }
         });
 
         /* ── Sync Log ── */

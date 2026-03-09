@@ -873,15 +873,16 @@
             });
         });
 
-        document.getElementById('modalBookingCancel').addEventListener('click', function() {
+        document.getElementById('modalBookingCancel').addEventListener('click', async function() {
             const id = document.getElementById('modalBooking').dataset.bookingId;
             if (!id) return;
             if (!confirm('Are you sure you want to cancel this booking? This cannot be undone.')) return;
-            window.CA3Data.updateBooking(id, { status: 'cancelled' });
-            document.getElementById('modalBooking').classList.remove('is-open');
-            render();
-            if (window.CascadeApp && window.CascadeApp.showToast) {
-                window.CascadeApp.showToast('Booking cancelled', 'warning');
+            try {
+                await window.CA3Data.updateBooking(id, { status: 'cancelled' });
+                document.getElementById('modalBooking').classList.remove('is-open');
+                render();
+            } catch (err) {
+                // Toast shown by CA3Data
             }
         });
 
@@ -899,22 +900,27 @@
             });
         });
 
-        document.getElementById('modalBlockSave').addEventListener('click', function() {
-            const start = document.getElementById('blockStart').value;
-            const end   = document.getElementById('blockEnd').value;
+        document.getElementById('modalBlockSave').addEventListener('click', async function() {
+            const start  = document.getElementById('blockStart').value;
+            const end    = document.getElementById('blockEnd').value;
             const reason = document.getElementById('blockReason').value;
             if (!start || !end) { alert('Please select both start and end dates.'); return; }
             if (end < start)   { alert('End date must be on or after start date.'); return; }
 
-            window.CA3Data.addBlocked({
-                id: window.CA3Data.generateId('BL'),
-                startDate: start, endDate: end,
-                reason: reason, source: 'manual'
-            });
-            document.getElementById('modalBlock').classList.remove('is-open');
-            render();
-            if (window.CascadeApp && window.CascadeApp.showToast) {
-                window.CascadeApp.showToast('Dates blocked successfully', 'success');
+            const btn = document.getElementById('modalBlockSave');
+            btn.disabled = true; btn.textContent = 'Saving…';
+            try {
+                await window.CA3Data.addBlocked({
+                    id: window.CA3Data.generateId('BL'),
+                    startDate: start, endDate: end,
+                    reason: reason, source: 'manual'
+                });
+                document.getElementById('modalBlock').classList.remove('is-open');
+                render();
+            } catch (err) {
+                // Toast shown by CA3Data
+            } finally {
+                btn.disabled = false; btn.textContent = 'Block Dates';
             }
         });
 
@@ -925,14 +931,15 @@
             });
         });
 
-        document.getElementById('modalBlockDetailRemove').addEventListener('click', function() {
+        document.getElementById('modalBlockDetailRemove').addEventListener('click', async function() {
             const id = document.getElementById('modalBlockDetail').dataset.blockId;
             if (!id) return;
-            window.CA3Data.deleteBlocked(id);
-            document.getElementById('modalBlockDetail').classList.remove('is-open');
-            render();
-            if (window.CascadeApp && window.CascadeApp.showToast) {
-                window.CascadeApp.showToast('Block removed', 'info');
+            try {
+                await window.CA3Data.deleteBlocked(id);
+                document.getElementById('modalBlockDetail').classList.remove('is-open');
+                render();
+            } catch (err) {
+                // Toast shown by CA3Data
             }
         });
 

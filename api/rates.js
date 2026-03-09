@@ -61,8 +61,17 @@ const DEFAULT_RATES = {
 /* ── Neon HTTP SQL helper ─────────────────────────────────────────────── */
 
 function getConnectionString() {
-  // Prefer non-pooling URL for the HTTP API (avoids PgBouncer compatibility issues)
-  return process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL || null;
+  // Standard Vercel Postgres names
+  if (process.env.POSTGRES_URL_NON_POOLING) return process.env.POSTGRES_URL_NON_POOLING;
+  if (process.env.POSTGRES_URL)             return process.env.POSTGRES_URL;
+  if (process.env.DATABASE_URL)             return process.env.DATABASE_URL;
+  // Scan for prefixed variants (e.g. MYDB_POSTGRES_URL_NON_POOLING)
+  for (const suffix of ['POSTGRES_URL_NON_POOLING', 'POSTGRES_URL', 'DATABASE_URL']) {
+    for (const [key, val] of Object.entries(process.env)) {
+      if (key !== suffix && key.endsWith('_' + suffix) && val) return val;
+    }
+  }
+  return null;
 }
 
 async function pgQuery(connectionString, query, params = []) {

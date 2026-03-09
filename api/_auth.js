@@ -4,12 +4,20 @@
  * Session token format (base64url-encoded):
  *   "<role>:<email>:<expiry_ms>.<hmac-sha256-hex>"
  *
- * Required env var: SESSION_SECRET
+ * No separate SESSION_SECRET needed — the signing key is derived from
+ * ADMIN_PASSWORD + OWNER_PASSWORD, which must already be set.
  */
 
 import { createHmac } from 'node:crypto';
 
-const SECRET = () => process.env.SESSION_SECRET || 'dev-secret-change-in-prod';
+// Derive a stable signing key from the two passwords.
+// If neither is set yet, fall back to a fixed string (login will still
+// fail because the password check also uses env vars).
+const SECRET = () => {
+  const a = process.env.ADMIN_PASSWORD || '';
+  const o = process.env.OWNER_PASSWORD || '';
+  return `ca3-session-${a}-${o}` || 'ca3-session-fallback';
+};
 
 /**
  * Parse and verify the ca3_session cookie from a request.

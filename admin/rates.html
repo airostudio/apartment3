@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/admin.css">
     <script src="../js/auth.js"></script>
     <script>/* Immediate auth guard - redirect to login if no session */
-    (function(){if(!sessionStorage.getItem('ca3_session')){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}}());</script>
+    (function(){var m=document.cookie.match(/(?:^|; )ca3_role=([^;]*)/);if(!m){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}})();</script>
     <style>
         /* ---- Page header ---- */
         .page-header {

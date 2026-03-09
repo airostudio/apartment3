@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
     <script src="../js/auth.js"></script>
-    <script>(function(){var s=sessionStorage.getItem('ca3_session');if(!s){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}else{var sess=JSON.parse(s);if(sess.role!=='owner'&&sess.role!=='admin'){location.href='/admin/login.html';}}})();</script>
+    <script>(function(){var m=document.cookie.match(/(?:^|; )ca3_role=([^;]*)/);if(!m){sessionStorage.setItem('ca3_redirect',location.href);location.href='/admin/login.html';}else{var role=decodeURIComponent(m[1]);if(role!=='owner'&&role!=='admin'){location.href='/admin/login.html';}}})();</script>
     <style>
         .owner-hero {
             background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #635bff 100%);

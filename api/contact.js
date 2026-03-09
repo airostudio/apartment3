@@ -8,12 +8,15 @@
  * Required environment variables (set in Vercel dashboard):
  *   RESEND_API_KEY   — your Resend API key
  *   EMAIL_FROM       — verified sender address (e.g. hello@mtbawbawcascade3.com)
+ *   ADMIN_EMAIL      — where enquiry notifications go (falls back to EMAIL_FROM)
  *
  * For local testing set these in .env.local and run: vercel dev
  */
 
-const RESEND_API   = 'https://api.resend.com/emails';
-const CONTACT_DEST = 'hello@mtbawbawcascade3.com';
+const RESEND_API = 'https://api.resend.com/emails';
+// Admin destination resolved at runtime from env vars (set in Vercel dashboard)
+// Falls back to EMAIL_FROM then hardcoded address so contact always has somewhere to go
+const CONTACT_DEST_FALLBACK = 'hello@mtbawbawcascade3.com';
 
 export default async function handler(req, res) {
   // CORS preflight
@@ -28,7 +31,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { RESEND_API_KEY, EMAIL_FROM } = process.env;
+  const { RESEND_API_KEY, EMAIL_FROM, ADMIN_EMAIL } = process.env;
 
   if (!RESEND_API_KEY) {
     console.warn('RESEND_API_KEY is not set — returning not_configured so client can fall back to mailto');
@@ -182,7 +185,7 @@ export default async function handler(req, res) {
       sendEmail({
         apiKey:   RESEND_API_KEY,
         from:     fromAddress,
-        to:       CONTACT_DEST,
+        to:       ADMIN_EMAIL || EMAIL_FROM || CONTACT_DEST_FALLBACK,
         replyTo:  email,
         subject:  `New enquiry from ${name} <${email}>: ${subject}`,
         html:     adminHtml,

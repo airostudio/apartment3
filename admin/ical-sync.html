@@ -984,8 +984,15 @@
 
         /* ── Init ── */
         document.addEventListener('DOMContentLoaded', function() {
-            renderConnections();
-            renderSyncLog();
+            if (window.CA3Data) {
+                CA3Data.init().then(function() {
+                    renderConnections();
+                    renderSyncLog();
+                });
+            } else {
+                renderConnections();
+                renderSyncLog();
+            }
         });
     </script>
     <script src="../js/data.js"></script>

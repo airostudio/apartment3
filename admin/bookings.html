@@ -955,7 +955,11 @@
         document.getElementById('openCreateBtn').addEventListener('click', openCreate);
 
         /* ── INITIAL LOAD ── */
-        loadBookings();
+        if (window.CA3Data) {
+            CA3Data.init().then(loadBookings);
+        } else {
+            loadBookings();
+        }
 
     }());
     </script>

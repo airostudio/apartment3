@@ -1,18 +1,13 @@
 import { requireSession } from './_auth.js';
+import { isConfigured, sbSelect, sbUpsert } from './_supabase.js';
 
 /**
- * /api/rates — Serverless rate management (Vercel Postgres / Neon)
+ * /api/rates — Seasonal rate management
  *
- * GET  /api/rates  — Return current rates (public)
- * POST /api/rates  — Save rates to Postgres (admin only)
+ * GET  /api/rates  — Return current rates (public — used by booking widget)
+ * POST /api/rates  — Save rates (admin only)
  *
- * Uses Neon's HTTP SQL endpoint — no npm packages required, just fetch().
- * Vercel Postgres automatically adds these env vars when you connect the
- * database to your project:
- *   POSTGRES_URL              — pooled connection string
- *   POSTGRES_URL_NON_POOLING  — direct connection string (preferred for HTTP API)
- *
- * The API auto-creates the settings table on first use.
+ * Stores rates as a single JSONB row in ca3_settings with key 'ca3_rates_v1'.
  */
 
 const RATES_KEY = 'ca3_rates_v1';
@@ -51,83 +46,14 @@ const DEFAULT_RATES = {
     pet:        { name: 'Pet Fee',       amount: 50,  type: 'Per Stay',  isPercent: false },
   },
   rules: {
-    'ski-midweek': { name: 'White Season Midweek Rate',         condition: 'Sunday–Thursday during White/Ski Season (June–September)',             discount: 0  },
-    'ski-weekend': { name: 'White Season Weekend Rate',         condition: 'Friday–Sunday during White/Ski Season (June–September)',               discount: 0  },
-    'vic-school':  { name: 'Victorian School Holidays Premium', condition: 'Additional charge during July & September VIC school holidays',        discount: 0  },
-    '7night':      { name: 'Minimum 7-Night Stay Discount',     condition: 'When guest books 7 or more consecutive nights',                        discount: 10 },
-    'earlybird':   { name: 'Early Bird Discount',               condition: 'When booking is made 60+ days in advance',                            discount: 15 },
-    'lastminute':  { name: 'Last Minute Discount',              condition: 'When booking is made within 3 days of check-in',                      discount: 10 },
+    'ski-midweek': { name: 'White Season Midweek Rate',         condition: 'Sunday–Thursday during White/Ski Season (June–September)',          discount: 0  },
+    'ski-weekend': { name: 'White Season Weekend Rate',         condition: 'Friday–Sunday during White/Ski Season (June–September)',            discount: 0  },
+    'vic-school':  { name: 'Victorian School Holidays Premium', condition: 'Additional charge during July & September VIC school holidays',     discount: 0  },
+    '7night':      { name: 'Minimum 7-Night Stay Discount',     condition: 'When guest books 7 or more consecutive nights',                    discount: 10 },
+    'earlybird':   { name: 'Early Bird Discount',               condition: 'When booking is made 60+ days in advance',                        discount: 15 },
+    'lastminute':  { name: 'Last Minute Discount',              condition: 'When booking is made within 3 days of check-in',                  discount: 10 },
   },
 };
-
-/* ── Neon HTTP SQL helper ─────────────────────────────────────────────── */
-
-function getConnectionString() {
-  // Standard Vercel Postgres names
-  if (process.env.POSTGRES_URL_NON_POOLING) return process.env.POSTGRES_URL_NON_POOLING;
-  if (process.env.POSTGRES_URL)             return process.env.POSTGRES_URL;
-  if (process.env.DATABASE_URL)             return process.env.DATABASE_URL;
-  // Scan for prefixed variants (e.g. MYDB_POSTGRES_URL_NON_POOLING)
-  for (const suffix of ['POSTGRES_URL_NON_POOLING', 'POSTGRES_URL', 'DATABASE_URL']) {
-    for (const [key, val] of Object.entries(process.env)) {
-      if (key !== suffix && key.endsWith('_' + suffix) && val) return val;
-    }
-  }
-  return null;
-}
-
-async function pgQuery(connectionString, query, params = []) {
-  const u = new URL(connectionString);
-  const host = u.hostname;
-  const password = decodeURIComponent(u.password);
-
-  const r = await fetch(`https://${host}/sql`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${password}`,
-      'Content-Type': 'application/json',
-      'Neon-Connection-String': connectionString,
-    },
-    body: JSON.stringify({ query, params }),
-  });
-
-  if (!r.ok) {
-    const text = await r.text().catch(() => '');
-    throw new Error(`Postgres HTTP ${r.status}: ${text}`);
-  }
-  return r.json();
-}
-
-async function ensureTable(connectionString) {
-  await pgQuery(connectionString,
-    `CREATE TABLE IF NOT EXISTS ca3_settings (
-       key   TEXT PRIMARY KEY,
-       value JSONB NOT NULL,
-       updated_at TIMESTAMPTZ DEFAULT NOW()
-     )`
-  );
-}
-
-async function getRates(connectionString) {
-  const result = await pgQuery(connectionString,
-    'SELECT value FROM ca3_settings WHERE key = $1',
-    [RATES_KEY]
-  );
-  return result.rows?.[0]?.value ?? null;
-}
-
-async function saveRates(connectionString, rates) {
-  await pgQuery(connectionString,
-    `INSERT INTO ca3_settings (key, value, updated_at)
-     VALUES ($1, $2::jsonb, NOW())
-     ON CONFLICT (key) DO UPDATE
-       SET value = EXCLUDED.value,
-           updated_at = NOW()`,
-    [RATES_KEY, JSON.stringify(rates)]
-  );
-}
-
-/* ── Handler ─────────────────────────────────────────────────────────── */
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -135,19 +61,17 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const connectionString = getConnectionString();
-  const dbConfigured = !!connectionString;
+  const dbConfigured = isConfigured();
 
   /* ── GET ── */
   if (req.method === 'GET') {
     let rates = DEFAULT_RATES;
     if (dbConfigured) {
       try {
-        await ensureTable(connectionString);
-        const saved = await getRates(connectionString);
-        if (saved) rates = saved;
+        const rows = await sbSelect('ca3_settings', `select=value&key=eq.${RATES_KEY}`);
+        if (rows.length) rates = rows[0].value;
       } catch (e) {
-        console.error('Postgres GET error:', e.message);
+        console.error('Rates GET error:', e.message);
       }
     }
     return res.status(200).json({ rates, dbConfigured });
@@ -158,18 +82,22 @@ export default async function handler(req, res) {
     if (!requireSession(req, res)) return;
     if (!dbConfigured) {
       return res.status(503).json({
-        error: 'Database not configured. Add a Vercel Postgres database to your project.',
+        error: 'Database not configured. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to your Vercel project.',
         code: 'db_not_configured',
       });
     }
-    const { rates } = req.body;
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const { rates } = body;
     if (!rates) return res.status(400).json({ error: 'Missing rates data.' });
     try {
-      await ensureTable(connectionString);
-      await saveRates(connectionString, rates);
+      await sbUpsert('ca3_settings', {
+        key:        RATES_KEY,
+        value:      rates,
+        updated_at: new Date().toISOString(),
+      }, 'key');
       return res.status(200).json({ ok: true });
     } catch (e) {
-      console.error('Postgres POST error:', e.message);
+      console.error('Rates POST error:', e.message);
       return res.status(500).json({ error: 'Failed to save rates.', detail: e.message });
     }
   }

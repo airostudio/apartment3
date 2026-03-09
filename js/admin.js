@@ -28,7 +28,7 @@
      * Sidebar toggle for mobile
      */
     initSidebar() {
-      const toggle = document.querySelector('.sidebar-toggle');
+      const toggle = document.querySelector('.topbar-toggle, .sidebar-toggle, #sidebarToggle');
       const sidebar = document.querySelector('.admin-sidebar');
 
       if (toggle && sidebar) {

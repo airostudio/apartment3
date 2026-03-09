@@ -952,8 +952,12 @@
             }
         });
 
-        // Initial render
-        render();
+        // Initial render — wait for API data to load
+        if (window.CA3Data) {
+            CA3Data.init().then(render);
+        } else {
+            render();
+        }
 
     })();
     </script>

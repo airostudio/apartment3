@@ -1,8 +1,10 @@
+import { requireSession } from './_auth.js';
+
 /**
  * /api/rates — Serverless rate management (Vercel Postgres / Neon)
  *
- * GET  /api/rates  — Return current rates (Postgres → default fallback)
- * POST /api/rates  — Save rates to Postgres
+ * GET  /api/rates  — Return current rates (public)
+ * POST /api/rates  — Save rates to Postgres (admin only)
  *
  * Uses Neon's HTTP SQL endpoint — no npm packages required, just fetch().
  * Vercel Postgres automatically adds these env vars when you connect the
@@ -153,6 +155,7 @@ export default async function handler(req, res) {
 
   /* ── POST ── */
   if (req.method === 'POST') {
+    if (!requireSession(req, res)) return;
     if (!dbConfigured) {
       return res.status(503).json({
         error: 'Database not configured. Add a Vercel Postgres database to your project.',

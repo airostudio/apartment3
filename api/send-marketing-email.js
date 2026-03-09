@@ -11,10 +11,13 @@
  * Required env vars: RESEND_API_KEY, EMAIL_FROM
  */
 
+import { requireSession } from './_auth.js';
+
 const RESEND_API = 'https://api.resend.com/emails';
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
+  if (!requireSession(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { RESEND_API_KEY, EMAIL_FROM } = process.env;

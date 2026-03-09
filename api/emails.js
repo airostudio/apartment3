@@ -16,6 +16,8 @@ const CONTACT_DEST  = 'hello@mtbawbawcascade3.com';
 // Matches subject format: "New enquiry from Name <email>: Subject"
 const SUBJECT_RE    = /^New enquiry from (.+?) <([^>]+)>: (.+)$/;
 
+import { requireSession } from './_auth.js';
+
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,6 +25,8 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     return res.status(200).end();
   }
+
+  if (!requireSession(req, res)) return;
 
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });

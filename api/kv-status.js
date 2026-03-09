@@ -5,6 +5,8 @@
  * reports what names Vercel is actually using, and pings the DB.
  */
 
+import { requireSession } from './_auth.js';
+
 const DB_KEYWORDS = ['POSTGRES', 'DATABASE_URL', 'PG', 'NEON', 'SUPABASE', 'KV'];
 
 export default async function handler(req, res) {
@@ -12,6 +14,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+  if (!requireSession(req, res)) return;
 
   // Scan all env vars for anything DB-related (mask values)
   const dbVars = {};

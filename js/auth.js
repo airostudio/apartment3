@@ -1,130 +1,111 @@
 /**
  * Cascade Apartment 3 — Client-side Authentication Module
  *
- * Uses SHA-256 (Web Crypto API) to hash credentials on first login.
- * Hashed credentials are stored in localStorage; session in sessionStorage.
+ * login()      → POST /api/admin-login  → sets HttpOnly ca3_session cookie
+ * logout()     → POST /api/admin-logout → clears cookies
+ * requireAuth()→ reads ca3_role cookie; falls back to GET /api/admin-check
  *
- * DEMO ONLY — In production, replace with server-side authentication
- * (e.g. JWT tokens, HTTP-only session cookies, Auth0, Firebase Auth, etc.)
+ * The ca3_role cookie (non-HttpOnly) is set by the server alongside the
+ * HttpOnly ca3_session token so the client can read the role without
+ * ever touching the actual auth token.
  *
  * Roles:
  *   admin  — Full access: all pages, rates, settings, iCal, properties
- *   owner  — Read-only portal: dashboard, bookings (view), payments/transfers
+ *   owner  — Read-only portal: dashboard, bookings, payments/transfers
  */
 (function () {
     'use strict';
 
-    var SESSION_KEY  = 'ca3_session';
-    var USERS_KEY    = 'ca3_users';
     var REDIRECT_KEY = 'ca3_redirect';
-    var SALT         = 'ca3-kXp9mZ-2026';
 
-    // ── User seed ─────────────────────────────────────────────────────────────
-    // Credentials are hashed with SHA-256 + salt on first login attempt,
-    // then stored as hashes in localStorage. Plaintext is never re-used after that.
-    var SEED = [
-        {
-            email:    'hello@mtbawbawcascade3.com',
-            password: 'CaAdmin#2026',
-            role:     'admin',
-            name:     'Admin',
-            initials: 'AD'
-        },
-        {
-            email:    'typhoon.tall69@gmail.com',
-            password: 'Rx8#Tz5mKp2w',
-            role:     'owner',
-            name:     'Property Owner',
-            initials: 'PO'
-        }
-    ];
-
-    // ── Crypto ────────────────────────────────────────────────────────────────
-    function sha256(str) {
-        return crypto.subtle.digest(
-            'SHA-256', new TextEncoder().encode(str)
-        ).then(function (buf) {
-            return Array.from(new Uint8Array(buf))
-                .map(function (b) { return b.toString(16).padStart(2, '0'); })
-                .join('');
-        });
+    // ── Cookie helpers ────────────────────────────────────────────────────────
+    function getCookie(name) {
+        var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[1]) : null;
     }
 
-    // ── User store ────────────────────────────────────────────────────────────
-    // Hashes all seed passwords and stores in localStorage (runs once)
-    function ensureUsers() {
-        if (localStorage.getItem(USERS_KEY)) return Promise.resolve();
-        var out = {};
-        return Promise.all(SEED.map(function (u) {
-            return sha256(u.email.toLowerCase() + ':' + u.password + ':' + SALT)
-                .then(function (hash) {
-                    out[u.email.toLowerCase()] = {
-                        hash:     hash,
-                        role:     u.role,
-                        name:     u.name,
-                        initials: u.initials
-                    };
-                });
-        })).then(function () {
-            localStorage.setItem(USERS_KEY, JSON.stringify(out));
-        });
-    }
-
-    // ── Session helpers ───────────────────────────────────────────────────────
+    // ── Session from cookie ───────────────────────────────────────────────────
+    // Returns a minimal session object from the readable ca3_role cookie,
+    // or null if not present.
     function getSession() {
-        try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); }
-        catch (e) { return null; }
+        var role = getCookie('ca3_role');
+        if (!role) return null;
+        return { role: role };
     }
 
     // ── Login ─────────────────────────────────────────────────────────────────
     // Returns Promise<{ success: bool, session?: object }>
     function login(email, password) {
-        return ensureUsers().then(function () {
-            var users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
-            var key   = (email || '').toLowerCase().trim();
-            var user  = users[key];
-            if (!user) return { success: false };
-            return sha256(key + ':' + password + ':' + SALT).then(function (hash) {
-                if (hash !== user.hash) return { success: false };
+        return fetch('/api/admin-login', {
+            method:      'POST',
+            credentials: 'same-origin',
+            headers:     { 'Content-Type': 'application/json' },
+            body:        JSON.stringify({ email: email, password: password }),
+        }).then(function (r) {
+            return r.json().then(function (data) {
+                if (!data.success) return { success: false };
+                // Server has set the cookies; build a local session object for UX
                 var session = {
-                    email:    key,
-                    role:     user.role,
-                    name:     user.name,
-                    initials: user.initials,
-                    ts:       Date.now()
+                    email:    email.toLowerCase().trim(),
+                    role:     data.role,
+                    name:     data.name,
+                    initials: data.initials,
                 };
-                sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
                 return { success: true, session: session };
             });
+        }).catch(function () {
+            return { success: false };
         });
     }
 
     // ── Logout ────────────────────────────────────────────────────────────────
     function logout() {
-        sessionStorage.removeItem(SESSION_KEY);
-        window.location.href = '/admin/login.html';
+        fetch('/api/admin-logout', { method: 'POST', credentials: 'same-origin' })
+            .finally(function () {
+                window.location.href = '/admin/login.html';
+            });
     }
 
     // ── Auth guard ────────────────────────────────────────────────────────────
-    // Call from each protected page. Redirects to login if no session.
-    // If session exists, applies user info to topbar and returns session.
-    function requireAuth() {
-        var session = getSession();
-        if (!session) {
-            sessionStorage.setItem(REDIRECT_KEY, window.location.href);
-            window.location.href = '/admin/login.html';
-            return null;
+    // Call at the top of each protected page.
+    // Reads the ca3_role cookie first (instant). If absent, hits /api/admin-check
+    // (one round-trip) to handle edge cases (e.g. HttpOnly cookie present but
+    // readable cookie cleared). Redirects to login if unauthenticated.
+    function requireAuth(callback) {
+        var role = getCookie('ca3_role');
+
+        if (role) {
+            // Fast path — cookie present
+            var session = { role: role };
+            _applyToTopbar(session);
+            if (callback) callback(session);
+            return;
         }
-        _applyToTopbar(session);
-        return session;
+
+        // Slow path — verify via API (covers cases where readable cookie is gone)
+        fetch('/api/admin-check', { credentials: 'same-origin', cache: 'no-store' })
+            .then(function (r) {
+                if (!r.ok) throw new Error('not authenticated');
+                return r.json();
+            })
+            .then(function (data) {
+                if (!data.authenticated) throw new Error('not authenticated');
+                var session = { role: data.role, email: data.email };
+                _applyToTopbar(session);
+                if (callback) callback(session);
+            })
+            .catch(function () {
+                sessionStorage.setItem(REDIRECT_KEY, window.location.href);
+                window.location.href = '/admin/login.html';
+            });
     }
 
     // ── Apply session to topbar ───────────────────────────────────────────────
     function _applyToTopbar(session) {
         var avatar = document.querySelector('.admin-topbar__user-avatar');
         var uname  = document.querySelector('.admin-topbar__user-name');
-        if (avatar) avatar.textContent = session.initials;
-        if (uname)  uname.textContent  = session.name;
+        if (avatar) avatar.textContent = session.initials || (session.role === 'admin' ? 'AD' : 'PO');
+        if (uname)  uname.textContent  = session.name     || (session.role === 'admin' ? 'Admin' : 'Property Owner');
 
         // Role badge for owner
         if (session.role === 'owner') {
@@ -182,21 +163,20 @@
     }
 
     // ── Owner nav restriction ─────────────────────────────────────────────────
-    // Owner can view: Dashboard, Bookings, Calendar, Guests, Reports, Payments
-    // Owner is redirected away from: Rates, Settings, iCal Sync, Properties
+    var OWNER_RESTRICTED = [
+        'rates.html', 'settings.html', 'ical-sync.html',
+        'properties.html', 'property-edit.html'
+    ];
+
     function _restrictOwnerNav() {
-        var RESTRICTED = [
-            'rates.html', 'settings.html', 'ical-sync.html',
-            'properties.html', 'property-edit.html'
-        ];
         var page = window.location.pathname.split('/').pop();
-        if (RESTRICTED.indexOf(page) !== -1) {
+        if (OWNER_RESTRICTED.indexOf(page) !== -1) {
             window.location.href = '/admin/index.html';
             return;
         }
         document.querySelectorAll('.sidebar-nav-link, .sidebar-nav a').forEach(function (a) {
             var href = (a.getAttribute('href') || '').split('/').pop();
-            if (RESTRICTED.indexOf(href) !== -1) {
+            if (OWNER_RESTRICTED.indexOf(href) !== -1) {
                 var item = a.closest('li') || a.parentElement;
                 if (item) {
                     Object.assign(item.style, { opacity: '0.3', pointerEvents: 'none' });
@@ -211,12 +191,7 @@
         login:       login,
         logout:      logout,
         getSession:  getSession,
-        requireAuth: requireAuth
+        requireAuth: requireAuth,
     };
-
-    // Pre-warm the user store (hashes on first visit, resolves immediately after)
-    if (window.crypto && window.crypto.subtle) {
-        ensureUsers().catch(function () {});
-    }
 
 }());

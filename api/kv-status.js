@@ -1,8 +1,8 @@
 /**
- * /api/kv-status — KV connection diagnostic
+ * /api/kv-status — Database connection diagnostic
  *
- * Returns safe diagnostic info about KV env vars and connectivity.
- * Values are masked; only presence and connectivity status are shown.
+ * Returns safe diagnostic info about Postgres connectivity.
+ * Connection string is masked; only presence and connectivity are shown.
  */
 
 export default async function handler(req, res) {
@@ -11,36 +11,34 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  // Scan for any Vercel KV-related env vars (handles custom store names)
-  const kvVars = {};
-  for (const [key, val] of Object.entries(process.env)) {
-    if (key.includes('KV_REST_API') || key === 'KV_URL') {
-      kvVars[key] = val ? `[set, length=${val.length}]` : '[empty]';
-    }
+  const connStr = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL || null;
+  const configured = !!connStr;
+
+  // Show which relevant env vars are present (masked)
+  const envVars = {};
+  for (const key of ['POSTGRES_URL', 'POSTGRES_URL_NON_POOLING', 'POSTGRES_HOST', 'POSTGRES_DATABASE', 'POSTGRES_USER']) {
+    const val = process.env[key];
+    if (val) envVars[key] = `[set, length=${val.length}]`;
   }
 
-  // Determine which URL/token to use (standard or prefixed)
-  const url   = process.env.KV_REST_API_URL   || findEnv('KV_REST_API_URL');
-  const token = process.env.KV_REST_API_TOKEN  || findEnv('KV_REST_API_TOKEN');
-
-  const configured = !!(url && token);
   let pingResult = null;
-
   if (configured) {
     try {
-      const r = await fetch(`${url}/pipeline`, {
+      const u = new URL(connStr);
+      const host = u.hostname;
+      const password = decodeURIComponent(u.password);
+
+      const r = await fetch(`https://${host}/sql`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${password}`,
           'Content-Type': 'application/json',
+          'Neon-Connection-String': connStr,
         },
-        body: JSON.stringify([['PING']]),
+        body: JSON.stringify({ query: 'SELECT 1 AS ok', params: [] }),
       });
       const data = await r.json();
-      pingResult = {
-        httpStatus: r.status,
-        response: data,
-      };
+      pingResult = { httpStatus: r.status, rows: data.rows };
     } catch (e) {
       pingResult = { error: e.message };
     }
@@ -48,15 +46,8 @@ export default async function handler(req, res) {
 
   return res.status(200).json({
     configured,
-    kvVars,
-    url: url ? `${url.slice(0, 30)}...` : null,
+    envVars,
+    host: connStr ? new URL(connStr).hostname : null,
     pingResult,
   });
-}
-
-function findEnv(suffix) {
-  for (const [key, val] of Object.entries(process.env)) {
-    if (key.endsWith('_' + suffix)) return val;
-  }
-  return null;
 }

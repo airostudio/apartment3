@@ -450,7 +450,7 @@
                 <div style="display:flex;align-items:flex-start;gap:0.75rem;">
                     <svg style="width:18px;height:18px;flex-shrink:0;margin-top:1px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                     <div>
-                        <span id="kv-banner-msg">Rates are <strong>not saved to the server</strong> — Vercel KV is not configured. Changes will be lost on refresh.</span>
+                        <span id="kv-banner-msg">Rates are <strong>not saved to the server</strong> — Postgres database is not connected. Changes will be lost on refresh.</span>
                         <button onclick="runKvDiagnostic()" style="margin-left:0.75rem;font-size:0.8rem;text-decoration:underline;background:none;border:none;cursor:pointer;color:#92400e;padding:0;">Run diagnostic</button>
                     </div>
                 </div>
@@ -1098,7 +1098,7 @@
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
                     if (data.rates) applyRatesToUI(data.rates);
-                    if (!data.kvConfigured) {
+                    if (!data.dbConfigured) {
                         var banner = document.getElementById('kv-banner');
                         if (banner) banner.style.display = 'flex';
                     }
@@ -1115,9 +1115,9 @@
             })
             .then(function (r) { return r.json(); })
             .then(function (data) {
-                if (data.code === 'kv_not_configured') {
+                if (data.code === 'db_not_configured') {
                     /* Already shown the banner — just note in console */
-                    console.warn('Rates saved in-memory only — KV not configured');
+                    console.warn('Rates saved in-memory only — Postgres not configured');
                 }
             })
             .catch(function () { /* fail silently */ });

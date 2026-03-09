@@ -367,9 +367,25 @@
   // ============================================
   // Booking Form Handler
   // ============================================
+
+  /* Cached rates fetched from /api/rates on form init */
+  let _serverRates = null;
+
   function initBookingForm() {
     const form = document.getElementById('bookingForm');
     if (!form) return;
+
+    /* Fetch server rates once; trigger a recalculate when they arrive */
+    fetch('/api/rates')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (data && data.rates) {
+          _serverRates = data.rates;
+          /* Re-run pricing with correct seasonal rates */
+          recalculate();
+        }
+      })
+      .catch(function () { /* fail silently — fall back to base rate */ });
 
     const continueBtn = document.getElementById('continueToPayment');
 
@@ -471,13 +487,20 @@
       refreshAvailability(checkin, checkout);
 
       if (checkin && checkout) {
+        const seasonalRates = _serverRates ? BookingEngine.expandSeasons(_serverRates.seasons) : [];
+        const shoulderRate  = (_serverRates && _serverRates.seasons && _serverRates.seasons.shoulder)
+          ? _serverRates.seasons.shoulder.ratePerNight : 200;
+        const cleaningFee   = (_serverRates && _serverRates.fees && _serverRates.fees.cleaning)
+          ? _serverRates.fees.cleaning.amount : 120;
         const pricing = BookingEngine.calculatePrice({
-          baseRate: 289,
+          baseRate: shoulderRate,
           checkin,
           checkout,
           adults,
           children,
           guests: adults + children,
+          seasonalRates,
+          cleaningFee,
           extraAdultFee: 50,
           extraChildFee: 25,
           maxBaseGuests: 2,
@@ -612,16 +635,23 @@
         return isNaN(d1) || isNaN(d2) ? null : Math.round((d2 - d1) / 86400000);
       })();
 
+      const _sr2        = _serverRates && _serverRates.seasons;
+      const _fees2      = _serverRates && _serverRates.fees;
+      const shoulderRate2 = (_sr2 && _sr2.shoulder) ? _sr2.shoulder.ratePerNight : 200;
+      const cleaningFee2  = (_fees2 && _fees2.cleaning) ? _fees2.cleaning.amount : 120;
+      const xtraGuest2    = (_fees2 && _fees2.extraguest) ? _fees2.extraguest.amount : 30;
       const finalPricing = BookingEngine.calculatePrice({
-        baseRate: 289,
+        baseRate: shoulderRate2,
         checkin: ci,
         checkout: co,
         adults,
         children,
         guests: adults + children,
-        extraAdultFee: 50,
-        extraChildFee: 25,
+        extraAdultFee: xtraGuest2,
+        extraChildFee: Math.round(xtraGuest2 / 2),
         maxBaseGuests: 2,
+        seasonalRates: _serverRates ? BookingEngine.expandSeasons(_serverRates.seasons) : [],
+        cleaningFee: cleaningFee2,
       });
 
       let addonsTotal = 0;
@@ -741,6 +771,41 @@
   } else {
     init();
   }
+
+  /**
+   * Expand month-based season definitions into date ranges that
+   * calculatePrice() can use.  Generates ranges for the current year
+   * plus the next two years so forward bookings are always covered.
+   *
+   * @param {Object} seasons — e.g. ratesData.seasons from /api/rates
+   * @returns {Array}        — seasonalRates array for calculatePrice()
+   */
+  BookingEngine.expandSeasons = function (seasons) {
+    if (!seasons) return [];
+    const now    = new Date();
+    const years  = [now.getFullYear(), now.getFullYear() + 1, now.getFullYear() + 2];
+    const result = [];
+
+    Object.keys(seasons).forEach(function (key) {
+      const s = seasons[key];
+      if (!s || !Array.isArray(s.months) || !s.ratePerNight) return;
+
+      years.forEach(function (year) {
+        s.months.forEach(function (month) {
+          const lastDay = new Date(year, month, 0).getDate(); // day-0 trick
+          result.push({
+            name:      s.name,
+            startDate: year + '-' + String(month).padStart(2, '0') + '-01',
+            endDate:   year + '-' + String(month).padStart(2, '0') + '-' + lastDay,
+            type:      'fixed',
+            rate:      s.ratePerNight,
+          });
+        });
+      });
+    });
+
+    return result;
+  };
 
   // Expose BookingEngine globally
   window.CascadeApp = window.CascadeApp || {};

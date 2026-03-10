@@ -258,45 +258,33 @@
     // Persist for confirmation.html to read
     sessionStorage.setItem('ca3_confirmed_booking', JSON.stringify(confirmedBooking));
 
-    // Upgrade the pending booking that was written on booking.html to 'confirmed',
-    // or add a new confirmed booking if no pending entry is found.
-    if (window.CA3Data) {
-      const pendingId = sessionStorage.getItem('ca3_pending_id');
-      if (pendingId) {
-        window.CA3Data.updateBooking(pendingId, {
-          id:              ref,
-          ref,
-          guestName:       confirmedBooking.guestName,
-          guestEmail:      confirmedBooking.guestEmail,
-          status:          'confirmed',
-          total:           amountCents / 100,
-          paid:            amountCents / 100,
+    // Persist the confirmed booking to the database.
+    // /api/confirm-booking is a public endpoint — it verifies the payment
+    // with Stripe server-side so no admin session is needed. We await it
+    // here so the fetch is not aborted by the page navigation below.
+    sessionStorage.removeItem('ca3_pending_id');
+    try {
+      await fetch('/api/confirm-booking', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           paymentIntentId: paymentIntent.id,
-          confirmedAt:     confirmedBooking.confirmedAt,
-        });
-        sessionStorage.removeItem('ca3_pending_id');
-      } else {
-        // Fallback: no pending booking found — add a fresh confirmed booking
-        window.CA3Data.addBooking({
-          id:              ref,
           ref,
-          guestName:       confirmedBooking.guestName,
-          guestEmail:      confirmedBooking.guestEmail,
-          guestPhone:      pending.guestPhone || '',
-          checkIn:         pending.checkin    || '',
-          checkOut:        pending.checkout   || '',
-          nights:          pending.nights     || 0,
-          guests:          pending.guests     || 1,
-          status:          'confirmed',
-          source:          'direct',
-          baseRate:        (pending.pricing && pending.pricing.averageNightlyRate) || 0,
-          total:           amountCents / 100,
-          paid:            amountCents / 100,
-          deposit:         0,
-          paymentIntentId: paymentIntent.id,
-          notes:           pending.specialRequests || '',
-        });
-      }
+          booking: {
+            guestName:  confirmedBooking.guestName,
+            guestEmail: confirmedBooking.guestEmail,
+            guestPhone: pending.guestPhone || '',
+            checkIn:    pending.checkin    || '',
+            checkOut:   pending.checkout   || '',
+            guests:     pending.guests     || 1,
+            total:      amountCents / 100,
+            notes:      pending.specialRequests || '',
+          },
+        }),
+      });
+    } catch (_) {
+      // Non-fatal: the payment already succeeded. The admin can reconcile
+      // via the Stripe Dashboard if the DB write failed.
     }
 
     window.location.href = 'confirmation.html?ref=' + encodeURIComponent(ref);

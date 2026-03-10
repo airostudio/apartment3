@@ -328,11 +328,7 @@
             <p class="admin-page-subtitle">Update your property details and settings for Cascade Apartment 3</p>
           </div>
           <div style="display: flex; gap: var(--space-md);">
-            <button class="btn btn--outline">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-right: 6px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-              Save Draft
-            </button>
-            <button class="btn btn--primary">
+            <button id="btnSaveProperty" class="btn btn--primary">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-right: 6px;"><polyline points="20 6 9 17 4 12"/></svg>
               Save Changes
             </button>
@@ -362,11 +358,11 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg);">
                   <div class="form-group">
                     <label class="form-label">Property Name <span class="required">*</span></label>
-                    <input type="text" class="form-input" value="Cascade Apartment 3">
+                    <input type="text" id="propName" class="form-input" value="Cascade Apartment 3">
                   </div>
                   <div class="form-group">
                     <label class="form-label">Property Type <span class="required">*</span></label>
-                    <select class="form-select">
+                    <select id="propType" class="form-select">
                       <option value="">Select type...</option>
                       <option>Hotel</option>
                       <option>Motel</option>
@@ -380,7 +376,7 @@
 
                 <div class="form-group" style="margin-bottom: var(--space-lg);">
                   <label class="form-label">Description</label>
-                  <textarea class="form-textarea" rows="5">Cascade Apartment 3 is a premium ski-in/ski-out alpine apartment located at Falls Creek, Victoria. Sleeping up to 8 guests across 3 bedrooms, it features a full kitchen, cosy fireplace, private balcony with mountain views, ski storage, and access to the resort's year-round facilities.</textarea>
+                  <textarea id="propDescription" class="form-textarea" rows="5">Cascade Apartment 3 is a premium ski-in/ski-out alpine apartment located at Falls Creek, Victoria. Sleeping up to 8 guests across 3 bedrooms, it features a full kitchen, cosy fireplace, private balcony with mountain views, ski storage, and access to the resort's year-round facilities.</textarea>
                   <span class="form-hint">Write a compelling description that highlights key selling points.</span>
                 </div>
 
@@ -388,17 +384,17 @@
 
                 <div class="form-group" style="margin-bottom: var(--space-lg);">
                   <label class="form-label">Street Address <span class="required">*</span></label>
-                  <input type="text" class="form-input" value="4 Bogong High Plains Road">
+                  <input type="text" id="propAddress" class="form-input" value="4 Bogong High Plains Road">
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg);">
                   <div class="form-group">
                     <label class="form-label">City <span class="required">*</span></label>
-                    <input type="text" class="form-input" value="Falls Creek">
+                    <input type="text" id="propCity" class="form-input" value="Falls Creek">
                   </div>
                   <div class="form-group">
                     <label class="form-label">State <span class="required">*</span></label>
-                    <select class="form-select">
+                    <select id="propState" class="form-select">
                       <option value="">Select state...</option>
                       <option>NSW</option>
                       <option selected>VIC</option>
@@ -415,28 +411,14 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg);">
                   <div class="form-group">
                     <label class="form-label">Postcode <span class="required">*</span></label>
-                    <input type="text" class="form-input" value="3699">
+                    <input type="text" id="propPostcode" class="form-input" value="3699">
                   </div>
                   <div class="form-group">
                     <label class="form-label">Country</label>
-                    <select class="form-select">
+                    <select id="propCountry" class="form-select">
                       <option selected>Australia</option>
                       <option>New Zealand</option>
                     </select>
-                  </div>
-                </div>
-
-                <!-- Map Placeholder -->
-                <div style="margin-bottom: var(--space-xl);">
-                  <label class="form-label">Location on Map</label>
-                  <div class="chart-placeholder" style="height: 250px;">
-                    <div style="text-align: center;">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" style="margin: 0 auto var(--space-sm); display: block; color: var(--color-muted);">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                      </svg>
-                      <span>Map will load after address is entered</span>
-                    </div>
                   </div>
                 </div>
 
@@ -445,11 +427,11 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                   <div class="form-group">
                     <label class="form-label">Contact Email</label>
-                    <input type="email" class="form-input" value="hello@mtbawbawcascade3.com">
+                    <input type="email" id="propContactEmail" class="form-input" value="hello@mtbawbawcascade3.com">
                   </div>
                   <div class="form-group">
                     <label class="form-label">Contact Phone</label>
-                    <input type="tel" class="form-input" value="+61 3 5758 1234">
+                    <input type="tel" id="propContactPhone" class="form-input" value="+61 3 5758 1234">
                   </div>
                 </div>
               </form>
@@ -696,17 +678,17 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-xl);">
                 <div class="form-group">
                   <label class="form-label">Check-in Time</label>
-                  <input type="time" class="form-input" value="14:00">
+                  <input type="time" id="propCheckinTime" class="form-input" value="14:00">
                 </div>
                 <div class="form-group">
                   <label class="form-label">Check-out Time</label>
-                  <input type="time" class="form-input" value="10:00">
+                  <input type="time" id="propCheckoutTime" class="form-input" value="10:00">
                 </div>
               </div>
 
               <div class="form-group" style="margin-bottom: var(--space-xl);">
                 <label class="form-label">Cancellation Policy</label>
-                <select class="form-select">
+                <select id="propCancellationPolicy" class="form-select">
                   <option>Free cancellation up to 24 hours before check-in</option>
                   <option>Free cancellation up to 48 hours before check-in</option>
                   <option>Free cancellation up to 7 days before check-in</option>
@@ -719,18 +701,18 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-xl);">
                 <div class="form-group">
                   <label class="form-label">Minimum Stay (nights)</label>
-                  <input type="number" class="form-input" value="1" min="1">
+                  <input type="number" id="propMinStay" class="form-input" value="1" min="1">
                 </div>
                 <div class="form-group">
                   <label class="form-label">Maximum Stay (nights)</label>
-                  <input type="number" class="form-input" value="30" min="1">
+                  <input type="number" id="propMaxStay" class="form-input" value="30" min="1">
                 </div>
               </div>
 
               <div class="form-group" style="margin-bottom: var(--space-xl);">
                 <label class="form-label">Deposit Percentage</label>
                 <div style="display: flex; align-items: center; gap: var(--space-md);">
-                  <input type="number" class="form-input" value="20" min="0" max="100" style="width: 120px;">
+                  <input type="number" id="propDeposit" class="form-input" value="20" min="0" max="100" style="width: 120px;">
                   <span style="font-size: var(--font-size-sm); color: var(--color-gray);">% of total booking amount</span>
                 </div>
               </div>
@@ -743,7 +725,7 @@
                   <p>Allow guests to bring pets to the property</p>
                 </div>
                 <label class="toggle">
-                  <input type="checkbox">
+                  <input type="checkbox" id="propPets">
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -754,7 +736,7 @@
                   <p>Allow smoking on the property or in designated areas</p>
                 </div>
                 <label class="toggle">
-                  <input type="checkbox">
+                  <input type="checkbox" id="propSmoking">
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -765,7 +747,7 @@
                   <p>Allow events or parties at the property</p>
                 </div>
                 <label class="toggle">
-                  <input type="checkbox">
+                  <input type="checkbox" id="propEvents">
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -776,7 +758,7 @@
                   <p>Suitable for families with children</p>
                 </div>
                 <label class="toggle">
-                  <input type="checkbox" checked>
+                  <input type="checkbox" id="propChildren" checked>
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -860,31 +842,122 @@
     </div>
 
   <script src="../js/data.js"></script>
-    <script src="../js/app.js"></script>
+  <script src="../js/app.js"></script>
   <script src="../js/admin.js"></script>
   <script>
-    // Tab switching functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      var tabs = document.querySelectorAll('.form-tab');
-      var panels = document.querySelectorAll('.tab-panel');
+  document.addEventListener('DOMContentLoaded', function () {
 
-      tabs.forEach(function(tab) {
-        tab.addEventListener('click', function() {
-          var targetId = 'tab-' + this.getAttribute('data-tab');
-
-          // Deactivate all tabs and panels
-          tabs.forEach(function(t) { t.classList.remove('active'); });
-          panels.forEach(function(p) { p.classList.remove('active'); });
-
-          // Activate clicked tab and matching panel
-          this.classList.add('active');
-          var targetPanel = document.getElementById(targetId);
-          if (targetPanel) {
-            targetPanel.classList.add('active');
-          }
-        });
+    /* ── Tab switching ── */
+    var tabs   = document.querySelectorAll('.form-tab');
+    var panels = document.querySelectorAll('.tab-panel');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var targetId = 'tab-' + this.getAttribute('data-tab');
+        tabs.forEach(function (t) { t.classList.remove('active'); });
+        panels.forEach(function (p) { p.classList.remove('active'); });
+        this.classList.add('active');
+        var panel = document.getElementById(targetId);
+        if (panel) panel.classList.add('active');
       });
     });
+
+    /* ── Helpers ── */
+    function val(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+    function setVal(id, v) { var el = document.getElementById(id); if (el && v !== undefined && v !== null) el.value = v; }
+    function checked(id) { var el = document.getElementById(id); return el ? el.checked : false; }
+    function setChecked(id, v) { var el = document.getElementById(id); if (el) el.checked = !!v; }
+
+    function showToast(msg, ok) {
+      var t = document.createElement('div');
+      t.textContent = msg;
+      t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:500;color:#fff;background:' + (ok ? '#27ae60' : '#e74c3c');
+      document.body.appendChild(t);
+      setTimeout(function () { t.remove(); }, 3500);
+    }
+
+    /* ── Load property from API ── */
+    fetch('/api/property')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var p = d.property || {};
+        setVal('propName',              p.name);
+        setVal('propType',              p.type);
+        setVal('propDescription',       p.description);
+        setVal('propAddress',           p.address);
+        setVal('propCity',              p.city);
+        setVal('propState',             p.state);
+        setVal('propPostcode',          p.postcode);
+        setVal('propCountry',           p.country);
+        setVal('propContactEmail',      p.contactEmail);
+        setVal('propContactPhone',      p.contactPhone);
+        setVal('propCheckinTime',       p.checkinTime);
+        setVal('propCheckoutTime',      p.checkoutTime);
+        setVal('propCancellationPolicy',p.cancellationPolicy);
+        setVal('propMinStay',           p.minStay);
+        setVal('propMaxStay',           p.maxStay);
+        setVal('propDeposit',           p.depositPercent);
+        var pol = p.policies || {};
+        setChecked('propPets',     pol.pets);
+        setChecked('propSmoking',  pol.smoking);
+        setChecked('propEvents',   pol.events);
+        setChecked('propChildren', pol.children !== false);
+      })
+      .catch(function () { /* page keeps default values */ });
+
+    /* ── Save property ── */
+    var btn = document.getElementById('btnSaveProperty');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+
+        var property = {
+          name:               val('propName'),
+          type:               val('propType'),
+          description:        val('propDescription'),
+          address:            val('propAddress'),
+          city:               val('propCity'),
+          state:              val('propState'),
+          postcode:           val('propPostcode'),
+          country:            val('propCountry'),
+          contactEmail:       val('propContactEmail'),
+          contactPhone:       val('propContactPhone'),
+          checkinTime:        val('propCheckinTime'),
+          checkoutTime:       val('propCheckoutTime'),
+          cancellationPolicy: val('propCancellationPolicy'),
+          minStay:            parseInt(val('propMinStay')) || 1,
+          maxStay:            parseInt(val('propMaxStay')) || 30,
+          depositPercent:     parseInt(val('propDeposit')) || 0,
+          policies: {
+            pets:     checked('propPets'),
+            smoking:  checked('propSmoking'),
+            events:   checked('propEvents'),
+            children: checked('propChildren'),
+          },
+        };
+
+        fetch('/api/property', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ property: property }),
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d.ok) {
+              showToast('Property saved', true);
+            } else {
+              showToast(d.error || 'Save failed', false);
+            }
+          })
+          .catch(function () { showToast('Network error — could not save', false); })
+          .finally(function () {
+            btn.disabled = false;
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-right:6px;"><polyline points="20 6 9 17 4 12"/></svg>Save Changes';
+          });
+      });
+    }
+
+  });
   </script>
 </body>
 </html>

@@ -464,7 +464,7 @@
         if (emptyRow) emptyRow.remove();
         var recent = bookings.slice().sort(function (a, b) {
           return (b.confirmedAt || b.id || '').localeCompare(a.confirmedAt || a.id || '');
-        }).slice(0, 5);
+        }).slice(0, 3);
         recent.forEach(function (b) {
           var initials = (b.guestName || 'GU').split(' ').map(function (w) { return w[0]; }).join('').toUpperCase().slice(0, 2);
           var badgeClass = { confirmed: 'badge--confirmed', pending: 'badge--pending', cancelled: 'badge--cancelled' }[b.status] || 'badge--pending';

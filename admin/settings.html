@@ -1647,18 +1647,121 @@
             });
         });
 
-        // Save changes button
+        /* ── Helpers ── */
+        function gv(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+        function sv(id, v) { var el = document.getElementById(id); if (el && v !== undefined && v !== null) el.value = v; }
+        function gcb(name) { var el = document.querySelector('[name="' + name + '"]'); return el ? el.checked : false; }
+        function scb(name, v) { var el = document.querySelector('[name="' + name + '"]'); if (el) el.checked = !!v; }
+
+        function showToast(msg, ok) {
+            var t = document.createElement('div');
+            t.textContent = msg;
+            t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:500;color:#fff;background:' + (ok ? '#27ae60' : '#e74c3c');
+            document.body.appendChild(t);
+            setTimeout(function() { t.remove(); }, 3500);
+        }
+
+        function collectSettings() {
+            return {
+                siteName:         gv('siteName'),
+                siteUrl:          gv('siteUrl'),
+                siteDescription:  gv('siteDescription'),
+                contactEmail:     gv('contactEmail'),
+                contactPhone:     gv('contactPhone'),
+                defaultTimezone:  gv('defaultTimezone'),
+                defaultCurrency:  gv('defaultCurrency'),
+                businessName:     gv('businessName'),
+                abnTaxId:         gv('abnTaxId'),
+                businessAddress:  gv('businessAddress'),
+                businessCity:     gv('businessCity'),
+                businessState:    gv('businessState'),
+                businessPostcode: gv('businessPostcode'),
+                businessCountry:  gv('businessCountry'),
+                businessPhone:    gv('businessPhone'),
+                bookingMode:      gv('bookingMode'),
+                checkinTime:      gv('checkinTime'),
+                checkoutTime:     gv('checkoutTime'),
+                minStay:          parseInt(gv('minStay')) || 1,
+                maxStay:          parseInt(gv('maxStay')) || 30,
+                advanceBooking:   parseInt(gv('advanceBooking')) || 365,
+                bookingCutoff:    parseInt(gv('bookingCutoff')) || 24,
+                maxGuests:        parseInt(gv('maxGuests')) || 10,
+                customPolicy:     gv('customPolicy'),
+                notifications: {
+                    newBooking:       gcb('notifyNewBooking'),
+                    cancellation:     gcb('notifyCancellation'),
+                    checkinReminder:  gcb('notifyCheckinReminder'),
+                    checkoutReminder: gcb('notifyCheckoutReminder'),
+                    payment:          gcb('notifyPayment'),
+                    review:           gcb('notifyReview'),
+                },
+                guestEmails: {
+                    bookingConfirm:   gcb('guestBookingConfirm'),
+                    preArrival:       gcb('guestPreArrival'),
+                    checkinInstructions: gcb('guestCheckinInstructions'),
+                    thankYou:         gcb('guestThankYou'),
+                },
+                rules: {
+                    requirePhone: gcb('requirePhone'),
+                    requireId:    gcb('requireId'),
+                    allowChildren: gcb('allowChildren'),
+                    allowPets:    gcb('allowPets'),
+                },
+            };
+        }
+
+        function applySettings(s) {
+            if (!s) return;
+            sv('siteName', s.siteName); sv('siteUrl', s.siteUrl); sv('siteDescription', s.siteDescription);
+            sv('contactEmail', s.contactEmail); sv('contactPhone', s.contactPhone);
+            sv('defaultTimezone', s.defaultTimezone); sv('defaultCurrency', s.defaultCurrency);
+            sv('businessName', s.businessName); sv('abnTaxId', s.abnTaxId);
+            sv('businessAddress', s.businessAddress); sv('businessCity', s.businessCity);
+            sv('businessState', s.businessState); sv('businessPostcode', s.businessPostcode);
+            sv('businessCountry', s.businessCountry); sv('businessPhone', s.businessPhone);
+            sv('bookingMode', s.bookingMode); sv('checkinTime', s.checkinTime);
+            sv('checkoutTime', s.checkoutTime); sv('minStay', s.minStay); sv('maxStay', s.maxStay);
+            sv('advanceBooking', s.advanceBooking); sv('bookingCutoff', s.bookingCutoff);
+            sv('maxGuests', s.maxGuests); sv('customPolicy', s.customPolicy);
+            var n = s.notifications || {};
+            scb('notifyNewBooking', n.newBooking); scb('notifyCancellation', n.cancellation);
+            scb('notifyCheckinReminder', n.checkinReminder); scb('notifyCheckoutReminder', n.checkoutReminder);
+            scb('notifyPayment', n.payment); scb('notifyReview', n.review);
+            var g = s.guestEmails || {};
+            scb('guestBookingConfirm', g.bookingConfirm); scb('guestPreArrival', g.preArrival);
+            scb('guestCheckinInstructions', g.checkinInstructions); scb('guestThankYou', g.thankYou);
+            var r = s.rules || {};
+            scb('requirePhone', r.requirePhone); scb('requireId', r.requireId);
+            scb('allowChildren', r.allowChildren); scb('allowPets', r.allowPets);
+        }
+
+        /* ── Load settings ── */
+        fetch('/api/settings')
+            .then(function(r) { return r.json(); })
+            .then(function(d) { if (d.settings) applySettings(d.settings); })
+            .catch(function() {});
+
+        /* ── Save settings button ── */
         document.getElementById('saveChangesBtn').addEventListener('click', function() {
             var btn = this;
-            btn.textContent = 'Saving...';
+            btn.textContent = 'Saving…';
             btn.disabled = true;
-            setTimeout(function() {
-                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Saved!';
-                setTimeout(function() {
+
+            fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ settings: collectSettings() }),
+            })
+                .then(function(r) { return r.json(); })
+                .then(function(d) {
+                    if (d.ok) { showToast('Settings saved', true); }
+                    else { showToast(d.error || 'Save failed', false); }
+                })
+                .catch(function() { showToast('Network error — could not save', false); })
+                .finally(function() {
                     btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Changes';
                     btn.disabled = false;
-                }, 2000);
-            }, 800);
+                });
         });
     </script>
 </body>

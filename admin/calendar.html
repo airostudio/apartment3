@@ -109,6 +109,40 @@
             opacity: 0.75;
         }
 
+        /* Split day — one booking checks out, the next checks in on the same day.
+           The cell is divided into left (checkout) and right (checkin) halves.    */
+        .cal-booking-split {
+            display: flex;
+            margin-bottom: 2px;
+            border-radius: 3px;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+        .cal-booking-split__half {
+            flex: 1;
+            min-width: 0;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 2px 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+        /* Left half (departure): keep the coloured border-left from the booking class */
+        .cal-booking-split__half:first-child {
+            border-radius: 3px 0 0 3px;
+        }
+        /* Right half (arrival): white divider, no left-side booking border */
+        .cal-booking-split__half:last-child {
+            border-radius: 0 3px 3px 0;
+            border-left: 2px solid rgba(255,255,255,0.55) !important;
+        }
+
+        .cal-legend-dot--turnover {
+            background: linear-gradient(to right, #059669 50%, #6366f1 50%);
+        }
+
         /* Blocked day */
         .cal-blocked {
             display: block;
@@ -468,6 +502,7 @@
                     <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--airbnb"></span>Airbnb import</div>
                     <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--booking"></span>Booking.com import</div>
                     <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--blocked"></span>Blocked</div>
+                    <div class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--turnover"></span>Turnover day</div>
                 </div>
             </div>
 
@@ -675,45 +710,79 @@
             if (otherMonth) cls += ' admin-calendar__day--other-month';
             if (isToday)    cls += ' admin-calendar__day--today';
 
-            // Collect booking bars for this day
             let bars = '';
 
-            // Check blocked
+            // Blocked dates
             const block = blocked.find(bl =>
                 d >= parseDate(bl.startDate) && d <= parseDate(bl.endDate)
             );
             if (block) {
-                const isStart = ds === block.startDate;
-                const label   = isStart ? '🔒 ' + block.reason : '';
+                const label = ds === block.startDate ? '🔒 ' + block.reason : '';
                 bars += `<span class="cal-blocked" data-block-id="${block.id}">${label || '&nbsp;'}</span>`;
             }
 
-            // Check bookings
-            bookings.forEach(bk => {
-                if (bk.status === 'cancelled') return;
-                const ci = parseDate(bk.checkIn), co = parseDate(bk.checkOut);
-                if (d < ci || d >= co) return;
+            // Helper: colour class for a booking
+            function colorCls(bk) {
+                if (bk.source === 'airbnb')       return 'cal-booking--airbnb';
+                if (bk.source === 'booking_com')  return 'cal-booking--booking_com';
+                if (bk.status === 'pending')      return 'cal-booking--pending';
+                return 'cal-booking--confirmed';
+            }
 
-                const isStart  = ds === bk.checkIn;
-                const isEnd    = new Date(d.getTime() + 86400000).toISOString().slice(0,10) === bk.checkOut;
+            // Helper: abbreviated guest name
+            function shortName(bk) {
+                return bk.guestName.split(' ').map((p, i) => i === 0 ? p : p[0] + '.').join(' ');
+            }
+
+            // Bookings active on this day (ci <= d < co)
+            const active = bookings.filter(bk =>
+                bk.status !== 'cancelled' &&
+                d >= parseDate(bk.checkIn) && d < parseDate(bk.checkOut)
+            );
+
+            // Bookings that CHECK OUT today (not active, but departing)
+            const departing = bookings.filter(bk =>
+                bk.status !== 'cancelled' && bk.checkOut === ds
+            );
+
+            // Pair each departing booking with an arriving booking (same day turnover)
+            const arriving   = active.filter(bk => bk.checkIn === ds);
+            const splitInIds = new Set();
+
+            departing.forEach(depBk => {
+                const arrBk = arriving.find(a => !splitInIds.has(a.id));
+                if (!arrBk) return;
+                splitInIds.add(arrBk.id);
+
+                const depTitle = `${depBk.guestName}: ${depBk.checkIn} – ${depBk.checkOut} (checking out)`;
+                const arrTitle = `${arrBk.guestName}: ${arrBk.checkIn} – ${arrBk.checkOut} (checking in)`;
+
+                // Left = departure (end of previous stay), Right = arrival (start of new stay)
+                bars +=
+                    `<div class="cal-booking-split">` +
+                        `<span class="cal-booking-split__half ${colorCls(depBk)}" ` +
+                            `data-booking-id="${depBk.id}" title="${depTitle}">&nbsp;</span>` +
+                        `<span class="cal-booking-split__half ${colorCls(arrBk)}" ` +
+                            `data-booking-id="${arrBk.id}" title="${arrTitle}">${shortName(arrBk)}</span>` +
+                    `</div>`;
+            });
+
+            // Render remaining active bookings (those not part of a split pair)
+            active.forEach(bk => {
+                if (splitInIds.has(bk.id)) return;
+
+                const isStart   = bk.checkIn === ds;
+                const isEnd     = new Date(d.getTime() + 86400000).toISOString().slice(0, 10) === bk.checkOut;
                 const continues = !isEnd;
                 const continued = !isStart;
 
-                let barCls = 'cal-booking';
-                if (bk.source === 'airbnb')      barCls += ' cal-booking--airbnb';
-                else if (bk.source === 'booking_com') barCls += ' cal-booking--booking_com';
-                else if (bk.status === 'pending') barCls += ' cal-booking--pending';
-                else                             barCls += ' cal-booking--confirmed';
-
+                let barCls = 'cal-booking ' + colorCls(bk);
                 if (continued && continues) barCls += ' cal-booking--middle';
-                else if (continues) barCls += ' cal-booking--continues';
-                else if (continued) barCls += ' cal-booking--continued';
+                else if (continues)         barCls += ' cal-booking--continues';
+                else if (continued)         barCls += ' cal-booking--continued';
 
-                const label = isStart
-                    ? bk.guestName.split(' ').map((p,i) => i === 0 ? p : p[0]+'.').join(' ')
-                    : '&nbsp;';
-
-                bars += `<span class="${barCls}" data-booking-id="${bk.id}">${label}</span>`;
+                const label = isStart ? shortName(bk) : '&nbsp;';
+                bars += `<span class="${barCls}" data-booking-id="${bk.id}" title="${bk.guestName}: ${bk.checkIn} – ${bk.checkOut}">${label}</span>`;
             });
 
             return `<div class="${cls}" data-date="${ds}">
@@ -724,7 +793,8 @@
 
         function attachGridEvents(grid, bookings, blocked) {
             grid.addEventListener('click', function(e) {
-                const bar = e.target.closest('.cal-booking');
+                const bar = e.target.closest('.cal-booking') ||
+                            e.target.closest('.cal-booking-split__half');
                 const blk = e.target.closest('.cal-blocked');
 
                 if (bar) {

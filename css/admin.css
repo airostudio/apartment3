@@ -297,6 +297,37 @@
   border: 2px solid var(--color-white);
 }
 
+/* ── DB status pill in topbar ── */
+.db-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-gray);
+  cursor: default;
+  user-select: none;
+}
+.db-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-gray);
+  flex-shrink: 0;
+}
+.db-status-dot--ok {
+  background: var(--color-success);
+  box-shadow: 0 0 5px rgba(39,174,96,0.5);
+}
+.db-status-dot--error {
+  background: var(--color-danger);
+  box-shadow: 0 0 5px rgba(231,76,60,0.5);
+}
+
 .topbar-user {
   display: flex;
   align-items: center;

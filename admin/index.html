@@ -162,6 +162,10 @@
                     </svg>
                     <span class="topbar-notification-dot"></span>
                 </button>
+                <div id="dbStatusPill" class="db-status-pill" title="Checking database…" style="display:none;">
+                    <span class="db-status-dot" id="dbStatusDot"></span>
+                    <span class="db-status-label" id="dbStatusLabel">DB</span>
+                </div>
                 <div class="topbar-user">
                     <span class="topbar-user-avatar">AD</span>
                     <span class="topbar-user-name">Admin</span>
@@ -368,6 +372,33 @@
     <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/admin.js"></script>
+    <script>
+    (function () {
+      var pill  = document.getElementById('dbStatusPill');
+      var dot   = document.getElementById('dbStatusDot');
+      var label = document.getElementById('dbStatusLabel');
+      if (!pill) return;
+      pill.style.display = 'flex';
+      fetch('/api/db-status')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.ok) {
+            dot.className = 'db-status-dot db-status-dot--ok';
+            label.textContent = 'Database';
+            pill.title = 'Supabase connected';
+          } else {
+            dot.className = 'db-status-dot db-status-dot--error';
+            label.textContent = 'Database';
+            pill.title = d.error || 'Database not connected';
+          }
+        })
+        .catch(function () {
+          dot.className = 'db-status-dot db-status-dot--error';
+          label.textContent = 'Database';
+          pill.title = 'Could not reach /api/db-status';
+        });
+    })();
+    </script>
     <script>
     (function () {
       if (!window.CA3Data) return;

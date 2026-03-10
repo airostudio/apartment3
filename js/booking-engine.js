@@ -762,23 +762,23 @@
       }
 
       // ── Reserve dates immediately in CA3Data ──────────────────────────────
-      // Writing a 'pending' booking now ensures the dates are blocked while
-      // the guest is on the checkout page. Without this step, dates appear
-      // free until Stripe payment completes, making double-booking possible.
-      // The pending booking is upgraded to 'confirmed' after successful payment,
-      // or automatically cleaned up the next time booking.html loads (30-min TTL).
+      // Push a 'pending' entry into the local in-memory cache so the dates
+      // appear unavailable while the guest is on the checkout page.
+      // We do NOT call CA3Data.addBooking() here — that method posts to
+      // /api/bookings which requires admin auth and the guest has none.
+      // Hitting the API would abort mid-flight when the page navigates to
+      // checkout.html, causing a spurious NetworkError in the console.
+      // The real confirmed booking record is created by the payment flow.
       if (window.CA3Data) {
         // Remove any stale pending bookings left over from previous abandoned sessions
-        window.CA3Data.saveBookings(
-          window.CA3Data.getBookings().filter(function(b) {
-            if (b.status !== 'pending') return true;
-            var age = Date.now() - (new Date(b.createdAt || 0).getTime());
-            return age < 30 * 60 * 1000;
-          })
-        );
-        // Write a fresh pending booking to hold the dates
+        var cleanedBookings = window.CA3Data.getBookings().filter(function(b) {
+          if (b.status !== 'pending') return true;
+          var age = Date.now() - (new Date(b.createdAt || 0).getTime());
+          return age < 30 * 60 * 1000;
+        });
+        // Push the new pending entry directly into the local cache (no API call)
         var pendingBookingId = window.CA3Data.generateId('PENDING');
-        window.CA3Data.addBooking({
+        var pendingEntry = {
           id:        pendingBookingId,
           ref:       pendingBookingId,
           guestName: ((data.firstName || '') + ' ' + (data.lastName || '')).trim() || 'Guest',
@@ -795,7 +795,8 @@
           deposit:   0,
           notes:     data.specialRequests || '',
           createdAt: new Date().toISOString(),
-        });
+        };
+        window.CA3Data.saveBookings([pendingEntry].concat(cleanedBookings));
         // Persist the pending ID so checkout/confirmation can upgrade it
         sessionStorage.setItem('ca3_pending_id', pendingBookingId);
       }

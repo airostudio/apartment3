@@ -110,13 +110,16 @@
         }
 
         /* Split day — one booking checks out, the next checks in on the same day.
-           The cell is divided into left (checkout) and right (checkin) halves.    */
+           The cell is divided into left (checkout) and right (checkin) halves with
+           a diagonal angle so back-to-back bookings visually slot into the same day.
+           Also used for solo arrivals (phantom left) and solo departures (phantom right). */
         .cal-booking-split {
             display: flex;
             margin-bottom: 2px;
             border-radius: 3px;
-            overflow: hidden;
+            overflow: visible; /* allow clip-path to control edges */
             line-height: 1.5;
+            position: relative;
         }
         .cal-booking-split__half {
             flex: 1;
@@ -129,18 +132,26 @@
             text-overflow: ellipsis;
             cursor: pointer;
         }
-        /* Left half (departure): keep the coloured border-left from the booking class */
+        /* Left half (departure): right edge is diagonal — top-right to lower-right
+           so the arriving booking can visually slot into the freed-up corner.       */
         .cal-booking-split__half:first-child {
+            clip-path: polygon(0% 0%, 100% 0%, 78% 100%, 0% 100%);
             border-radius: 3px 0 0 3px;
         }
-        /* Right half (arrival): white divider, no left-side booking border */
+        /* Right half (arrival): left edge is diagonal — upper-left to bottom-left  */
         .cal-booking-split__half:last-child {
+            clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 0% 100%);
             border-radius: 0 3px 3px 0;
-            border-left: 2px solid rgba(255,255,255,0.55) !important;
+            border-left: none !important; /* clip-path handles the diagonal separation */
+        }
+        /* Phantom half — invisible spacer so the visible half stays half-width */
+        .cal-booking-split__half--phantom {
+            cursor: default;
+            visibility: hidden;
         }
 
         .cal-legend-dot--turnover {
-            background: linear-gradient(to right, #059669 50%, #6366f1 50%);
+            background: linear-gradient(to bottom right, #059669 50%, #6366f1 50%);
         }
 
         /* Blocked day */
@@ -740,49 +751,64 @@
                 d >= parseDate(bk.checkIn) && d < parseDate(bk.checkOut)
             );
 
-            // Bookings that CHECK OUT today (not active, but departing)
+            // Bookings that CHECK OUT today — shown as a departure half-block
             const departing = bookings.filter(bk =>
                 bk.status !== 'cancelled' && bk.checkOut === ds
             );
 
-            // Pair each departing booking with an arriving booking (same day turnover)
+            // Arrivals = active bookings whose check-in is today
             const arriving   = active.filter(bk => bk.checkIn === ds);
-            const splitInIds = new Set();
+            const splitInIds = new Set(); // tracks IDs already rendered in a split pair
 
+            // ── Turnover days: pair each departure with an arrival ─────────────
             departing.forEach(depBk => {
                 const arrBk = arriving.find(a => !splitInIds.has(a.id));
-                if (!arrBk) return;
-                splitInIds.add(arrBk.id);
+                if (arrBk) splitInIds.add(arrBk.id);
 
                 const depTitle = `${depBk.guestName}: ${depBk.checkIn} – ${depBk.checkOut} (checking out)`;
-                const arrTitle = `${arrBk.guestName}: ${arrBk.checkIn} – ${arrBk.checkOut} (checking in)`;
 
-                // Left = departure (end of previous stay), Right = arrival (start of new stay)
-                bars +=
-                    `<div class="cal-booking-split">` +
-                        `<span class="cal-booking-split__half ${colorCls(depBk)}" ` +
-                            `data-booking-id="${depBk.id}" title="${depTitle}">&nbsp;</span>` +
-                        `<span class="cal-booking-split__half ${colorCls(arrBk)}" ` +
-                            `data-booking-id="${arrBk.id}" title="${arrTitle}">${shortName(arrBk)}</span>` +
-                    `</div>`;
+                if (arrBk) {
+                    // Back-to-back: departure on left, arrival on right
+                    const arrTitle = `${arrBk.guestName}: ${arrBk.checkIn} – ${arrBk.checkOut} (checking in)`;
+                    bars +=
+                        `<div class="cal-booking-split">` +
+                            `<span class="cal-booking-split__half ${colorCls(depBk)}" ` +
+                                `data-booking-id="${depBk.id}" title="${depTitle}">&nbsp;</span>` +
+                            `<span class="cal-booking-split__half ${colorCls(arrBk)}" ` +
+                                `data-booking-id="${arrBk.id}" title="${arrTitle}">${shortName(arrBk)}</span>` +
+                        `</div>`;
+                } else {
+                    // Solo departure: left half coloured, right half phantom
+                    bars +=
+                        `<div class="cal-booking-split">` +
+                            `<span class="cal-booking-split__half ${colorCls(depBk)}" ` +
+                                `data-booking-id="${depBk.id}" title="${depTitle}">&nbsp;</span>` +
+                            `<span class="cal-booking-split__half cal-booking-split__half--phantom"></span>` +
+                        `</div>`;
+                }
             });
 
-            // Render remaining active bookings (those not part of a split pair)
+            // ── Render remaining active bookings (not already in a split pair) ──
             active.forEach(bk => {
                 if (splitInIds.has(bk.id)) return;
 
-                const isStart   = bk.checkIn === ds;
-                const isEnd     = new Date(d.getTime() + 86400000).toISOString().slice(0, 10) === bk.checkOut;
-                const continues = !isEnd;
-                const continued = !isStart;
+                const isStart = bk.checkIn === ds;
 
-                let barCls = 'cal-booking ' + colorCls(bk);
-                if (continued && continues) barCls += ' cal-booking--middle';
-                else if (continues)         barCls += ' cal-booking--continues';
-                else if (continued)         barCls += ' cal-booking--continued';
-
-                const label = isStart ? shortName(bk) : '&nbsp;';
-                bars += `<span class="${barCls}" data-booking-id="${bk.id}" title="${bk.guestName}: ${bk.checkIn} – ${bk.checkOut}">${label}</span>`;
+                if (isStart) {
+                    // Arrival day: right half coloured, left half phantom
+                    // (left side of the day is free — previous guests have checked out)
+                    const arrTitle = `${bk.guestName}: ${bk.checkIn} – ${bk.checkOut} (checking in)`;
+                    bars +=
+                        `<div class="cal-booking-split">` +
+                            `<span class="cal-booking-split__half cal-booking-split__half--phantom"></span>` +
+                            `<span class="cal-booking-split__half ${colorCls(bk)}" ` +
+                                `data-booking-id="${bk.id}" title="${arrTitle}">${shortName(bk)}</span>` +
+                        `</div>`;
+                } else {
+                    // Middle night: full bar
+                    const barCls = 'cal-booking ' + colorCls(bk) + ' cal-booking--middle';
+                    bars += `<span class="${barCls}" data-booking-id="${bk.id}" title="${bk.guestName}: ${bk.checkIn} – ${bk.checkOut}">&nbsp;</span>`;
+                }
             });
 
             return `<div class="${cls}" data-date="${ds}">

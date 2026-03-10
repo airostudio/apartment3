@@ -127,6 +127,37 @@ export async function sbUpdate(table, filter, changes) {
   return r.json();
 }
 
+/**
+ * Check whether a date range conflicts with any existing confirmed/pending booking.
+ *
+ * A new booking [checkIn, checkOut) conflicts with an existing booking [ci, co) when:
+ *   ci < checkOut  AND  co > checkIn
+ *
+ * Back-to-back is intentionally allowed: if an existing booking checks out on the
+ * same day a new booking checks in, co == checkIn so `co > checkIn` is FALSE — no
+ * conflict is reported and the same-day turnover proceeds normally.
+ *
+ * @param {string} checkIn   — ISO date string, e.g. '2025-12-20'
+ * @param {string} checkOut  — ISO date string, e.g. '2025-12-24'
+ * @param {string} [excludeId] — booking ID to ignore (useful when updating an existing booking)
+ * @returns {Promise<string|null>} — null if available, or the conflicting booking's id
+ */
+export async function sbCheckDateConflict(checkIn, checkOut, excludeId) {
+  if (!isConfigured()) return null; // DB not configured — skip check
+
+  // PostgREST filter: find non-cancelled bookings whose range overlaps [checkIn, checkOut)
+  const params = [
+    'select=id',
+    'status=neq.cancelled',
+    `check_in=lt.${checkOut}`,
+    `check_out=gt.${checkIn}`,
+  ];
+  if (excludeId) params.push(`id=neq.${encodeURIComponent(excludeId)}`);
+
+  const rows = await sbSelect('ca3_bookings', params.join('&'));
+  return rows.length > 0 ? rows[0].id : null;
+}
+
 /** DELETE rows matching filter. filter e.g. { id: 'abc123' } */
 export async function sbDelete(table, filter) {
   const qs = Object.entries(filter).map(([k, v]) => `${k}=eq.${encodeURIComponent(v)}`).join('&');

@@ -8,7 +8,7 @@
  *              guestPhone, checkIn, checkOut, guests, total, notes } }
  */
 
-import { isConfigured, sbUpsert } from './_supabase.js';
+import { isConfigured, sbUpsert, sbCheckDateConflict } from './_supabase.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -48,6 +48,22 @@ export default async function handler(req, res) {
   } catch (err) {
     console.error('/api/confirm-booking stripe verify error:', err.message);
     return res.status(500).json({ error: 'Payment verification failed.' });
+  }
+
+  // ── Server-side date conflict check ─────────────────────────────────────
+  // Prevents double-booking even if two guests complete payment simultaneously.
+  // Back-to-back is allowed: a new check-in on an existing checkout day is fine.
+  try {
+    const conflictId = await sbCheckDateConflict(booking.checkIn, booking.checkOut, ref);
+    if (conflictId) {
+      return res.status(409).json({
+        error: 'These dates are no longer available — another booking has been confirmed for an overlapping period. Please contact us to arrange alternative dates.',
+      });
+    }
+  } catch (err) {
+    // If the conflict check itself fails (e.g. DB unreachable) we still
+    // proceed so the guest is not stranded after a successful payment.
+    console.error('/api/confirm-booking conflict-check error:', err.message);
   }
 
   // ── Write confirmed booking to database ─────────────────────────────────

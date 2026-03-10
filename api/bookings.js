@@ -1,5 +1,5 @@
 import { requireSession } from './_auth.js';
-import { isConfigured, sbSelect, sbInsert, sbUpdate, sbDelete } from './_supabase.js';
+import { isConfigured, sbSelect, sbInsert, sbUpdate, sbDelete, sbCheckDateConflict } from './_supabase.js';
 
 /**
  * /api/bookings — CRUD for bookings
@@ -38,6 +38,15 @@ export default async function handler(req, res) {
       const b = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       if (!b.guestName && !b.guest_name) return res.status(400).json({ error: 'guestName is required' });
 
+      const checkIn  = b.checkIn  || b.check_in  || '';
+      const checkOut = b.checkOut || b.check_out || '';
+      if (checkIn && checkOut) {
+        const conflictId = await sbCheckDateConflict(checkIn, checkOut);
+        if (conflictId) {
+          return res.status(409).json({ error: `Dates conflict with existing booking ${conflictId}.` });
+        }
+      }
+
       const row = toRow(b);
       const inserted = await sbInsert('ca3_bookings', row);
       return res.status(201).json({ booking: mapRow(inserted[0] || row) });
@@ -48,6 +57,15 @@ export default async function handler(req, res) {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       const { id, changes } = body;
       if (!id) return res.status(400).json({ error: 'id is required' });
+
+      const checkIn  = changes.checkIn  || changes.check_in  || '';
+      const checkOut = changes.checkOut || changes.check_out || '';
+      if (checkIn && checkOut) {
+        const conflictId = await sbCheckDateConflict(checkIn, checkOut, id);
+        if (conflictId) {
+          return res.status(409).json({ error: `Dates conflict with existing booking ${conflictId}.` });
+        }
+      }
 
       const row = toRow(changes);
       row.updated_at = new Date().toISOString();

@@ -793,21 +793,32 @@
                 if (splitInIds.has(bk.id)) return;
 
                 const isStart = bk.checkIn === ds;
+                // "First middle night" = the day immediately after check-in.
+                // The name label is shown here so it appears in the body of the
+                // booking bar rather than on the narrow arrival half-block.
+                const isFirstMiddle = !isStart &&
+                    (d.getTime() - parseDate(bk.checkIn).getTime() === 86400000);
+                // For single-night stays there is no middle night, so show the
+                // name on the arrival half instead.
+                const isSingleNight = new Date(d.getTime() + 86400000)
+                    .toISOString().slice(0, 10) === bk.checkOut;
 
                 if (isStart) {
-                    // Arrival day: right half coloured, left half phantom
-                    // (left side of the day is free — previous guests have checked out)
+                    // Arrival day: right half coloured, left half phantom.
+                    // Name only shown here for single-night stays (no middle bar available).
                     const arrTitle = `${bk.guestName}: ${bk.checkIn} – ${bk.checkOut} (checking in)`;
+                    const label = isSingleNight ? shortName(bk) : '&nbsp;';
                     bars +=
                         `<div class="cal-booking-split">` +
                             `<span class="cal-booking-split__half cal-booking-split__half--phantom"></span>` +
                             `<span class="cal-booking-split__half ${colorCls(bk)}" ` +
-                                `data-booking-id="${bk.id}" title="${arrTitle}">${shortName(bk)}</span>` +
+                                `data-booking-id="${bk.id}" title="${arrTitle}">${label}</span>` +
                         `</div>`;
                 } else {
-                    // Middle night: full bar
+                    // Middle night: full bar. Show guest name only on the first middle night.
+                    const label = isFirstMiddle ? shortName(bk) : '&nbsp;';
                     const barCls = 'cal-booking ' + colorCls(bk) + ' cal-booking--middle';
-                    bars += `<span class="${barCls}" data-booking-id="${bk.id}" title="${bk.guestName}: ${bk.checkIn} – ${bk.checkOut}">&nbsp;</span>`;
+                    bars += `<span class="${barCls}" data-booking-id="${bk.id}" title="${bk.guestName}: ${bk.checkIn} – ${bk.checkOut}">${label}</span>`;
                 }
             });
 

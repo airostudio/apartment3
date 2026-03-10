@@ -33,11 +33,33 @@
     },
 
     /**
+     * Find the matching season for a given date from the raw seasons object
+     * returned by /api/rates.  Returns the season object or null.
+     *
+     * @param {Date}   date
+     * @param {Object} seasons  — e.g. { white: {...}, green: {...} }
+     */
+    findSeasonForDate(date, seasons) {
+      if (!seasons) return null;
+      const month = date.getMonth() + 1; // 1-based
+      for (const key of Object.keys(seasons)) {
+        const s = seasons[key];
+        if (Array.isArray(s.months) && s.months.includes(month)) return s;
+      }
+      return null;
+    },
+
+    /**
      * Calculate total price for a booking
+     *
+     * Supports two pricing modes:
+     *  NEW — pass `seasons` (raw seasons object from /api/rates).  The engine
+     *        uses weekday/weekend package rates defined per season.
+     *  LEGACY — pass `seasonalRates` (array of date-range objects) + `baseRate`.
      */
     calculatePrice(params) {
       const {
-        baseRate,
+        baseRate = 0,
         checkin,
         checkout,
         guests = 2,
@@ -47,62 +69,100 @@
         extraAdultFee = 0,   // extra fee per adult per night beyond maxBaseGuests
         extraChildFee = 0,   // extra fee per child per night beyond remaining base slots
         maxBaseGuests = 2,
-        seasonalRates = [],
+        seasons = null,      // NEW: raw seasons object from /api/rates
+        seasonalRates = [],  // LEGACY: array of date-range rate objects
         specialRules = [],
         cleaningFee = this.defaults.cleaningFee,
         serviceFeePercent = this.defaults.serviceFeePercent,
         taxPercent = this.defaults.taxPercent
       } = params;
 
-      const checkinDate = new Date(checkin);
-      const checkoutDate = new Date(checkout);
+      const checkinDate = new Date(checkin + 'T00:00:00');
+      const checkoutDate = new Date(checkout + 'T00:00:00');
       const nights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
 
       if (nights <= 0) {
         return { error: 'Check-out must be after check-in' };
       }
 
-      // Calculate nightly rates considering seasonal pricing
+      // ── NEW pricing model ────────────────────────────────────────────────────
+      // Used when the seasons object contains weekendPackageRate (new format).
       let nightlyBreakdown = [];
       let totalAccommodation = 0;
+      const season = this.findSeasonForDate(checkinDate, seasons);
 
-      for (let i = 0; i < nights; i++) {
-        const currentDate = new Date(checkinDate);
-        currentDate.setDate(currentDate.getDate() + i);
+      if (season && season.weekendPackageRate != null) {
+        const dow = checkinDate.getDay(); // 0=Sun … 5=Fri, 6=Sat
+        const isWeekendCheckin = (dow === 5 || dow === 6);
 
-        let nightRate = baseRate;
-        let rateName = 'Standard';
+        if (isWeekendCheckin) {
+          // Fri/Sat check-in: mandatory 2-night package + additionalNight per extra night
+          const pkg   = season.weekendPackageRate;
+          const extra = season.weekendAdditionalNight;
+          const extraNights = Math.max(0, nights - 2);
+          totalAccommodation = pkg + extraNights * extra;
 
-        // Check seasonal rates
-        for (const season of seasonalRates) {
-          const seasonStart = new Date(season.startDate);
-          const seasonEnd = new Date(season.endDate);
+          for (let i = 0; i < nights; i++) {
+            const d = new Date(checkinDate);
+            d.setDate(d.getDate() + i);
+            const ds = [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+            nightlyBreakdown.push({
+              date:   ds,
+              rate:   Math.round((i < 2 ? pkg / 2 : extra) * 100) / 100,
+              season: season.name + (i < 2 ? ' (Weekend Package)' : ' (Additional Night)'),
+            });
+          }
+        } else {
+          // Sun–Thu check-in: 1-night rate or 2+-night rate per night
+          const nightRate = nights === 1
+            ? season.weekdayRate1Night
+            : season.weekdayRate2PlusNights;
+          totalAccommodation = nightRate * nights;
 
-          if (currentDate >= seasonStart && currentDate <= seasonEnd) {
-            if (season.type === 'percentage') {
-              nightRate = baseRate * (1 + season.modifier / 100);
-            } else {
-              nightRate = season.rate;
-            }
-            rateName = season.name;
-            break;
+          for (let i = 0; i < nights; i++) {
+            const d = new Date(checkinDate);
+            d.setDate(d.getDate() + i);
+            const ds = [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+            nightlyBreakdown.push({
+              date:   ds,
+              rate:   nightRate,
+              season: season.name,
+            });
           }
         }
+      } else {
+        // ── LEGACY pricing model ───────────────────────────────────────────────
+        for (let i = 0; i < nights; i++) {
+          const currentDate = new Date(checkinDate);
+          currentDate.setDate(currentDate.getDate() + i);
 
-        // Weekend surcharge
-        const dayOfWeek = currentDate.getDay();
-        if (dayOfWeek === 5 || dayOfWeek === 6) { // Friday, Saturday
-          nightRate *= 1.1; // 10% weekend surcharge (industry standard)
-          rateName += ' (Weekend)';
+          let nightRate = baseRate;
+          let rateName = 'Standard';
+
+          for (const s of seasonalRates) {
+            const seasonStart = new Date(s.startDate);
+            const seasonEnd   = new Date(s.endDate);
+            if (currentDate >= seasonStart && currentDate <= seasonEnd) {
+              nightRate = s.type === 'percentage' ? baseRate * (1 + s.modifier / 100) : s.rate;
+              rateName  = s.name;
+              break;
+            }
+          }
+
+          // 10% weekend surcharge for legacy mode
+          const dow = currentDate.getDay();
+          if (dow === 5 || dow === 6) {
+            nightRate *= 1.1;
+            rateName  += ' (Weekend)';
+          }
+
+          nightlyBreakdown.push({
+            date:   currentDate.toISOString().split('T')[0],
+            rate:   Math.round(nightRate * 100) / 100,
+            season: rateName,
+          });
+          totalAccommodation += nightRate;
         }
-
-        nightlyBreakdown.push({
-          date: currentDate.toISOString().split('T')[0],
-          rate: Math.round(nightRate * 100) / 100,
-          season: rateName
-        });
-
-        totalAccommodation += nightRate;
       }
 
       // Extra guest fees — adults fill base slots first, children cover remainder
@@ -246,11 +306,11 @@
           errors.push({ field: 'checkout', message: `Maximum stay is ${this.defaults.maxStay} nights` });
         }
 
-        // Weekend minimum stay: Fri/Sat/Sun check-in requires 2 nights minimum
-        if (nights === 1) {
-          const dow = checkinDate.getDay(); // 0=Sun, 5=Fri, 6=Sat
-          if (dow === 5 || dow === 6 || dow === 0) {
-            errors.push({ field: 'checkout', message: 'Weekend stays (Fri, Sat & Sun) require a minimum of 2 nights' });
+        // Friday/Saturday check-in requires 2-night minimum
+        if (nights < 2) {
+          const dow = checkinDate.getDay(); // 5=Fri, 6=Sat
+          if (dow === 5 || dow === 6) {
+            errors.push({ field: 'checkout', message: 'Friday and Saturday check-ins require a minimum of 2 nights' });
           }
         }
       }
@@ -487,19 +547,16 @@
       refreshAvailability(checkin, checkout);
 
       if (checkin && checkout) {
-        const seasonalRates = _serverRates ? BookingEngine.expandSeasons(_serverRates.seasons) : [];
-        const shoulderRate  = (_serverRates && _serverRates.seasons && _serverRates.seasons.shoulder)
-          ? _serverRates.seasons.shoulder.ratePerNight : 200;
-        const cleaningFee   = (_serverRates && _serverRates.fees && _serverRates.fees.cleaning)
+        const seasons     = (_serverRates && _serverRates.seasons) ? _serverRates.seasons : null;
+        const cleaningFee = (_serverRates && _serverRates.fees && _serverRates.fees.cleaning)
           ? _serverRates.fees.cleaning.amount : 120;
         const pricing = BookingEngine.calculatePrice({
-          baseRate: shoulderRate,
           checkin,
           checkout,
           adults,
           children,
           guests: adults + children,
-          seasonalRates,
+          seasons,
           cleaningFee,
           extraAdultFee: 50,
           extraChildFee: 25,
@@ -537,7 +594,7 @@
         if (!this.value) return;
         const d   = new Date(this.value + 'T00:00:00');
         const dow = d.getDay();
-        const minNights = (dow === 5 || dow === 6 || dow === 0) ? 2 : 1;
+        const minNights = (dow === 5 || dow === 6) ? 2 : 1; // Fri/Sat only
         const minDate   = new Date(d);
         minDate.setDate(minDate.getDate() + minNights);
         const minStr = minDate.toISOString().split('T')[0];
@@ -635,22 +692,20 @@
         return isNaN(d1) || isNaN(d2) ? null : Math.round((d2 - d1) / 86400000);
       })();
 
-      const _sr2        = _serverRates && _serverRates.seasons;
-      const _fees2      = _serverRates && _serverRates.fees;
-      const shoulderRate2 = (_sr2 && _sr2.shoulder) ? _sr2.shoulder.ratePerNight : 200;
-      const cleaningFee2  = (_fees2 && _fees2.cleaning) ? _fees2.cleaning.amount : 120;
-      const xtraGuest2    = (_fees2 && _fees2.extraguest) ? _fees2.extraguest.amount : 30;
+      const _fees2       = _serverRates && _serverRates.fees;
+      const seasons2     = (_serverRates && _serverRates.seasons) ? _serverRates.seasons : null;
+      const cleaningFee2 = (_fees2 && _fees2.cleaning)   ? _fees2.cleaning.amount   : 120;
+      const xtraGuest2   = (_fees2 && _fees2.extraguest) ? _fees2.extraguest.amount : 30;
       const finalPricing = BookingEngine.calculatePrice({
-        baseRate: shoulderRate2,
         checkin: ci,
         checkout: co,
         adults,
         children,
         guests: adults + children,
+        seasons: seasons2,
         extraAdultFee: xtraGuest2,
         extraChildFee: Math.round(xtraGuest2 / 2),
         maxBaseGuests: 2,
-        seasonalRates: _serverRates ? BookingEngine.expandSeasons(_serverRates.seasons) : [],
         cleaningFee: cleaningFee2,
       });
 

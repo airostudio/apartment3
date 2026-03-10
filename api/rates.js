@@ -19,24 +19,30 @@ const DEFAULT_RATES = {
       subLabel: 'Winter / Ski Season',
       dates: 'June – September',
       months: [6, 7, 8, 9],
-      ratePerNight: 420,
-      minStay: 2,
+      // Weekday (Sun–Thu) rates
+      weekdayRate1Night:      985,  // single midweek night
+      weekdayRate2PlusNights: 855,  // per night for 2+ midweek nights
+      // Weekend (Fri–Sat) rates — 2-night minimum on Fri/Sat check-in
+      weekendPackageRate:     2119, // total for the mandatory Fri+Sat 2 nights
+      weekendAdditionalNight: 855,  // each night beyond the 2-night package
+      ratePerNight: 985,            // display / legacy fallback
+      minStay: 1,
+      minStayWeekend: 2,
     },
     green: {
       name: 'Green Season',
-      subLabel: 'Summer / Holiday Season',
-      dates: 'December – February',
-      months: [12, 1, 2],
-      ratePerNight: 280,
+      subLabel: 'Warmer Months',
+      dates: 'October – May',
+      months: [1, 2, 3, 4, 5, 10, 11, 12],
+      // Weekday (Sun–Thu) rates
+      weekdayRate1Night:      291,  // single midweek night
+      weekdayRate2PlusNights: 291,  // per night for 2+ midweek nights
+      // Weekend (Fri–Sat) rates — 2-night minimum on Fri/Sat check-in
+      weekendPackageRate:     785,  // total for the mandatory Fri+Sat 2 nights
+      weekendAdditionalNight: 393,  // each night beyond the 2-night package
+      ratePerNight: 291,            // display / legacy fallback
       minStay: 1,
-    },
-    shoulder: {
-      name: 'Shoulder Season',
-      subLabel: 'Off-peak',
-      dates: 'March – May, October – November',
-      months: [3, 4, 5, 10, 11],
-      ratePerNight: 200,
-      minStay: 1,
+      minStayWeekend: 2,
     },
   },
   fees: {
@@ -46,12 +52,9 @@ const DEFAULT_RATES = {
     pet:        { name: 'Pet Fee',       amount: 50,  type: 'Per Stay',  isPercent: false },
   },
   rules: {
-    'ski-midweek': { name: 'White Season Midweek Rate',         condition: 'Sunday–Thursday during White/Ski Season (June–September)',          discount: 0  },
-    'ski-weekend': { name: 'White Season Weekend Rate',         condition: 'Friday–Sunday during White/Ski Season (June–September)',            discount: 0  },
-    'vic-school':  { name: 'Victorian School Holidays Premium', condition: 'Additional charge during July & September VIC school holidays',     discount: 0  },
-    '7night':      { name: 'Minimum 7-Night Stay Discount',     condition: 'When guest books 7 or more consecutive nights',                    discount: 10 },
-    'earlybird':   { name: 'Early Bird Discount',               condition: 'When booking is made 60+ days in advance',                        discount: 15 },
-    'lastminute':  { name: 'Last Minute Discount',              condition: 'When booking is made within 3 days of check-in',                  discount: 10 },
+    '7night':    { name: 'Minimum 7-Night Stay Discount', condition: 'When guest books 7 or more consecutive nights',    discount: 10 },
+    'earlybird': { name: 'Early Bird Discount',            condition: 'When booking is made 60+ days in advance',        discount: 15 },
+    'lastminute':{ name: 'Last Minute Discount',           condition: 'When booking is made within 3 days of check-in', discount: 10 },
   },
 };
 

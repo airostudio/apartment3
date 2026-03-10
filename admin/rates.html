@@ -528,9 +528,9 @@
                                     <h3 class="rate-card-title">White Season</h3>
                                     <span class="rate-card-dates" id="season-dates-white">June &ndash; September</span>
                                 </div>
-                                <div class="rate-card-modifier rate-card-modifier--up" id="season-rate-white" style="flex-direction:column;align-items:flex-end;gap:1px;">
-                                    <span style="font-size:1rem;font-weight:800;" id="season-rate-display-white">$420</span>
-                                    <span style="font-size:0.65rem;font-weight:500;opacity:0.8;">per night</span>
+                                <div class="rate-card-modifier rate-card-modifier--up" id="season-rate-white" style="flex-direction:column;align-items:flex-end;gap:2px;">
+                                    <span style="font-size:0.8rem;font-weight:800;" id="season-rate-display-white">$985 weekday</span>
+                                    <span style="font-size:0.7rem;font-weight:600;opacity:0.85;" id="season-rate-display-white-wknd">$2,119 weekend</span>
                                 </div>
                                 <button class="rate-card-edit-btn" title="Edit White Season" onclick="openSeasonalModal('white')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -541,7 +541,7 @@
                             </div>
                         </div>
 
-                        <!-- Green Season (Summer / Holiday) -->
+                        <!-- Green Season -->
                         <div class="rate-card rate-card--standard" id="season-card-green">
                             <div class="rate-card-header">
                                 <div class="rate-card-icon" style="background:#dcfce7;color:#15803d;">
@@ -549,41 +549,18 @@
                                 </div>
                                 <div class="rate-card-info">
                                     <h3 class="rate-card-title">Green Season</h3>
-                                    <span class="rate-card-dates" id="season-dates-green">December &ndash; February</span>
+                                    <span class="rate-card-dates" id="season-dates-green">October &ndash; May</span>
                                 </div>
-                                <div class="rate-card-modifier rate-card-modifier--up" id="season-rate-green" style="flex-direction:column;align-items:flex-end;gap:1px;background:rgba(16,185,129,0.1);color:#059669;">
-                                    <span style="font-size:1rem;font-weight:800;" id="season-rate-display-green">$280</span>
-                                    <span style="font-size:0.65rem;font-weight:500;opacity:0.8;">per night</span>
+                                <div class="rate-card-modifier rate-card-modifier--up" id="season-rate-green" style="flex-direction:column;align-items:flex-end;gap:2px;background:rgba(16,185,129,0.1);color:#059669;">
+                                    <span style="font-size:0.8rem;font-weight:800;" id="season-rate-display-green">$291 weekday</span>
+                                    <span style="font-size:0.7rem;font-weight:600;opacity:0.85;" id="season-rate-display-green-wknd">$785 weekend</span>
                                 </div>
                                 <button class="rate-card-edit-btn" title="Edit Green Season" onclick="openSeasonalModal('green')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                 </button>
                             </div>
                             <div class="rate-card-bar">
-                                <div class="rate-card-bar-fill" id="season-bar-green" style="width: 67%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
-                            </div>
-                        </div>
-
-                        <!-- Shoulder / Off-Peak -->
-                        <div class="rate-card rate-card--offpeak" id="season-card-shoulder">
-                            <div class="rate-card-header">
-                                <div class="rate-card-icon" style="background:#f1f5f9;color:#64748b;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="9" x2="12" y2="2"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/></svg>
-                                </div>
-                                <div class="rate-card-info">
-                                    <h3 class="rate-card-title">Shoulder Season</h3>
-                                    <span class="rate-card-dates" id="season-dates-shoulder">March &ndash; May, October &ndash; November</span>
-                                </div>
-                                <div class="rate-card-modifier rate-card-modifier--base" id="season-rate-shoulder" style="flex-direction:column;align-items:flex-end;gap:1px;">
-                                    <span style="font-size:1rem;font-weight:800;" id="season-rate-display-shoulder">$200</span>
-                                    <span style="font-size:0.65rem;font-weight:500;opacity:0.8;">per night</span>
-                                </div>
-                                <button class="rate-card-edit-btn" title="Edit Shoulder Season" onclick="openSeasonalModal('shoulder')">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                </button>
-                            </div>
-                            <div class="rate-card-bar">
-                                <div class="rate-card-bar-fill" id="season-bar-shoulder" style="width: 48%; background: linear-gradient(90deg, #94a3b8, #cbd5e1);"></div>
+                                <div class="rate-card-bar-fill" id="season-bar-green" style="width: 30%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
                             </div>
                         </div>
 
@@ -601,69 +578,6 @@
                 </div>
                 <div class="admin-card-body">
                     <div class="rules-list">
-
-                        <div class="rule-item" id="rule-item-ski-midweek">
-                            <div class="rule-icon rule-icon--ski">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L8 6H4l2 4-4 2 4 2-2 4h4l4 4 4-4h4l-2-4 4-2-4-2 2-4h-4z"/></svg>
-                            </div>
-                            <div class="rule-details">
-                                <h4 class="rule-name">Ski Season Midweek Rate</h4>
-                                <p class="rule-condition">Sunday–Thursday during Ski Season (June–September)</p>
-                            </div>
-                            <div class="rule-value">
-                                <span class="badge-info">+50% surcharge</span>
-                            </div>
-                            <div class="rule-actions">
-                                <button class="btn-icon-action" title="Edit" onclick="openRuleModal('ski-midweek')">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                </button>
-                                <button class="btn-icon-action btn-icon-action--danger" title="Delete" onclick="deleteRule('ski-midweek')">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="rule-item" id="rule-item-ski-weekend">
-                            <div class="rule-icon rule-icon--ski">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L8 6H4l2 4-4 2 4 2-2 4h4l4 4 4-4h4l-2-4 4-2-4-2 2-4h-4z"/></svg>
-                            </div>
-                            <div class="rule-details">
-                                <h4 class="rule-name">Ski Season Weekend Rate</h4>
-                                <p class="rule-condition">Friday–Sunday during Ski Season (June–September)</p>
-                            </div>
-                            <div class="rule-value">
-                                <span class="badge-danger">+65% surcharge</span>
-                            </div>
-                            <div class="rule-actions">
-                                <button class="btn-icon-action" title="Edit" onclick="openRuleModal('ski-weekend')">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                </button>
-                                <button class="btn-icon-action btn-icon-action--danger" title="Delete" onclick="deleteRule('ski-weekend')">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="rule-item" id="rule-item-vic-school">
-                            <div class="rule-icon rule-icon--premium">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            </div>
-                            <div class="rule-details">
-                                <h4 class="rule-name">Victorian School Holidays Premium</h4>
-                                <p class="rule-condition">Additional charge during July &amp; September VIC school holidays (applies to ski midweek &amp; weekend rates)</p>
-                            </div>
-                            <div class="rule-value">
-                                <span class="badge-danger">+20% surcharge</span>
-                            </div>
-                            <div class="rule-actions">
-                                <button class="btn-icon-action" title="Edit" onclick="openRuleModal('vic-school')">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                </button>
-                                <button class="btn-icon-action btn-icon-action--danger" title="Delete" onclick="deleteRule('vic-school')">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                </button>
-                            </div>
-                        </div>
 
                         <div class="rule-item" id="rule-item-7night">
                             <div class="rule-icon rule-icon--discount">
@@ -899,16 +813,30 @@
                     <input type="text" id="sm-dates" class="rate-modal-input" placeholder="e.g. June – September">
                     <span class="rate-modal-hint">Describes when this season applies — shown on the rates card</span>
                 </div>
+                <div style="font-size:0.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;">Weekday Rates (Sun – Thu)</div>
                 <div class="rate-modal-row">
                     <div class="rate-modal-field">
-                        <label class="rate-modal-label" for="sm-rate">Nightly Rate ($)</label>
-                        <input type="number" id="sm-rate" class="rate-modal-input" min="0" step="5" placeholder="420">
-                        <span class="rate-modal-hint">Flat nightly rate for this season</span>
+                        <label class="rate-modal-label" for="sm-wd1">1-Night Rate ($)</label>
+                        <input type="number" id="sm-wd1" class="rate-modal-input" min="0" step="1" placeholder="985">
+                        <span class="rate-modal-hint">Single weekday night</span>
                     </div>
                     <div class="rate-modal-field">
-                        <label class="rate-modal-label" for="sm-minstay">Minimum Stay (nights)</label>
-                        <input type="number" id="sm-minstay" class="rate-modal-input" min="1" step="1" placeholder="2">
-                        <span class="rate-modal-hint">Minimum booking length for this season</span>
+                        <label class="rate-modal-label" for="sm-wd2">2+ Nights Rate ($ / night)</label>
+                        <input type="number" id="sm-wd2" class="rate-modal-input" min="0" step="1" placeholder="855">
+                        <span class="rate-modal-hint">Per night for 2+ midweek nights</span>
+                    </div>
+                </div>
+                <div style="font-size:0.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;">Weekend Rates (Fri – Sat, 2-night min)</div>
+                <div class="rate-modal-row">
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="sm-wpkg">Fri+Sat Package ($)</label>
+                        <input type="number" id="sm-wpkg" class="rate-modal-input" min="0" step="1" placeholder="2119">
+                        <span class="rate-modal-hint">Total for mandatory 2-night Fri+Sat stay</span>
+                    </div>
+                    <div class="rate-modal-field">
+                        <label class="rate-modal-label" for="sm-wadd">Additional Night ($)</label>
+                        <input type="number" id="sm-wadd" class="rate-modal-input" min="0" step="1" placeholder="855">
+                        <span class="rate-modal-hint">Each night beyond the 2-night package</span>
                     </div>
                 </div>
             </div>
@@ -1001,17 +929,25 @@
         /* In-memory state — populated by loadRates() */
         var ratesData = {
             seasons: {
-                white:    { name: 'White Season',    subLabel: 'Winter / Ski Season',       dates: 'June \u2013 September',                 months: [6,7,8,9],     ratePerNight: 420, minStay: 2 },
-                green:    { name: 'Green Season',    subLabel: 'Summer / Holiday Season',   dates: 'December \u2013 February',              months: [12,1,2],      ratePerNight: 280, minStay: 1 },
-                shoulder: { name: 'Shoulder Season', subLabel: 'Off-peak',                  dates: 'March \u2013 May, October \u2013 November', months: [3,4,5,10,11], ratePerNight: 200, minStay: 1 }
+                white: {
+                    name: 'White Season', subLabel: 'Winter / Ski Season',
+                    dates: 'June \u2013 September', months: [6,7,8,9],
+                    weekdayRate1Night: 985, weekdayRate2PlusNights: 855,
+                    weekendPackageRate: 2119, weekendAdditionalNight: 855,
+                    ratePerNight: 985, minStay: 1, minStayWeekend: 2
+                },
+                green: {
+                    name: 'Green Season', subLabel: 'Warmer Months',
+                    dates: 'October \u2013 May', months: [1,2,3,4,5,10,11,12],
+                    weekdayRate1Night: 291, weekdayRate2PlusNights: 291,
+                    weekendPackageRate: 785, weekendAdditionalNight: 393,
+                    ratePerNight: 291, minStay: 1, minStayWeekend: 2
+                }
             },
             rules: {
-                'ski-midweek': { name: 'White Season Midweek Rate',           condition: 'Sunday\u2013Thursday during White/Ski Season (June\u2013September)',  discount: 0  },
-                'ski-weekend': { name: 'White Season Weekend Rate',           condition: 'Friday\u2013Sunday during White/Ski Season (June\u2013September)',    discount: 0  },
-                'vic-school':  { name: 'Victorian School Holidays Premium',   condition: 'Additional charge during July & September VIC school holidays',       discount: 0  },
-                '7night':      { name: 'Minimum 7-Night Stay Discount',       condition: 'When guest books 7 or more consecutive nights',                       discount: 10 },
-                'earlybird':   { name: 'Early Bird Discount',                 condition: 'When booking is made 60+ days in advance',                            discount: 15 },
-                'lastminute':  { name: 'Last Minute Discount',                condition: 'When booking is made within 3 days of check-in',                      discount: 10 }
+                '7night':    { name: 'Minimum 7-Night Stay Discount', condition: 'When guest books 7 or more consecutive nights',    discount: 10 },
+                'earlybird': { name: 'Early Bird Discount',            condition: 'When booking is made 60+ days in advance',        discount: 15 },
+                'lastminute':{ name: 'Last Minute Discount',           condition: 'When booking is made within 3 days of check-in', discount: 10 }
             },
             fees: {
                 'cleaning':   { name: 'Cleaning Fee', amount: 120, type: 'Per Stay',  isPercent: false },
@@ -1019,7 +955,7 @@
                 'extraguest': { name: 'Extra Guest',  amount: 30,  type: 'Per Night', isPercent: false },
                 'pet':        { name: 'Pet Fee',      amount: 50,  type: 'Per Stay',  isPercent: false }
             },
-            base: { nightly: 200, weekend: 215, weeklyDiscount: 10, monthlyDiscount: 20 }
+            base: { nightly: 291, weekend: 785, weeklyDiscount: 0, monthlyDiscount: 0 }
         };
 
         /* ── Load from server ─────────────────────────────────────── */
@@ -1027,20 +963,24 @@
             if (!r) return;
 
             /* Seasons */
-            ['white', 'green', 'shoulder'].forEach(function (key) {
+            ['white', 'green'].forEach(function (key) {
                 var s = r.seasons && r.seasons[key];
                 if (!s) return;
-                var rate = s.ratePerNight || 0;
-                var el = function(id) { return document.getElementById(id); };
-                if (el('season-dates-' + key))         el('season-dates-' + key).textContent         = s.dates || '';
-                if (el('season-rate-display-' + key))  el('season-rate-display-' + key).textContent  = '$' + rate;
                 ratesData.seasons[key] = s;
+                var el = function(id) { return document.getElementById(id); };
+                if (el('season-dates-' + key)) el('season-dates-' + key).textContent = s.dates || '';
+                var wd = s.weekdayRate1Night || s.ratePerNight || 0;
+                var wp = s.weekendPackageRate || 0;
+                if (el('season-rate-display-' + key))
+                    el('season-rate-display-' + key).textContent = '$' + wd + ' weekday';
+                if (el('season-rate-display-' + key + '-wknd'))
+                    el('season-rate-display-' + key + '-wknd').textContent = '$' + wp.toLocaleString() + ' weekend';
             });
 
-            /* Bar widths proportional to highest rate */
-            var rates = ['white','green','shoulder'].map(function(k){ return (r.seasons[k] || {}).ratePerNight || 0; });
+            /* Bar widths proportional to highest weekday rate */
+            var rates = ['white','green'].map(function(k){ return (r.seasons && r.seasons[k] && (r.seasons[k].weekdayRate1Night || r.seasons[k].ratePerNight)) || 0; });
             var maxRate = Math.max.apply(null, rates) || 1;
-            ['white','green','shoulder'].forEach(function(key, i) {
+            ['white','green'].forEach(function(key, i) {
                 var bar = document.getElementById('season-bar-' + key);
                 if (bar) bar.style.width = Math.round((rates[i] / maxRate) * 100) + '%';
             });
@@ -1182,37 +1122,45 @@
         function openSeasonalModal(key) {
             currentSeason = key;
             var d = ratesData.seasons[key];
-            document.getElementById('sm-name').value    = d.name;
-            document.getElementById('sm-dates').value   = d.dates;
-            document.getElementById('sm-rate').value    = d.ratePerNight;
-            document.getElementById('sm-minstay').value = d.minStay || 1;
+            document.getElementById('sm-name').value  = d.name;
+            document.getElementById('sm-dates').value = d.dates;
+            document.getElementById('sm-wd1').value   = d.weekdayRate1Night      || d.ratePerNight || 0;
+            document.getElementById('sm-wd2').value   = d.weekdayRate2PlusNights || d.ratePerNight || 0;
+            document.getElementById('sm-wpkg').value  = d.weekendPackageRate      || 0;
+            document.getElementById('sm-wadd').value  = d.weekendAdditionalNight  || 0;
             document.getElementById('seasonal-modal-title').textContent = 'Edit ' + d.name;
             openModal('seasonal-modal');
         }
 
         function saveSeasonalRate() {
-            var name     = document.getElementById('sm-name').value.trim();
-            var dates    = document.getElementById('sm-dates').value.trim();
-            var rate     = parseFloat(document.getElementById('sm-rate').value) || 0;
-            var minStay  = parseInt(document.getElementById('sm-minstay').value) || 1;
+            var name  = document.getElementById('sm-name').value.trim();
+            var dates = document.getElementById('sm-dates').value.trim();
+            var wd1   = parseFloat(document.getElementById('sm-wd1').value)   || 0;
+            var wd2   = parseFloat(document.getElementById('sm-wd2').value)   || 0;
+            var wpkg  = parseFloat(document.getElementById('sm-wpkg').value)  || 0;
+            var wadd  = parseFloat(document.getElementById('sm-wadd').value)  || 0;
 
-            /* Preserve existing season data (months etc), only update editable fields */
             ratesData.seasons[currentSeason] = Object.assign({}, ratesData.seasons[currentSeason], {
-                name: name, dates: dates, ratePerNight: rate, minStay: minStay
+                name: name, dates: dates,
+                weekdayRate1Night: wd1, weekdayRate2PlusNights: wd2,
+                weekendPackageRate: wpkg, weekendAdditionalNight: wadd,
+                ratePerNight: wd1  // keep display fallback in sync
             });
 
             /* Update card UI */
             var datesEl = document.getElementById('season-dates-' + currentSeason);
             if (datesEl) datesEl.textContent = dates;
             var rateEl = document.getElementById('season-rate-display-' + currentSeason);
-            if (rateEl) rateEl.textContent = '$' + rate;
+            if (rateEl) rateEl.textContent = '$' + wd1 + ' weekday';
+            var rateWkndEl = document.getElementById('season-rate-display-' + currentSeason + '-wknd');
+            if (rateWkndEl) rateWkndEl.textContent = '$' + wpkg.toLocaleString() + ' weekend';
             var titleEl = document.querySelector('#season-card-' + currentSeason + ' .rate-card-title');
             if (titleEl) titleEl.textContent = name;
 
             /* Recompute bar widths */
-            var rates = ['white','green','shoulder'].map(function(k){ return (ratesData.seasons[k] || {}).ratePerNight || 0; });
+            var rates = ['white','green'].map(function(k){ return (ratesData.seasons[k] || {}).weekdayRate1Night || 0; });
             var maxRate = Math.max.apply(null, rates) || 1;
-            ['white','green','shoulder'].forEach(function(k, i) {
+            ['white','green'].forEach(function(k, i) {
                 var bar = document.getElementById('season-bar-' + k);
                 if (bar) bar.style.width = Math.round((rates[i] / maxRate) * 100) + '%';
             });

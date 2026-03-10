@@ -102,8 +102,11 @@
 
     // ── Apply session to topbar ───────────────────────────────────────────────
     function _applyToTopbar(session) {
-        var avatar = document.querySelector('.admin-topbar__user-avatar');
-        var uname  = document.querySelector('.admin-topbar__user-name');
+        // Handle avatar — multiple selector patterns are used across admin pages
+        var avatar = document.querySelector(
+            '.admin-topbar__user-avatar, .avatar-initials, #topbarAvatar, .topbar-user-avatar'
+        );
+        var uname = document.querySelector('.admin-topbar__user-name, #topbarName');
         if (avatar) avatar.textContent = session.initials || (session.role === 'admin' ? 'AD' : 'PO');
         if (uname)  uname.textContent  = session.name     || (session.role === 'admin' ? 'Admin' : 'Property Owner');
 
@@ -126,40 +129,82 @@
             _restrictOwnerNav();
         }
 
-        // Logout button
-        var actions = document.querySelector('.admin-topbar__actions');
+        // Logout button in header — try .admin-topbar__actions first, fall back to .topbar-right
+        var actions = document.querySelector('.admin-topbar__actions')
+                   || document.querySelector('.topbar-right');
         if (actions && !actions.querySelector('.auth-logout-btn')) {
-            var btn = document.createElement('button');
-            btn.className = 'auth-logout-btn';
-            btn.title     = 'Sign out';
-            btn.innerHTML =
-                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
-                'stroke-linecap="round" stroke-linejoin="round" width="14" height="14">' +
-                '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>' +
-                '<polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>' +
-                '</svg> Sign Out';
-            Object.assign(btn.style, {
-                display: 'inline-flex', alignItems: 'center', gap: '5px',
-                padding: '5px 12px',
-                border: '1.5px solid #e2e8f0', borderRadius: '6px',
-                background: '#fff', cursor: 'pointer',
-                fontSize: '0.8125rem', fontWeight: '500',
-                color: '#64748b', fontFamily: "'Inter',sans-serif",
-                transition: 'all 0.15s', marginLeft: '8px', flexShrink: '0'
-            });
-            btn.addEventListener('mouseenter', function () {
-                btn.style.background  = '#fef2f2';
-                btn.style.color       = '#dc2626';
-                btn.style.borderColor = '#fca5a5';
-            });
-            btn.addEventListener('mouseleave', function () {
-                btn.style.background  = '#fff';
-                btn.style.color       = '#64748b';
-                btn.style.borderColor = '#e2e8f0';
-            });
-            btn.addEventListener('click', logout);
+            var btn = _makeLogoutButton();
+            Object.assign(btn.style, { marginLeft: '8px', flexShrink: '0' });
             actions.appendChild(btn);
         }
+
+        // Persistent footer on every admin page
+        _injectAdminFooter(session);
+    }
+
+    // ── Build a styled Sign Out button ────────────────────────────────────────
+    function _makeLogoutButton() {
+        var btn = document.createElement('button');
+        btn.className = 'auth-logout-btn';
+        btn.title     = 'Sign out';
+        btn.innerHTML =
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+            'stroke-linecap="round" stroke-linejoin="round" width="14" height="14">' +
+            '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>' +
+            '<polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>' +
+            '</svg> Sign Out';
+        Object.assign(btn.style, {
+            display: 'inline-flex', alignItems: 'center', gap: '5px',
+            padding: '5px 12px',
+            border: '1.5px solid #e2e8f0', borderRadius: '6px',
+            background: '#fff', cursor: 'pointer',
+            fontSize: '0.8125rem', fontWeight: '500',
+            color: '#64748b', fontFamily: "'Inter',sans-serif",
+            transition: 'all 0.15s',
+        });
+        btn.addEventListener('mouseenter', function () {
+            btn.style.background  = '#fef2f2';
+            btn.style.color       = '#dc2626';
+            btn.style.borderColor = '#fca5a5';
+        });
+        btn.addEventListener('mouseleave', function () {
+            btn.style.background  = '#fff';
+            btn.style.color       = '#64748b';
+            btn.style.borderColor = '#e2e8f0';
+        });
+        btn.addEventListener('click', logout);
+        return btn;
+    }
+
+    // ── Inject a persistent footer into every admin page ─────────────────────
+    function _injectAdminFooter(session) {
+        if (document.querySelector('.ca3-admin-footer')) return; // idempotent
+
+        var main = document.querySelector('.admin-main') || document.body;
+
+        var footer = document.createElement('footer');
+        footer.className = 'ca3-admin-footer';
+        footer.style.cssText =
+            'border-top:1px solid #e2e8f0;padding:16px 24px;background:#f8fafc;' +
+            'margin-top:auto;flex-shrink:0;';
+
+        var inner = document.createElement('div');
+        inner.style.cssText =
+            'display:flex;align-items:center;justify-content:space-between;' +
+            'gap:12px;flex-wrap:wrap;max-width:100%;';
+
+        var left = document.createElement('span');
+        left.style.cssText = 'font-size:0.8rem;color:#94a3b8;font-family:"Inter",sans-serif;';
+        var roleName = session && session.role === 'owner' ? 'Property Owner' : 'Admin';
+        left.textContent = 'Cascade Apartment 3 \u2014 Admin Panel \u00b7 Signed in as ' + roleName;
+
+        var logoutBtn = _makeLogoutButton();
+        Object.assign(logoutBtn.style, { padding: '6px 14px' });
+
+        inner.appendChild(left);
+        inner.appendChild(logoutBtn);
+        footer.appendChild(inner);
+        main.appendChild(footer);
     }
 
     // ── Owner nav restriction ─────────────────────────────────────────────────

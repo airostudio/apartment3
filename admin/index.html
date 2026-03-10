@@ -458,13 +458,13 @@
         nextAvailEl.textContent = found ? 'Next available: ' + fmtDate(found) : 'Next available: —';
       }
 
-      // Recent bookings table (last 5)
+      // Recent bookings table (last 3, same order as bookings page)
       var tbody = document.getElementById('recentBookingsTbody');
       var emptyRow = document.getElementById('recentBookingsEmpty');
       if (tbody && bookings.length > 0) {
         if (emptyRow) emptyRow.remove();
         var recent = bookings.slice().sort(function (a, b) {
-          return (b.confirmedAt || b.id || '').localeCompare(a.confirmedAt || a.id || '');
+          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
         }).slice(0, 3);
         recent.forEach(function (b) {
           var initials = (b.guestName || 'GU').split(' ').map(function (w) { return w[0]; }).join('').toUpperCase().slice(0, 2);

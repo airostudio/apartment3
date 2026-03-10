@@ -347,8 +347,13 @@
                         </div>
                         <div class="admin-card-body" style="display:flex;flex-direction:column;gap:var(--space-md);">
                             <div style="display:flex;justify-content:space-between;align-items:center;">
-                                <span style="font-size:var(--font-size-sm);color:var(--color-gray);">This month occupancy</span>
+                                <span style="font-size:var(--font-size-sm);color:var(--color-gray);" id="propOccupancyLabel">This month occupancy</span>
                                 <strong style="font-size:var(--font-size-md);" id="propOccupancy">0%</strong>
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm);">
+                                <button id="occPrevMonth" title="Previous month" style="background:none;border:1px solid var(--color-border,#e5e7eb);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:1rem;line-height:1.4;color:var(--color-gray);">&#8249;</button>
+                                <span id="occMonthLabel" style="font-size:var(--font-size-sm);font-weight:500;"></span>
+                                <button id="occNextMonth" title="Next month" style="background:none;border:1px solid var(--color-border,#e5e7eb);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:1rem;line-height:1.4;color:var(--color-gray);">&#8250;</button>
                             </div>
                             <div class="property-mini-bar" style="width:100%;">
                                 <div class="property-mini-bar-fill" id="propOccupancyBar" style="width:0%;"></div>
@@ -425,24 +430,51 @@
       if (revenueEl) revenueEl.textContent = revenue > 0 ? fmt(revenue) : '$0';
       if (avgEl) avgEl.textContent = avgRate > 0 ? fmt(avgRate) : '—';
 
-      // Occupancy (current month)
+      // Occupancy – navigable by month
       var now = new Date();
-      var y = now.getFullYear(), m = now.getMonth();
-      var daysInMonth = new Date(y, m + 1, 0).getDate();
-      var bookedDays = 0;
-      for (var d = 1; d <= daysInMonth; d++) {
-        var ds = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-        if (CA3Data.isDateBooked(ds)) bookedDays++;
+      var occYear = now.getFullYear(), occMonth = now.getMonth();
+
+      function renderOccupancy() {
+        var y = occYear, m = occMonth;
+        var daysInMonth = new Date(y, m + 1, 0).getDate();
+        var bookedDays = 0;
+        for (var d = 1; d <= daysInMonth; d++) {
+          var ds = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+          if (CA3Data.isDateBooked(ds)) bookedDays++;
+        }
+        var occ = daysInMonth > 0 ? Math.round((bookedDays / daysInMonth) * 100) : 0;
+
+        var isCurrentMonth = (y === now.getFullYear() && m === now.getMonth());
+        var monthName = new Date(y, m, 1).toLocaleDateString('en-AU', { month: 'long', year: 'numeric' });
+
+        var occEl = document.getElementById('statOccupancy');
+        if (occEl) occEl.textContent = occ + '%';
+        var propOcc = document.getElementById('propOccupancy');
+        var propBar = document.getElementById('propOccupancyBar');
+        var propNights = document.getElementById('propNightsBooked');
+        var propLabel = document.getElementById('propOccupancyLabel');
+        var occMonthLabel = document.getElementById('occMonthLabel');
+        if (propOcc) propOcc.textContent = occ + '%';
+        if (propBar) propBar.style.width = occ + '%';
+        if (propNights) propNights.textContent = 'Nights booked: ' + bookedDays + '/' + daysInMonth;
+        if (propLabel) propLabel.textContent = isCurrentMonth ? 'This month occupancy' : 'Occupancy';
+        if (occMonthLabel) occMonthLabel.textContent = monthName;
       }
-      var occ = daysInMonth > 0 ? Math.round((bookedDays / daysInMonth) * 100) : 0;
-      var occEl = document.getElementById('statOccupancy');
-      if (occEl) occEl.textContent = occ + '%';
-      var propOcc = document.getElementById('propOccupancy');
-      var propBar = document.getElementById('propOccupancyBar');
-      var propNights = document.getElementById('propNightsBooked');
-      if (propOcc) propOcc.textContent = occ + '%';
-      if (propBar) propBar.style.width = occ + '%';
-      if (propNights) propNights.textContent = 'Nights booked: ' + bookedDays + '/' + daysInMonth;
+
+      renderOccupancy();
+
+      var prevBtn = document.getElementById('occPrevMonth');
+      var nextBtn = document.getElementById('occNextMonth');
+      if (prevBtn) prevBtn.addEventListener('click', function () {
+        occMonth--;
+        if (occMonth < 0) { occMonth = 11; occYear--; }
+        renderOccupancy();
+      });
+      if (nextBtn) nextBtn.addEventListener('click', function () {
+        occMonth++;
+        if (occMonth > 11) { occMonth = 0; occYear++; }
+        renderOccupancy();
+      });
 
       // Next available date
       var nextAvailEl = document.getElementById('propNextAvail');

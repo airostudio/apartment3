@@ -261,7 +261,7 @@
     /* Rates Tab */
     .rates-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       margin-bottom: 24px;
     }
@@ -1060,25 +1060,19 @@
           <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:600;color:#1a1a2e;margin-bottom:20px;">Seasonal Pricing</h3>
           <div class="rates-grid">
             <div class="rate-card winter">
-              <div class="rate-season">Winter Season</div>
-              <div class="rate-dates">Jun - Aug (Ski Season)</div>
-              <div class="rate-price">$385 <span>/ night</span></div>
-              <div class="rate-note">Minimum 2 nights</div>
+              <div class="rate-season">White Season</div>
+              <div class="rate-dates">Jun – Sep (Ski Season)</div>
+              <div class="rate-price">$985 <span>/ night</span></div>
+              <div class="rate-note">Weekday rate · $2,119 Fri–Sat package · Min 2 nights on weekends</div>
             </div>
             <div class="rate-card featured">
-              <div class="rate-season">Standard Season</div>
-              <div class="rate-dates">Mar - May &amp; Sep - Nov</div>
-              <div class="rate-price">$285 <span>/ night</span></div>
-              <div class="rate-note">Minimum 1 night</div>
-            </div>
-            <div class="rate-card">
-              <div class="rate-season">Off-Peak</div>
-              <div class="rate-dates">Dec - Feb</div>
-              <div class="rate-price">$220 <span>/ night</span></div>
-              <div class="rate-note">Minimum 1 night</div>
+              <div class="rate-season">Green Season</div>
+              <div class="rate-dates">Oct – May (Warmer Months)</div>
+              <div class="rate-price">$291 <span>/ night</span></div>
+              <div class="rate-note">Weekday rate · $785 Fri–Sat package · Min 2 nights on weekends</div>
             </div>
           </div>
-          <p class="rates-footnote">* Rates shown are for the entire apartment (up to 8 guests). Cleaning fee of $150 applies per stay. Weekend and public holiday surcharges may apply. All rates in AUD.</p>
+          <p class="rates-footnote">* Rates shown are for the entire apartment (up to 8 guests). Cleaning fee of $120 applies per stay. Weekend rates apply for Fri–Sat check-ins (2-night minimum). All rates in AUD.</p>
         </div>
 
         <!-- Reviews Tab -->
@@ -1202,7 +1196,7 @@
       <!-- Booking Sidebar -->
       <aside class="booking-sidebar">
         <div class="booking-price-header">
-          <span class="price" id="pSidebarNightly">$285</span>
+          <span class="price" id="pSidebarNightly">$291</span>
           <span class="per-night">/ night</span>
         </div>
 
@@ -1229,7 +1223,7 @@
           </div>
           <div class="price-row">
             <span class="label" title="One-time cleaning fee">Cleaning fee</span>
-            <span id="pSidebarCleaning">$150</span>
+            <span id="pSidebarCleaning">$120</span>
           </div>
           <div class="price-row">
             <span class="label" title="Service charge for booking platform">Service fee</span>
@@ -1368,9 +1362,8 @@
     // ── Seasonal rate helper ───────────────────────────────────────
     function getRate(dateStr) {
       var m = new Date(dateStr + 'T00:00:00').getMonth() + 1; // 1-12
-      if (m >= 6 && m <= 8) return 385;                        // Winter / Ski
-      if ((m >= 3 && m <= 5) || (m >= 9 && m <= 11)) return 285; // Standard
-      return 220;                                               // Off-peak
+      if (m >= 6 && m <= 9) return 985;  // White Season / Ski (Jun–Sep)
+      return 291;                         // Green Season (Oct–May)
     }
 
     function fmt(n) { return '$' + n.toLocaleString('en-AU'); }
@@ -1386,7 +1379,7 @@
 
       var rate     = getRate(ci);
       var accom    = rate * nights;
-      var cleaning = 150;
+      var cleaning = 120;
       var service  = Math.round(accom * 0.05);
       var taxable  = accom + cleaning + service;
       var tax      = Math.round(taxable * 0.10);

@@ -90,9 +90,9 @@
         shoulder: { name: 'Shoulder Season', months: [3,4,5,10,11], ratePerNight: 200, minStay: 1 },
       },
       fees: {
-        cleaning:   { name: 'Cleaning Fee', amount: 120, isPercent: false },
-        service:    { name: 'Service Fee',  amount: 0,   isPercent: true  },
-        extraguest: { name: 'Extra Guest',  amount: 30,  isPercent: false },
+        cleaning:   { name: 'Cleaning Fee', amount: 0,   isPercent: false },
+        service:    { name: 'Service Fee',  amount: 100, isPercent: false },
+        extraguest: { name: 'Extra Guest',  amount: 10,  isPercent: false },
         pet:        { name: 'Pet Fee',      amount: 50,  isPercent: false },
       },
     };

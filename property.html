@@ -1072,7 +1072,7 @@
               <div class="rate-note">Weekday rate · $785 Fri–Sat package · Min 2 nights on weekends</div>
             </div>
           </div>
-          <p class="rates-footnote">* Rates shown are for the entire apartment (up to 8 guests). Cleaning fee of $120 applies per stay. Weekend rates apply for Fri–Sat check-ins (2-night minimum). All rates in AUD.</p>
+          <p class="rates-footnote">* Rates shown are for the entire apartment (up to 8 guests). Service fee of $100 applies per booking. Additional guests beyond 2 are charged $10/night each. Weekend rates apply for Fri–Sat check-ins (2-night minimum). All rates in AUD.</p>
         </div>
 
         <!-- Reviews Tab -->
@@ -1222,11 +1222,7 @@
             <span id="pSidebarAccom">—</span>
           </div>
           <div class="price-row">
-            <span class="label" title="One-time cleaning fee">Cleaning fee</span>
-            <span id="pSidebarCleaning">$120</span>
-          </div>
-          <div class="price-row">
-            <span class="label" title="Service charge for booking platform">Service fee</span>
+            <span class="label" title="Service charge per booking">Service fee</span>
             <span id="pSidebarService">—</span>
           </div>
           <div class="price-row">
@@ -1379,9 +1375,8 @@
 
       var rate     = getRate(ci);
       var accom    = rate * nights;
-      var cleaning = 120;
-      var service  = Math.round(accom * 0.05);
-      var taxable  = accom + cleaning + service;
+      var service  = 100;
+      var taxable  = accom + service;
       var tax      = Math.round(taxable * 0.10);
       var total    = taxable + tax;
 

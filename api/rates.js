@@ -46,10 +46,10 @@ const DEFAULT_RATES = {
     },
   },
   fees: {
-    cleaning:   { name: 'Cleaning Fee',  amount: 120, type: 'Per Stay',  isPercent: false },
-    service:    { name: 'Service Fee',   amount: 0,   type: 'Per Stay',  isPercent: true  },
-    extraguest: { name: 'Extra Guest',   amount: 30,  type: 'Per Night', isPercent: false },
-    pet:        { name: 'Pet Fee',       amount: 50,  type: 'Per Stay',  isPercent: false },
+    cleaning:   { name: 'Cleaning Fee',  amount: 0,   type: 'Per Stay',     isPercent: false },
+    service:    { name: 'Service Fee',   amount: 100, type: 'Per Booking',  isPercent: false },
+    extraguest: { name: 'Extra Guest',   amount: 10,  type: 'Per Night',    isPercent: false },
+    pet:        { name: 'Pet Fee',       amount: 50,  type: 'Per Stay',     isPercent: false },
   },
   rules: {
     '7night':    { name: 'Minimum 7-Night Stay Discount', condition: 'When guest books 7 or more consecutive nights',    discount: 10 },

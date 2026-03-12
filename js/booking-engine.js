@@ -19,8 +19,9 @@
       bookingCutoffHours: 24,
       currency: 'AUD',
       depositPercent: 30,
-      cleaningFee: 75,
-      serviceFeePercent: 5,
+      cleaningFee: 0,
+      serviceFeePercent: 0,
+      serviceFeeFlat: 100,
       taxPercent: 10,
     },
 
@@ -74,6 +75,7 @@
         specialRules = [],
         cleaningFee = this.defaults.cleaningFee,
         serviceFeePercent = this.defaults.serviceFeePercent,
+        serviceFeeFlat = this.defaults.serviceFeeFlat,
         taxPercent = this.defaults.taxPercent
       } = params;
 
@@ -213,7 +215,9 @@
 
       // Calculate fees
       const subtotal = totalAccommodation + totalExtraGuestFee - discount;
-      const serviceFee = subtotal * (serviceFeePercent / 100);
+      const serviceFee = serviceFeeFlat > 0
+        ? serviceFeeFlat
+        : Math.round(subtotal * (serviceFeePercent / 100) * 100) / 100;
       const taxableAmount = subtotal + serviceFee + cleaningFee;
       const tax = taxableAmount * (taxPercent / 100);
       const total = taxableAmount + tax;
@@ -547,9 +551,11 @@
       refreshAvailability(checkin, checkout);
 
       if (checkin && checkout) {
-        const seasons     = (_serverRates && _serverRates.seasons) ? _serverRates.seasons : null;
-        const cleaningFee = (_serverRates && _serverRates.fees && _serverRates.fees.cleaning)
-          ? _serverRates.fees.cleaning.amount : 120;
+        const seasons        = (_serverRates && _serverRates.seasons) ? _serverRates.seasons : null;
+        const _fees          = _serverRates && _serverRates.fees;
+        const cleaningFee    = (_fees && _fees.cleaning)   ? _fees.cleaning.amount   : 0;
+        const serviceFeeFlat = (_fees && _fees.service && !_fees.service.isPercent) ? _fees.service.amount : 100;
+        const xtraGuest      = (_fees && _fees.extraguest) ? _fees.extraguest.amount : 10;
         const pricing = BookingEngine.calculatePrice({
           checkin,
           checkout,
@@ -558,8 +564,9 @@
           guests: adults + children,
           seasons,
           cleaningFee,
-          extraAdultFee: 50,
-          extraChildFee: 25,
+          serviceFeeFlat,
+          extraAdultFee: xtraGuest,
+          extraChildFee: xtraGuest,
           maxBaseGuests: 2,
         });
 
@@ -692,10 +699,11 @@
         return isNaN(d1) || isNaN(d2) ? null : Math.round((d2 - d1) / 86400000);
       })();
 
-      const _fees2       = _serverRates && _serverRates.fees;
-      const seasons2     = (_serverRates && _serverRates.seasons) ? _serverRates.seasons : null;
-      const cleaningFee2 = (_fees2 && _fees2.cleaning)   ? _fees2.cleaning.amount   : 120;
-      const xtraGuest2   = (_fees2 && _fees2.extraguest) ? _fees2.extraguest.amount : 30;
+      const _fees2          = _serverRates && _serverRates.fees;
+      const seasons2        = (_serverRates && _serverRates.seasons) ? _serverRates.seasons : null;
+      const cleaningFee2    = (_fees2 && _fees2.cleaning)   ? _fees2.cleaning.amount   : 0;
+      const serviceFeeFlat2 = (_fees2 && _fees2.service && !_fees2.service.isPercent) ? _fees2.service.amount : 100;
+      const xtraGuest2      = (_fees2 && _fees2.extraguest) ? _fees2.extraguest.amount : 10;
       const finalPricing = BookingEngine.calculatePrice({
         checkin: ci,
         checkout: co,
@@ -704,9 +712,10 @@
         guests: adults + children,
         seasons: seasons2,
         extraAdultFee: xtraGuest2,
-        extraChildFee: Math.round(xtraGuest2 / 2),
+        extraChildFee: xtraGuest2,
         maxBaseGuests: 2,
         cleaningFee: cleaningFee2,
+        serviceFeeFlat: serviceFeeFlat2,
       });
 
       let addonsTotal = 0;

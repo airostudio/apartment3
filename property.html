@@ -1062,8 +1062,8 @@
             <div class="rate-card winter">
               <div class="rate-season">White Season</div>
               <div class="rate-dates">Jun – Sep (Ski Season)</div>
-              <div class="rate-price">$985 <span>/ night</span></div>
-              <div class="rate-note">Weekday rate · $2,119 Fri–Sat package · Min 2 nights on weekends</div>
+              <div class="rate-price">$855 <span>/ night</span></div>
+              <div class="rate-note">2+ nights Sun–Thu · 1-night $985 · $2,119 Fri–Sat package · Min 2 nights on weekends</div>
             </div>
             <div class="rate-card featured">
               <div class="rate-season">Green Season</div>
@@ -1355,9 +1355,9 @@
     })();
 
     // ── Seasonal rate helper ───────────────────────────────────────
-    function getRate(dateStr) {
+    function getRate(dateStr, nights) {
       var m = new Date(dateStr + 'T00:00:00').getMonth() + 1; // 1-12
-      if (m >= 6 && m <= 9) return 985;  // White Season / Ski (Jun–Sep)
+      if (m >= 6 && m <= 9) return (nights && nights >= 2) ? 855 : 985;  // White Season / Ski (Jun–Sep)
       return 291;                         // Green Season (Oct–May)
     }
 
@@ -1372,7 +1372,7 @@
       var nights = Math.round((new Date(co + 'T00:00:00') - new Date(ci + 'T00:00:00')) / 86400000);
       if (nights <= 0) return;
 
-      var rate     = getRate(ci);
+      var rate     = getRate(ci, nights);
       var accom    = rate * nights;
       var service  = 100;
       var taxable  = accom + service;

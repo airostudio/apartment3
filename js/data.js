@@ -69,7 +69,7 @@
   function init() {
     if (_initPromise) return _initPromise;
     _initPromise = Promise.all([
-      fetch('/api/bookings',          { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { bookings: [] }; }).catch(function(){ return { bookings: [] }; }),
+      fetch('/api/available-dates',   { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { bookings: [] }; }).catch(function(){ return { bookings: [] }; }),
       fetch('/api/blocked-dates',     { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { blocked: [] }; }).catch(function(){ return { blocked: [] }; }),
       fetch('/api/ical-connections',  { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { connections: [] }; }).catch(function(){ return { connections: [] }; }),
       fetch('/api/rates',             { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { rates: null }; }).catch(function(){ return { rates: null }; }),

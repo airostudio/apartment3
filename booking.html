@@ -633,6 +633,10 @@
   <script src="js/booking-engine.js"></script>
   <script>
     (function() {
+      // Kick off availability data fetch as early as possible so it's ready
+      // by the time the user selects dates.
+      if (window.CA3Data) CA3Data.init();
+
       // Prevent selection of past dates
       var todayStr = new Date().toISOString().split('T')[0];
       var ciInp = document.getElementById('checkinDate');
@@ -642,11 +646,13 @@
 
       // Clean up expired pending bookings (older than 30 min) so a guest who
       // abandoned the checkout page can return and re-book the same dates.
+      // Skip admin-created bookings — these are confirmed reservations regardless of status.
       if (window.CA3Data) {
         var nowMs = Date.now();
         window.CA3Data.saveBookings(
           window.CA3Data.getBookings().filter(function(b) {
             if (b.status !== 'pending') return true;
+            if (b.source === 'admin') return true; // never expire admin-created bookings
             var age = nowMs - (new Date(b.createdAt || 0).getTime());
             return age < 30 * 60 * 1000;
           })

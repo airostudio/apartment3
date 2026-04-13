@@ -524,6 +524,10 @@
               <span>Extra guests</span>
               <span id="co-extra-guest">—</span>
             </div>
+            <div class="price-row" id="co-cleaning-row" style="display:none;">
+              <span>Cleaning fee</span>
+              <span id="co-cleaning">—</span>
+            </div>
             <div class="price-row">
               <span>Service fee</span>
               <span id="co-service-fee">—</span>
@@ -679,7 +683,10 @@
         if (el('co-extra-guest-row')) el('co-extra-guest-row').style.display = '';
       }
 
-      if (el('co-cleaning'))     el('co-cleaning').textContent     = fmt(p.cleaningFee || 0);
+      if (p.cleaningFee > 0) {
+        if (el('co-cleaning'))     el('co-cleaning').textContent     = fmt(p.cleaningFee);
+        if (el('co-cleaning-row')) el('co-cleaning-row').style.display = '';
+      }
       if (el('co-service-fee'))  el('co-service-fee').textContent  = fmt(p.serviceFee || 0);
       if (el('co-tax'))          el('co-tax').textContent          = fmt(p.tax || 0);
 

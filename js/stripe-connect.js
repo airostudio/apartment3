@@ -81,6 +81,10 @@
 
     const amountCents = Math.round(grand * 100);
 
+    // Generate booking reference early so it can be included in the
+    // Stripe payment intent metadata and reused throughout the flow.
+    const ref = generateRef();
+
     // 1. Fetch publishable key
     let publishableKey = '';
     try {
@@ -119,7 +123,7 @@
           checkin:   pending.checkin    || '',
           checkout:  pending.checkout   || '',
           guests:    pending.guests     || '',
-          bookingId: pending.ref        || '',
+          bookingId: ref,
         }),
       });
 
@@ -187,10 +191,6 @@
 
       const originalHtml = el('payNowBtn') && el('payNowBtn').innerHTML;
       setPayBtn(true);
-
-      // Generate a booking reference now so we can stash it before the
-      // confirmPayment call (needed if Stripe redirects for 3DS auth).
-      const ref = generateRef();
 
       // Persist checkout state so confirmation.html can recover the booking
       // details if the browser is redirected away by Stripe for 3DS.

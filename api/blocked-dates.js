@@ -15,19 +15,19 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  if (!isConfigured()) {
-    return res.status(503).json({
-      error: 'Database not configured.',
-      code: 'db_not_configured',
-      blocked: [],
-    });
-  }
-
   try {
     /* ── GET (public) ── */
     if (req.method === 'GET') {
+      if (!isConfigured()) return res.status(200).json({ blocked: [] });
       const rows = await sbSelect('ca3_blocked_dates', 'select=*&order=start_date.asc');
       return res.status(200).json({ blocked: rows.map(mapRow) });
+    }
+
+    if (!isConfigured()) {
+      return res.status(503).json({
+        error: 'Database not configured.',
+        code: 'db_not_configured',
+      });
     }
 
     /* ── POST (create) — admin only ── */

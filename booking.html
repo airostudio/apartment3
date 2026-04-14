@@ -430,6 +430,8 @@
                     <option value="4">4 Adults</option>
                     <option value="5">5 Adults</option>
                     <option value="6">6 Adults</option>
+                    <option value="7">7 Adults</option>
+                    <option value="8">8 Adults</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -684,8 +686,8 @@
       if (checkin)  { var ci = document.getElementById('checkinDate');  if (ci)  ci.value  = checkin; }
       if (checkout) { var co = document.getElementById('checkoutDate'); if (co)  co.value  = checkout; }
       if (guests > 0) {
-        var adults   = Math.min(guests, 6);
-        var children = Math.max(0, guests - 6);
+        var adults   = Math.min(guests, 8);
+        var children = Math.max(0, guests - 8);
         var adEl = document.getElementById('numAdults');
         var chEl = document.getElementById('numChildren');
         if (adEl) adEl.value = adults;

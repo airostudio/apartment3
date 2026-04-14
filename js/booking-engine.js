@@ -14,7 +14,7 @@
       checkOutTime: '10:00',
       minStay: 1,
       maxStay: 30,
-      maxGuests: 10,
+      maxGuests: 8,
       advanceBookingDays: 365,
       bookingCutoffHours: 24,
       currency: 'AUD',

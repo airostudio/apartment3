@@ -23,7 +23,7 @@ const DEFAULT_RATES = {
       weekdayRate1Night:      985,  // single midweek night
       weekdayRate2PlusNights: 855,  // per night for 2+ midweek nights
       // Weekend (Fri–Sat) rates — 2-night minimum on Fri/Sat check-in
-      weekendPackageRate:     2119, // total for the mandatory Fri+Sat 2 nights
+      weekendPackageRate:     1970, // total for the mandatory Fri+Sat 2 nights ($985 × 2)
       weekendAdditionalNight: 855,  // each night beyond the 2-night package
       ratePerNight: 985,            // display / legacy fallback
       minStay: 1,

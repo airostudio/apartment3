@@ -68,11 +68,18 @@
 
   function init() {
     if (_initPromise) return _initPromise;
+
+    // Admin pages need full booking records (guestName, email, source, total …).
+    // Public pages only need date ranges to block unavailable days on the calendar.
+    var isAdminPage = typeof window !== 'undefined' &&
+                      window.location.pathname.indexOf('/admin/') >= 0;
+    var bookingsUrl = isAdminPage ? '/api/bookings' : '/api/available-dates';
+
     _initPromise = Promise.all([
-      fetch('/api/available-dates',   { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { bookings: [] }; }).catch(function(){ return { bookings: [] }; }),
-      fetch('/api/blocked-dates',     { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { blocked: [] }; }).catch(function(){ return { blocked: [] }; }),
-      fetch('/api/ical-connections',  { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { connections: [] }; }).catch(function(){ return { connections: [] }; }),
-      fetch('/api/rates',             { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { rates: null }; }).catch(function(){ return { rates: null }; }),
+      fetch(bookingsUrl,             { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { bookings: [] }; }).catch(function(){ return { bookings: [] }; }),
+      fetch('/api/blocked-dates',    { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { blocked: [] }; }).catch(function(){ return { blocked: [] }; }),
+      fetch('/api/ical-connections', { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { connections: [] }; }).catch(function(){ return { connections: [] }; }),
+      fetch('/api/rates',            { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { rates: null }; }).catch(function(){ return { rates: null }; }),
     ]).then(function (results) {
       _cache.bookings = results[0].bookings   || [];
       _cache.blocked  = results[1].blocked    || [];

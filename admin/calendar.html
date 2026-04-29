@@ -742,7 +742,8 @@
 
             // Helper: abbreviated guest name
             function shortName(bk) {
-                return bk.guestName.split(' ').map((p, i) => i === 0 ? p : p[0] + '.').join(' ');
+                const name = bk.guestName || bk.name || 'Guest';
+                return name.split(' ').map((p, i) => i === 0 ? p : p[0] + '.').join(' ');
             }
 
             // Bookings active on this day (ci <= d < co)
@@ -765,11 +766,11 @@
                 const arrBk = arriving.find(a => !splitInIds.has(a.id));
                 if (arrBk) splitInIds.add(arrBk.id);
 
-                const depTitle = `${depBk.guestName}: ${depBk.checkIn} – ${depBk.checkOut} (checking out)`;
+                const depTitle = `${depBk.guestName || depBk.name || 'Guest'}: ${depBk.checkIn} – ${depBk.checkOut} (checking out)`;
 
                 if (arrBk) {
                     // Back-to-back: departure on left, arrival on right
-                    const arrTitle = `${arrBk.guestName}: ${arrBk.checkIn} – ${arrBk.checkOut} (checking in)`;
+                    const arrTitle = `${arrBk.guestName || arrBk.name || 'Guest'}: ${arrBk.checkIn} – ${arrBk.checkOut} (checking in)`;
                     bars +=
                         `<div class="cal-booking-split">` +
                             `<span class="cal-booking-split__half ${colorCls(depBk)}" ` +
@@ -806,7 +807,7 @@
                 if (isStart) {
                     // Arrival day: right half coloured, left half phantom.
                     // Name only shown here for single-night stays (no middle bar available).
-                    const arrTitle = `${bk.guestName}: ${bk.checkIn} – ${bk.checkOut} (checking in)`;
+                    const arrTitle = `${bk.guestName || bk.name || 'Guest'}: ${bk.checkIn} – ${bk.checkOut} (checking in)`;
                     const label = isSingleNight ? shortName(bk) : '&nbsp;';
                     bars +=
                         `<div class="cal-booking-split">` +
@@ -818,7 +819,7 @@
                     // Middle night: full bar. Show guest name only on the first middle night.
                     const label = isFirstMiddle ? shortName(bk) : '&nbsp;';
                     const barCls = 'cal-booking ' + colorCls(bk) + ' cal-booking--middle';
-                    bars += `<span class="${barCls}" data-booking-id="${bk.id}" title="${bk.guestName}: ${bk.checkIn} – ${bk.checkOut}">${label}</span>`;
+                    bars += `<span class="${barCls}" data-booking-id="${bk.id}" title="${bk.guestName || bk.name || 'Guest'}: ${bk.checkIn} – ${bk.checkOut}">${label}</span>`;
                 }
             });
 
@@ -900,7 +901,7 @@
                         <div class="mon">${SHORT_MONTHS[ci.getMonth()]}</div>
                     </div>
                     <div class="checkin-info">
-                        <div class="checkin-guest">${bk.guestName}</div>
+                        <div class="checkin-guest">${bk.guestName || bk.name || 'Guest'}</div>
                         <div class="checkin-meta">${nights} night${nights !== 1 ? 's' : ''} · Check-out ${coFmt} · ${bk.guests} guest${bk.guests !== 1 ? 's' : ''}</div>
                     </div>
                     <div style="flex-shrink:0;">${sourceBadge(bk.source)}</div>
@@ -913,7 +914,7 @@
         /* ── Booking Modal ───────────────────────────────── */
         function openBookingModal(bk) {
             const modal = document.getElementById('modalBooking');
-            document.getElementById('modalBookingTitle').textContent = bk.guestName;
+            document.getElementById('modalBookingTitle').textContent = bk.guestName || bk.name || 'Guest';
             const ci = parseDate(bk.checkIn), co = parseDate(bk.checkOut);
             const nights = bk.nights || Math.round((co - ci) / 86400000);
 

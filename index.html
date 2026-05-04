@@ -725,6 +725,10 @@
         <a href="booking.html" class="btn btn--primary btn--lg">Book Now</a>
         <a href="property.html" class="btn btn--outline-white btn--lg">View Details</a>
       </div>
+      <p style="margin-top: var(--space-xl); color: rgba(255,255,255,0.7); font-size: var(--font-size-sm);">
+        Planning a group getaway?
+        <a href="#contact?subject=Group+Booking" style="color: var(--color-gold); font-weight: 600; text-decoration: underline; text-underline-offset: 3px;">Contact us about a group booking →</a>
+      </p>
     </div>
   </section>
 
@@ -1017,6 +1021,27 @@
       var errorBox  = document.getElementById('contactFormError');
       var successEl = document.getElementById('contactSuccess');
       if (!form) return;
+
+      // Pre-select subject from URL hash param, e.g. #contact?subject=Group+Booking
+      (function() {
+        var hash = window.location.hash || '';
+        var qIdx = hash.indexOf('?');
+        if (qIdx >= 0) {
+          var params = new URLSearchParams(hash.slice(qIdx + 1));
+          var subjectParam = params.get('subject');
+          if (subjectParam) {
+            var sel = document.getElementById('contactSubject');
+            if (sel) {
+              for (var i = 0; i < sel.options.length; i++) {
+                if (sel.options[i].value === subjectParam) {
+                  sel.selectedIndex = i;
+                  break;
+                }
+              }
+            }
+          }
+        }
+      })();
 
       function setGroupError(input, show) {
         var group = input.closest('.contact-form-group');

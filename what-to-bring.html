@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What to Bring — Cascade Apartment 3</title>
+  <meta name="description" content="Packing guide for your stay at Cascade Apartment 3, Mt Baw Baw. Find out what to bring and what's already provided.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .wtb-hero {
+      background: linear-gradient(135deg, var(--color-primary-dark, #0f2744), var(--color-primary, #1a3a5c));
+      padding: 80px 0 60px;
+      text-align: center;
+      margin-top: 72px;
+    }
+    .wtb-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: #fff;
+      margin: 0 0 16px;
+    }
+    .wtb-hero p {
+      color: rgba(255,255,255,0.75);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .wtb-alert {
+      background: #fff7ed;
+      border: 2px solid #f97316;
+      border-radius: 14px;
+      padding: 28px 32px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .wtb-alert__icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: #f97316;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .wtb-alert__icon svg { width: 22px; height: 22px; }
+    .wtb-alert__body h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #9a3412;
+      margin: 0 0 8px;
+    }
+    .wtb-alert__body p {
+      font-size: 0.95rem;
+      color: #7c2d12;
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    .wtb-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 640px) {
+      .wtb-grid { grid-template-columns: 1fr; }
+      .wtb-alert { flex-direction: column; }
+    }
+
+    .wtb-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .wtb-card__header {
+      padding: 20px 24px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .wtb-card__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .wtb-card__icon svg { width: 24px; height: 24px; }
+    .wtb-card__icon--bring  { background: #fef2f2; color: #dc2626; }
+    .wtb-card__icon--provided { background: #f0fdf4; color: #16a34a; }
+    .wtb-card__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 2px;
+    }
+    .wtb-card__subtitle {
+      font-size: 0.8rem;
+      color: #6b7280;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .wtb-card__list {
+      padding: 8px 24px 20px;
+      list-style: none;
+      margin: 0;
+    }
+    .wtb-card__list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f9fafb;
+      font-size: 0.95rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+    .wtb-card__list li:last-child { border-bottom: none; }
+    .wtb-card__list li .check {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .wtb-card__list li .check--bring    { background: #fee2e2; color: #dc2626; }
+    .wtb-card__list li .check--provided { background: #dcfce7; color: #16a34a; }
+    .wtb-card__list li .check svg { width: 12px; height: 12px; }
+
+    .wtb-tips {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 32px;
+      margin-bottom: 48px;
+    }
+    .wtb-tips h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: #1f2937;
+      margin: 0 0 20px;
+    }
+    .wtb-tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .wtb-tip {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .wtb-tip__icon {
+      width: 36px;
+      height: 36px;
+      background: #e0f2fe;
+      color: #0284c7;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .wtb-tip__icon svg { width: 18px; height: 18px; }
+    .wtb-tip__text strong { display: block; font-size: 0.9rem; color: #1f2937; margin-bottom: 3px; }
+    .wtb-tip__text span   { font-size: 0.85rem; color: #6b7280; line-height: 1.5; }
+
+    .wtb-cta {
+      text-align: center;
+      padding: 40px 0 20px;
+    }
+    .wtb-cta p {
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 36 L15 9 L27 36Z" fill="currentColor" fill-opacity="0.42"/>
+          <path d="M17 36 L30 3 L43 36Z" fill="currentColor"/>
+          <path d="M30 3 L36.5 17 L23.5 17Z" fill="currentColor" fill-opacity="0.22"/>
+          <path d="M1 40 Q5.5 37.2 10 40 Q14.5 42.8 19 40 Q23.5 37.2 28 40 Q32.5 42.8 37 40 Q39.5 38.5 43 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-wordmark">
+          <span class="logo-wordmark-main">Cascade</span>
+          <span class="logo-wordmark-sub">Apartment 3</span>
+        </span>
+      </a>
+      <nav class="nav-main">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="property.html" class="nav-link">The Apartment</a>
+        <a href="search.html" class="nav-link">Gallery</a>
+        <a href="property.html#tab-rates" class="nav-link">Rates</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="booking.html" class="btn btn--sm btn--primary">Book Now</a>
+      </div>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="property.html" class="nav-link">The Apartment</a>
+    <a href="search.html" class="nav-link">Gallery</a>
+    <a href="property.html#tab-rates" class="nav-link">Rates</a>
+    <a href="booking.html" class="btn btn--primary btn--block">Book Now</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="wtb-hero">
+    <div class="container">
+      <h1>What to Bring</h1>
+      <p>Everything you need to know before you pack for your alpine getaway at Cascade Apartment 3.</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- Important Alert -->
+      <div class="wtb-alert">
+        <div class="wtb-alert__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="wtb-alert__body">
+          <h2>Please bring your own linen &amp; towels</h2>
+          <p>
+            Cascade Apartment 3 is a <strong>linen-not-included</strong> property. Guests are required to bring
+            their own bed linen (fitted sheets, pillowcases, and top sheets) and towels for each person in your group.
+            Doonas, blankets, and pillows <strong>are provided</strong> for every bed.
+          </p>
+        </div>
+      </div>
+
+      <!-- Bring / Provided Cards -->
+      <div class="wtb-grid">
+
+        <!-- What to Bring -->
+        <div class="wtb-card">
+          <div class="wtb-card__header">
+            <div class="wtb-card__icon wtb-card__icon--bring">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wtb-card__title">You Need to Bring</div>
+              <div class="wtb-card__subtitle">Pack these for your stay</div>
+            </div>
+          </div>
+          <ul class="wtb-card__list">
+            <li>
+              <span class="check check--bring">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+              <div><strong>Bed linen</strong> — fitted sheets, top sheets, and pillowcases for each bed you'll use</div>
+            </li>
+            <li>
+              <span class="check check--bring">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+              <div><strong>Bath towels</strong> — one per person</div>
+            </li>
+            <li>
+              <span class="check check--bring">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+              <div><strong>Hand towels &amp; face washers</strong></div>
+            </li>
+            <li>
+              <span class="check check--bring">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+              <div><strong>Personal toiletries</strong> — shampoo, conditioner, soap, etc.</div>
+            </li>
+            <li>
+              <span class="check check--bring">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+              <div><strong>Food &amp; groceries</strong> — the nearest supermarket is in Rawson (approx. 20 min)</div>
+            </li>
+            <li>
+              <span class="check check--bring">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+              <div><strong>Warm clothing &amp; layers</strong> — alpine temperatures can drop significantly, even in summer</div>
+            </li>
+            <li>
+              <span class="check check--bring">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+              <div><strong>Snow chains</strong> — mandatory when conditions apply (ski season)</div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- What's Provided -->
+        <div class="wtb-card">
+          <div class="wtb-card__header">
+            <div class="wtb-card__icon wtb-card__icon--provided">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wtb-card__title">Already Provided</div>
+              <div class="wtb-card__subtitle">Ready and waiting for you</div>
+            </div>
+          </div>
+          <ul class="wtb-card__list">
+            <li>
+              <span class="check check--provided">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <div><strong>Doonas / duvets</strong> — for every bed</div>
+            </li>
+            <li>
+              <span class="check check--provided">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <div><strong>Blankets</strong> — extra blankets available in wardrobes</div>
+            </li>
+            <li>
+              <span class="check check--provided">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <div><strong>Pillows</strong> — one per person per bed</div>
+            </li>
+            <li>
+              <span class="check check--provided">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <div><strong>Wood fireplace</strong> — firewood provided during ski season</div>
+            </li>
+            <li>
+              <span class="check check--provided">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <div><strong>Fully equipped kitchen</strong> — cookware, utensils, plates, glasses &amp; cutlery</div>
+            </li>
+            <li>
+              <span class="check check--provided">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <div><strong>Washing machine &amp; dryer</strong></div>
+            </li>
+            <li>
+              <span class="check check--provided">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <div><strong>Wi-Fi, Smart TV &amp; streaming</strong></div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Handy Tips -->
+      <div class="wtb-tips">
+        <h2>Handy Tips for Your Trip</h2>
+        <div class="wtb-tips-grid">
+          <div class="wtb-tip">
+            <div class="wtb-tip__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="wtb-tip__text">
+              <strong>Check-in from 2:00 PM</strong>
+              <span>Checkout by 11:00 AM. Early check-in / late checkout available as an add-on.</span>
+            </div>
+          </div>
+          <div class="wtb-tip">
+            <div class="wtb-tip__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="wtb-tip__text">
+              <strong>Nearest shops in Rawson</strong>
+              <span>Stock up before heading up the mountain — approx. 20 min drive away.</span>
+            </div>
+          </div>
+          <div class="wtb-tip">
+            <div class="wtb-tip__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
+            </div>
+            <div class="wtb-tip__text">
+              <strong>Alpine weather</strong>
+              <span>Pack layers regardless of season — temperatures can drop quickly at altitude.</span>
+            </div>
+          </div>
+          <div class="wtb-tip">
+            <div class="wtb-tip__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </div>
+            <div class="wtb-tip__text">
+              <strong>Snow chains in winter</strong>
+              <span>Carry chains during ski season — they are mandatory when the road conditions require them.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="wtb-cta">
+        <p>Have a question about your stay? We're happy to help.</p>
+        <div class="btn-group justify-center">
+          <a href="booking.html" class="btn btn--primary btn--lg">Book Your Stay</a>
+          <a href="index.html#contact" class="btn btn--outline btn--lg">Contact Us</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 36 L15 9 L27 36Z" fill="currentColor" fill-opacity="0.42"/>
+              <path d="M17 36 L30 3 L43 36Z" fill="currentColor"/>
+              <path d="M30 3 L36.5 17 L23.5 17Z" fill="currentColor" fill-opacity="0.22"/>
+              <path d="M1 40 Q5.5 37.2 10 40 Q14.5 42.8 19 40 Q23.5 37.2 28 40 Q32.5 42.8 37 40 Q39.5 38.5 43 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+            <span class="logo-wordmark">
+              <span class="logo-wordmark-main">Cascade</span>
+              <span class="logo-wordmark-sub">Apartment 3</span>
+            </span>
+          </a>
+          <p>A premium alpine apartment at Baw Baw Village, Mt Baw Baw. Ski-in/ski-out access, stunning mountain views, and everything you need for an unforgettable alpine escape.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">The Apartment</h4>
+          <div class="footer-links">
+            <a href="property.html">Overview</a>
+            <a href="property.html#tab-amenities">Amenities</a>
+            <a href="search.html">Photo Gallery</a>
+            <a href="property.html#tab-rates">Rates</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Your Stay</h4>
+          <div class="footer-links">
+            <a href="what-to-bring.html">What to Bring</a>
+            <a href="booking.html">Book Now</a>
+            <a href="index.html#contact">Contact Us</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Support</h4>
+          <div class="footer-links">
+            <a href="booking.html">Book Now</a>
+            <a href="property.html#tab-rates">Cancellation Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Cascade Apartment 3. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    var toggle = document.getElementById('mobileMenuToggle');
+    var nav    = document.getElementById('mobileNav');
+    if (toggle && nav) {
+      toggle.addEventListener('click', function () {
+        nav.classList.toggle('is-open');
+        toggle.classList.toggle('is-open');
+      });
+    }
+
+    // Sticky header shadow
+    var header = document.getElementById('siteHeader');
+    if (header) {
+      window.addEventListener('scroll', function () {
+        header.classList.toggle('is-scrolled', window.scrollY > 10);
+      });
+    }
+  </script>
+</body>
+</html>

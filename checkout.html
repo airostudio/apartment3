@@ -183,6 +183,40 @@
       color: var(--color-text, #1f2937);
     }
 
+    /* ── Linen Notice ── */
+    .linen-notice {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-md);
+      background: #fff7ed;
+      border: 2px solid #f97316;
+      border-radius: var(--radius-md, 8px);
+      padding: var(--space-md) var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+    .linen-notice__icon {
+      flex-shrink: 0;
+      color: #f97316;
+      margin-top: 2px;
+    }
+    .linen-notice__body { flex: 1; }
+    .linen-notice__body strong {
+      display: block;
+      font-size: var(--font-size-base, 1rem);
+      color: #9a3412;
+      margin-bottom: 4px;
+    }
+    .linen-notice__body p {
+      font-size: var(--font-size-sm, 0.875rem);
+      color: #7c2d12;
+      margin: 0;
+      line-height: 1.6;
+    }
+    .linen-notice__body a {
+      color: #c2410c;
+      font-weight: 600;
+    }
+
     /* ── Stripe Notice ── */
     .stripe-notice {
       display: flex;
@@ -397,6 +431,26 @@
 
         <!-- Left Column: Payment Form -->
         <div class="checkout-form-column">
+
+          <!-- Linen Notice -->
+          <div class="linen-notice">
+            <div class="linen-notice__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <div class="linen-notice__body">
+              <strong>Reminder: please bring your own linen &amp; towels</strong>
+              <p>
+                Guests must supply their own bed linen (fitted sheets, pillowcases, and top sheets) and towels.
+                Doonas, blankets, and pillows are provided for every bed.
+                See our <a href="what-to-bring.html" target="_blank">What to Bring</a> guide for the full packing list.
+              </p>
+            </div>
+          </div>
+
           <form id="paymentForm" novalidate>
 
             <!-- Card Details -->

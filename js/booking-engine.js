@@ -317,6 +317,12 @@
             errors.push({ field: 'checkout', message: 'Friday and Saturday check-ins require a minimum of 2 nights' });
           }
         }
+
+        // Checkout cannot fall on a Saturday — that would mean Friday is the last
+        // night without Saturday, violating the Fri+Sat 2-night weekend rule.
+        if (checkoutDate.getDay() === 6) {
+          errors.push({ field: 'checkout', message: 'Your stay includes a Friday night — Saturday must also be booked. Please extend your checkout to Sunday or later.' });
+        }
       }
 
       // Guest validation
@@ -525,6 +531,17 @@
     const guestInputs = form.querySelectorAll('select[name*="guest" i], select[name*="adult" i], select[name*="children" i], input[name*="guest" i]');
 
     const recalculate = () => {
+      // If the user picked a Saturday checkout, silently advance to Sunday.
+      // A Saturday checkout means Friday is the last night — Saturday must also
+      // be included to satisfy the Fri+Sat weekend minimum.
+      if (checkoutEl && checkoutEl.value) {
+        const snapD = new Date(checkoutEl.value + 'T00:00:00');
+        if (snapD.getDay() === 6) {
+          snapD.setDate(snapD.getDate() + 1);
+          checkoutEl.value = [snapD.getFullYear(), String(snapD.getMonth()+1).padStart(2,'0'), String(snapD.getDate()).padStart(2,'0')].join('-');
+        }
+      }
+
       const checkin  = (form.querySelector('[name="checkinDate"]')  || form.querySelector('[name="checkin"]'))?.value;
       const checkout = (form.querySelector('[name="checkoutDate"]') || form.querySelector('[name="checkout"]'))?.value;
       const adults   = parseInt((form.querySelector('[name="numAdults"]')   || form.querySelector('[name="adults"]'))?.value)   || 2;
@@ -604,7 +621,9 @@
         const minNights = (dow === 5 || dow === 6) ? 2 : 1; // Fri/Sat only
         const minDate   = new Date(d);
         minDate.setDate(minDate.getDate() + minNights);
-        const minStr = minDate.toISOString().split('T')[0];
+        // Saturday checkout is forbidden — if min lands on Saturday, push to Sunday
+        if (minDate.getDay() === 6) minDate.setDate(minDate.getDate() + 1);
+        const minStr = [minDate.getFullYear(), String(minDate.getMonth()+1).padStart(2,'0'), String(minDate.getDate()).padStart(2,'0')].join('-');
         checkoutEl.min = minStr;
         // Advance checkout if it is now too early
         if (!checkoutEl.value || checkoutEl.value < minStr) {

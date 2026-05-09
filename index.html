@@ -925,7 +925,9 @@
         var minNights = isWeekendDow(d.getDay()) ? 2 : 1;
         var out = new Date(d);
         out.setDate(out.getDate() + minNights);
-        return out.toISOString().split('T')[0];
+        // Saturday checkout is forbidden — push to Sunday
+        if (out.getDay() === 6) out.setDate(out.getDate() + 1);
+        return [out.getFullYear(), String(out.getMonth()+1).padStart(2,'0'), String(out.getDate()).padStart(2,'0')].join('-');
       }
 
       // When check-in changes: update checkout minimum and auto-open checkout
@@ -972,6 +974,14 @@
         var dow = d1.getDay();
         if (nights === 1 && isWeekendDow(dow)) {
           showHeroMsg('\u26a0 Weekend stays (Fri, Sat & Sun) require a 2-night minimum.', false);
+          return true;
+        }
+        // Checkout on Saturday means Friday night is the last night without Saturday \u2014
+        // the guest must extend to Sunday to satisfy the Fri+Sat 2-night weekend rule.
+        var d2 = new Date(d1);
+        d2.setDate(d2.getDate() + nights);
+        if (d2.getDay() === 6) {
+          showHeroMsg('\u26a0 Your stay ends on a Friday night \u2014 Saturday must also be included. Please select a Sunday or later checkout.', false);
           return true;
         }
         return false;

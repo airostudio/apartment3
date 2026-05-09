@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
   <style>
     /* Progress Steps */
     .progress-steps {
@@ -619,7 +623,7 @@
     var urlRef = params.get('ref');
     if (!booking.ref && urlRef) booking.ref = urlRef;
 
-    // ── Update DOM with real booking data ──────────────────────────────────
+    // ── Update DOM with real booking data ───────��──────────────────────────
     function setText(sel, val) {
       if (!val) return;
       document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });

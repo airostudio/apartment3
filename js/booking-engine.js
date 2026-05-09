@@ -94,43 +94,67 @@
       const season = this.findSeasonForDate(checkinDate, seasons);
 
       if (season && season.weekendPackageRate != null) {
-        const dow = checkinDate.getDay(); // 0=Sun … 5=Fri, 6=Sat
-        const isWeekendCheckin = (dow === 5 || dow === 6);
+        const checkinDow = checkinDate.getDay();
+        const isWeekendCheckin = (checkinDow === 5 || checkinDow === 6);
 
-        if (isWeekendCheckin) {
-          // Fri/Sat check-in: mandatory 2-night package + additionalNight per extra night
-          const pkg   = season.weekendPackageRate;
-          const extra = season.weekendAdditionalNight;
-          const extraNights = Math.max(0, nights - 2);
-          totalAccommodation = pkg + extraNights * extra;
+        // Build per-night date + day-of-week list
+        const nightlyInfo = [];
+        for (let i = 0; i < nights; i++) {
+          const d = new Date(checkinDate);
+          d.setDate(d.getDate() + i);
+          nightlyInfo.push({
+            ds:  [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-'),
+            dow: d.getDay(),
+          });
+        }
 
-          for (let i = 0; i < nights; i++) {
-            const d = new Date(checkinDate);
-            d.setDate(d.getDate() + i);
-            const ds = [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
-            nightlyBreakdown.push({
-              date:   ds,
-              rate:   Math.round((i < 2 ? pkg / 2 : extra) * 100) / 100,
-              season: season.name + (i < 2 ? ' (Weekend Package)' : ' (Additional Night)'),
-            });
+        // Find consecutive Fri(5)→Sat(6) pairs wherever they fall in the stay.
+        // Each pair is priced as the weekend package; all other nights use weekday rates.
+        const pairedIdx = new Set();
+        for (let i = 0; i < nightlyInfo.length - 1; i++) {
+          if (nightlyInfo[i].dow === 5 && nightlyInfo[i+1].dow === 6) {
+            pairedIdx.add(i);
+            pairedIdx.add(i + 1);
           }
-        } else {
-          // Sun–Thu check-in: 1-night rate or 2+-night rate per night
-          const nightRate = nights === 1
-            ? season.weekdayRate1Night
-            : season.weekdayRate2PlusNights;
-          totalAccommodation = nightRate * nights;
+        }
+        const weekendPairs = pairedIdx.size / 2;
 
-          for (let i = 0; i < nights; i++) {
-            const d = new Date(checkinDate);
-            d.setDate(d.getDate() + i);
-            const ds = [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
-            nightlyBreakdown.push({
-              date:   ds,
-              rate:   nightRate,
-              season: season.name,
-            });
+        // Count unpaired Fri/Sat nights and pure weekday (Sun–Thu) nights
+        let orphanWeekendNights = 0;
+        let pureWeekdayNights   = 0;
+        for (let i = 0; i < nightlyInfo.length; i++) {
+          if (pairedIdx.has(i)) continue;
+          (nightlyInfo[i].dow === 5 || nightlyInfo[i].dow === 6)
+            ? orphanWeekendNights++
+            : pureWeekdayNights++;
+        }
+
+        // Rate for non-Fri/Sat nights:
+        //   Weekend check-in (Fri/Sat): weekendAdditionalNight for nights beyond the package
+        //   Weekday check-in: weekdayRate1Night for a single pure-weekday stay, else weekdayRate2PlusNights
+        const isSinglePureWeekday = nights === 1 && weekendPairs === 0 && orphanWeekendNights === 0;
+        const weekdayRate = isWeekendCheckin
+          ? season.weekendAdditionalNight
+          : (isSinglePureWeekday ? season.weekdayRate1Night : season.weekdayRate2PlusNights);
+
+        totalAccommodation = weekendPairs    * season.weekendPackageRate
+                           + orphanWeekendNights * season.weekdayRate1Night
+                           + pureWeekdayNights   * weekdayRate;
+
+        for (let i = 0; i < nightlyInfo.length; i++) {
+          const { ds, dow } = nightlyInfo[i];
+          let rate, label;
+          if (pairedIdx.has(i)) {
+            rate  = Math.round((season.weekendPackageRate / 2) * 100) / 100;
+            label = season.name + ' (Weekend Package)';
+          } else if (dow === 5 || dow === 6) {
+            rate  = season.weekdayRate1Night;
+            label = season.name + ' (Weekend)';
+          } else {
+            rate  = weekdayRate;
+            label = season.name;
           }
+          nightlyBreakdown.push({ date: ds, rate, season: label });
         }
       } else {
         // ── LEGACY pricing model ───────────────────────────────────────────────

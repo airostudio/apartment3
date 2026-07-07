@@ -496,6 +496,10 @@
                         <span class="bk-detail-value" id="bkViewGuests"></span>
                     </div>
                     <div class="bk-detail-row">
+                        <span class="bk-detail-label">Phone</span>
+                        <span class="bk-detail-value" id="bkViewPhone"></span>
+                    </div>
+                    <div class="bk-detail-row">
                         <span class="bk-detail-label">Status</span>
                         <span class="bk-detail-value"><span id="bkViewStatus" class="admin-badge"></span></span>
                     </div>
@@ -503,6 +507,7 @@
                         <span class="bk-detail-label">Total</span>
                         <span class="bk-detail-value" id="bkViewTotal" style="font-weight:600;font-size:1rem;"></span>
                     </div>
+                    <div id="bkViewExtras"></div>
                 </div>
             </div>
             <div class="bk-modal-footer">
@@ -815,6 +820,8 @@
         /* ── VIEW ── */
         function openView(row) {
             var d = row.dataset;
+            var fullBk = window.CA3Data ? CA3Data.getBookings().find(function(b) { return b.id === d.id; }) : null;
+
             document.getElementById('bkViewId').textContent       = '#' + d.id;
             document.getElementById('bkViewName').textContent     = d.name;
             document.getElementById('bkViewEmail').textContent    = d.email;
@@ -823,10 +830,39 @@
             document.getElementById('bkViewDuration').textContent = nightsBetween(d.checkin, d.checkout);
             document.getElementById('bkViewGuests').textContent   = d.guests + (d.guests === '1' ? ' guest' : ' guests');
             document.getElementById('bkViewTotal').textContent    = d.total;
+            document.getElementById('bkViewPhone').textContent    = (fullBk && fullBk.guestPhone) ? fullBk.guestPhone : '—';
+
             var badge = document.getElementById('bkViewStatus');
             badge.textContent = cap(d.status);
             badge.className   = 'admin-badge admin-badge--' + d.status;
             document.getElementById('bkViewEditBtn').dataset.rowId = d.id;
+
+            var extrasEl = document.getElementById('bkViewExtras');
+            extrasEl.innerHTML = '';
+            if (fullBk) {
+                var p = fullBk.pricing;
+                if (p && (p.accommodation || p.serviceFee || p.addonsTotal)) {
+                    var rows = '<div class="bk-detail-row" style="background:#f8fafc;margin-top:4px;"><span class="bk-detail-label" style="font-weight:600;color:#374151;font-size:0.8rem;">Pricing Breakdown</span><span class="bk-detail-value"></span></div>';
+                    if (p.accommodation)  rows += '<div class="bk-detail-row"><span class="bk-detail-label">Accommodation</span><span class="bk-detail-value">' + fmtMoney(p.accommodation) + '</span></div>';
+                    if (p.extraGuestFee)  rows += '<div class="bk-detail-row"><span class="bk-detail-label">Extra Guest</span><span class="bk-detail-value">' + fmtMoney(p.extraGuestFee) + '</span></div>';
+                    if (p.cleaningFee)    rows += '<div class="bk-detail-row"><span class="bk-detail-label">Cleaning Fee</span><span class="bk-detail-value">' + fmtMoney(p.cleaningFee) + '</span></div>';
+                    if (p.serviceFee)     rows += '<div class="bk-detail-row"><span class="bk-detail-label">Service Fee</span><span class="bk-detail-value">' + fmtMoney(p.serviceFee) + '</span></div>';
+                    if (p.tax)            rows += '<div class="bk-detail-row"><span class="bk-detail-label">GST</span><span class="bk-detail-value">' + fmtMoney(p.tax) + '</span></div>';
+                    if (p.addonsTotal)    rows += '<div class="bk-detail-row"><span class="bk-detail-label">Add-ons</span><span class="bk-detail-value">' + fmtMoney(p.addonsTotal) + '</span></div>';
+                    if (p.addons && p.addons.length) {
+                        p.addons.forEach(function(addon) {
+                            rows += '<div class="bk-detail-row"><span class="bk-detail-label" style="padding-left:1.25rem;color:#94a3b8;">&#8627; ' + (addon.label || addon.id) + '</span><span class="bk-detail-value">' + fmtMoney(addon.total || addon.price) + '</span></div>';
+                        });
+                    }
+                    extrasEl.innerHTML = rows;
+                } else if (fullBk.earlyCheckin || fullBk.lateCheckout) {
+                    var rows2 = '<div class="bk-detail-row" style="background:#f8fafc;margin-top:4px;"><span class="bk-detail-label" style="font-weight:600;color:#374151;font-size:0.8rem;">Add-ons</span><span class="bk-detail-value"></span></div>';
+                    if (fullBk.earlyCheckin) rows2 += '<div class="bk-detail-row"><span class="bk-detail-label">Early Check-in</span><span class="bk-detail-value">Yes</span></div>';
+                    if (fullBk.lateCheckout) rows2 += '<div class="bk-detail-row"><span class="bk-detail-label">Late Checkout</span><span class="bk-detail-value">Yes</span></div>';
+                    extrasEl.innerHTML = rows2;
+                }
+            }
+
             document.getElementById('bkViewModal').hidden = false;
             showOverlay();
         }

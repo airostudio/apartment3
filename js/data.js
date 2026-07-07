@@ -76,7 +76,21 @@
     var bookingsUrl = isAdminPage ? '/api/bookings' : '/api/available-dates';
 
     _initPromise = Promise.all([
-      fetch(bookingsUrl,             { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { bookings: [] }; }).catch(function(){ return { bookings: [] }; }),
+      fetch(bookingsUrl, { credentials: 'same-origin' }).then(function(r) {
+        if (r.ok) return r.json();
+        return r.json().catch(function() { return {}; }).then(function(d) {
+          if (isAdminPage) {
+            if (r.status === 503 && d.code === 'db_not_configured') {
+              showToast('Database not configured. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel → Settings → Environment Variables, then redeploy.', 'error');
+            } else if (r.status === 401) {
+              showToast('Session expired — please log in again.', 'error');
+            } else {
+              showToast('Could not load bookings (HTTP ' + r.status + '). Check Vercel logs.', 'error');
+            }
+          }
+          return { bookings: [] };
+        });
+      }).catch(function() { return { bookings: [] }; }),
       fetch('/api/blocked-dates',    { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { blocked: [] }; }).catch(function(){ return { blocked: [] }; }),
       fetch('/api/ical-connections', { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { connections: [] }; }).catch(function(){ return { connections: [] }; }),
       fetch('/api/rates',            { credentials: 'same-origin' }).then(function(r){ return r.ok ? r.json() : { rates: null }; }).catch(function(){ return { rates: null }; }),

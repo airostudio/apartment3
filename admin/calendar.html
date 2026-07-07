@@ -918,6 +918,27 @@
             const ci = parseDate(bk.checkIn), co = parseDate(bk.checkOut);
             const nights = bk.nights || Math.round((co - ci) / 86400000);
 
+            let pricingRows = '';
+            const p = bk.pricing;
+            if (p && (p.accommodation || p.serviceFee || p.addonsTotal)) {
+                pricingRows += `<div class="booking-detail-row" style="background:#f8fafc;margin:4px -24px;padding:8px 24px;"><span class="booking-detail-label" style="font-weight:600;color:#374151;">Pricing</span><span class="booking-detail-value"></span></div>`;
+                if (p.accommodation)  pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label">Accommodation</span><span class="booking-detail-value">${fmtMoney(p.accommodation)}</span></div>`;
+                if (p.extraGuestFee)  pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label">Extra Guest</span><span class="booking-detail-value">${fmtMoney(p.extraGuestFee)}</span></div>`;
+                if (p.cleaningFee)    pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label">Cleaning Fee</span><span class="booking-detail-value">${fmtMoney(p.cleaningFee)}</span></div>`;
+                if (p.serviceFee)     pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label">Service Fee</span><span class="booking-detail-value">${fmtMoney(p.serviceFee)}</span></div>`;
+                if (p.tax)            pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label">GST</span><span class="booking-detail-value">${fmtMoney(p.tax)}</span></div>`;
+                if (p.addonsTotal)    pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label">Add-ons</span><span class="booking-detail-value">${fmtMoney(p.addonsTotal)}</span></div>`;
+                if (p.addons && p.addons.length) {
+                    p.addons.forEach(addon => {
+                        pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label" style="padding-left:1.25rem;color:#9ca3af;">&#8627; ${addon.label || addon.id}</span><span class="booking-detail-value">${fmtMoney(addon.total || addon.price)}</span></div>`;
+                    });
+                }
+            } else if (bk.earlyCheckin || bk.lateCheckout) {
+                pricingRows += `<div class="booking-detail-row" style="background:#f8fafc;margin:4px -24px;padding:8px 24px;"><span class="booking-detail-label" style="font-weight:600;color:#374151;">Add-ons</span><span class="booking-detail-value"></span></div>`;
+                if (bk.earlyCheckin) pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label">Early Check-in</span><span class="booking-detail-value">Yes</span></div>`;
+                if (bk.lateCheckout) pricingRows += `<div class="booking-detail-row"><span class="booking-detail-label">Late Checkout</span><span class="booking-detail-value">Yes</span></div>`;
+            }
+
             document.getElementById('modalBookingBody').innerHTML = `
                 <div class="booking-detail-row"><span class="booking-detail-label">Reference</span><span class="booking-detail-value">${bk.ref || bk.id}</span></div>
                 <div class="booking-detail-row"><span class="booking-detail-label">Status</span><span class="booking-detail-value">${statusText(bk.status)}</span></div>
@@ -928,9 +949,9 @@
                 <div class="booking-detail-row"><span class="booking-detail-label">Guests</span><span class="booking-detail-value">${bk.guests}</span></div>
                 <div class="booking-detail-row"><span class="booking-detail-label">Email</span><span class="booking-detail-value">${bk.guestEmail || '—'}</span></div>
                 <div class="booking-detail-row"><span class="booking-detail-label">Phone</span><span class="booking-detail-value">${bk.guestPhone || '—'}</span></div>
-                <div class="booking-detail-row"><span class="booking-detail-label">Total</span><span class="booking-detail-value">${fmtMoney(bk.total)}</span></div>
-                <div class="booking-detail-row"><span class="booking-detail-label">Paid</span><span class="booking-detail-value">${fmtMoney(bk.paid || 0)}</span></div>
+                <div class="booking-detail-row"><span class="booking-detail-label">Total</span><span class="booking-detail-value" style="font-weight:700;">${fmtMoney(bk.total)}</span></div>
                 ${bk.notes ? `<div class="booking-detail-row"><span class="booking-detail-label">Notes</span><span class="booking-detail-value">${bk.notes}</span></div>` : ''}
+                ${pricingRows}
             `;
 
             modal.dataset.bookingId = bk.id;

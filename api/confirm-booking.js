@@ -73,26 +73,42 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, warning: 'db_not_configured' });
   }
 
+  const baseRow = {
+    id:          ref,
+    guest_name:  booking.guestName  || 'Guest',
+    guest_email: booking.guestEmail || '',
+    guest_phone: booking.guestPhone || '',
+    check_in:    booking.checkIn    || '',
+    check_out:   booking.checkOut   || '',
+    guests:      Number(booking.guests) || 1,
+    status:      'confirmed',
+    total:       Number(booking.total)  || 0,
+    notes:       booking.notes      || '',
+    source:      'direct',
+  };
+
   try {
-    const row = {
-      id:          ref,
-      guest_name:  booking.guestName  || 'Guest',
-      guest_email: booking.guestEmail || '',
-      guest_phone: booking.guestPhone || '',
-      check_in:    booking.checkIn    || '',
-      check_out:   booking.checkOut   || '',
-      guests:      Number(booking.guests) || 1,
-      status:      'confirmed',
-      total:       Number(booking.total)  || 0,
-      notes:       booking.notes      || '',
-      source:      'direct',
-    };
-    await sbUpsert('ca3_bookings', row);
+    const fullRow = Object.assign({}, baseRow, {
+      early_checkin: booking.earlyCheckin || false,
+      late_checkout: booking.lateCheckout || false,
+      addons_total:  Number(booking.addonsTotal) || 0,
+      pricing:       booking.pricing || null,
+    });
+    await sbUpsert('ca3_bookings', fullRow);
     return res.status(200).json({ ok: true });
   } catch (err) {
+    // If new columns don't exist yet, fall back to base row
+    if (err.message.includes('column') || err.message.includes('does not exist') || err.message.includes('42703')) {
+      try {
+        await sbUpsert('ca3_bookings', baseRow);
+        console.warn('/api/confirm-booking: saved without new columns (run ALTER TABLE migration)');
+        return res.status(200).json({ ok: true, warning: 'db_missing_columns' });
+      } catch (fallbackErr) {
+        console.error('/api/confirm-booking fallback db error:', fallbackErr.message);
+        return res.status(200).json({ ok: true, warning: fallbackErr.message });
+      }
+    }
     console.error('/api/confirm-booking db error:', err.message);
-    // Don't fail the guest experience over a DB write error — payment succeeded.
-    // Admin can see the payment in Stripe Dashboard and add the booking manually.
     return res.status(200).json({ ok: true, warning: err.message });
   }
 }

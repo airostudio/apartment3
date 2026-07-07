@@ -264,6 +264,9 @@
     // here so the fetch is not aborted by the page navigation below.
     sessionStorage.removeItem('ca3_pending_id');
     try {
+      const addons = (pending.pricing && pending.pricing.addons) || [];
+      const hasEarlyCheckin = addons.some(function(a) { return a.id === 'earlyCheckin'; });
+      const hasLateCheckout = addons.some(function(a) { return a.id === 'lateCheckout'; });
       await fetch('/api/confirm-booking', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -271,14 +274,18 @@
           paymentIntentId: paymentIntent.id,
           ref,
           booking: {
-            guestName:  confirmedBooking.guestName,
-            guestEmail: confirmedBooking.guestEmail,
-            guestPhone: pending.guestPhone || '',
-            checkIn:    pending.checkin    || '',
-            checkOut:   pending.checkout   || '',
-            guests:     pending.guests     || 1,
-            total:      amountCents / 100,
-            notes:      pending.specialRequests || '',
+            guestName:    confirmedBooking.guestName,
+            guestEmail:   confirmedBooking.guestEmail,
+            guestPhone:   pending.guestPhone || '',
+            checkIn:      pending.checkin    || '',
+            checkOut:     pending.checkout   || '',
+            guests:       pending.guests     || 1,
+            total:        amountCents / 100,
+            notes:        pending.specialRequests || '',
+            earlyCheckin: hasEarlyCheckin,
+            lateCheckout: hasLateCheckout,
+            addonsTotal:  (pending.pricing && pending.pricing.addonsTotal) || 0,
+            pricing:      pending.pricing || null,
           },
         }),
       });

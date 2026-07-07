@@ -16,20 +16,31 @@
  * );
  *
  * CREATE TABLE IF NOT EXISTS ca3_bookings (
- *   id          TEXT PRIMARY KEY,
- *   guest_name  TEXT NOT NULL,
- *   guest_email TEXT,
- *   guest_phone TEXT,
- *   check_in    DATE NOT NULL,
- *   check_out   DATE NOT NULL,
- *   guests      INTEGER DEFAULT 1,
- *   status      TEXT DEFAULT 'confirmed',
- *   total       NUMERIC(10,2) DEFAULT 0,
- *   notes       TEXT,
- *   source      TEXT DEFAULT 'direct',
- *   created_at  TIMESTAMPTZ DEFAULT NOW(),
- *   updated_at  TIMESTAMPTZ DEFAULT NOW()
+ *   id            TEXT PRIMARY KEY,
+ *   guest_name    TEXT NOT NULL,
+ *   guest_email   TEXT,
+ *   guest_phone   TEXT,
+ *   check_in      DATE NOT NULL,
+ *   check_out     DATE NOT NULL,
+ *   guests        INTEGER DEFAULT 1,
+ *   status        TEXT DEFAULT 'confirmed',
+ *   total         NUMERIC(10,2) DEFAULT 0,
+ *   notes         TEXT,
+ *   source        TEXT DEFAULT 'direct',
+ *   early_checkin BOOLEAN DEFAULT FALSE,
+ *   late_checkout BOOLEAN DEFAULT FALSE,
+ *   addons_total  NUMERIC(10,2) DEFAULT 0,
+ *   pricing       JSONB,
+ *   created_at    TIMESTAMPTZ DEFAULT NOW(),
+ *   updated_at    TIMESTAMPTZ DEFAULT NOW()
  * );
+ *
+ * -- Run this if the table already exists (adds missing columns safely):
+ * ALTER TABLE ca3_bookings
+ *   ADD COLUMN IF NOT EXISTS early_checkin BOOLEAN DEFAULT FALSE,
+ *   ADD COLUMN IF NOT EXISTS late_checkout BOOLEAN DEFAULT FALSE,
+ *   ADD COLUMN IF NOT EXISTS addons_total  NUMERIC(10,2) DEFAULT 0,
+ *   ADD COLUMN IF NOT EXISTS pricing       JSONB;
  *
  * CREATE TABLE IF NOT EXISTS ca3_blocked_dates (
  *   id         TEXT PRIMARY KEY,

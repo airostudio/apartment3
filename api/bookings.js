@@ -95,45 +95,56 @@ export default async function handler(req, res) {
 
 function toRow(b) {
   const row = {};
-  if (b.id          !== undefined) row.id          = b.id;
-  if (b.guestName   !== undefined) row.guest_name  = b.guestName;
-  if (b.guest_name  !== undefined) row.guest_name  = b.guest_name;
-  if (b.guestEmail  !== undefined) row.guest_email = b.guestEmail;
-  if (b.guest_email !== undefined) row.guest_email = b.guest_email;
-  if (b.guestPhone  !== undefined) row.guest_phone = b.guestPhone;
-  if (b.guest_phone !== undefined) row.guest_phone = b.guest_phone;
-  if (b.checkIn     !== undefined) row.check_in    = b.checkIn;
-  if (b.check_in    !== undefined) row.check_in    = b.check_in;
-  if (b.checkOut    !== undefined) row.check_out   = b.checkOut;
-  if (b.check_out   !== undefined) row.check_out   = b.check_out;
-  if (b.guests      !== undefined) row.guests      = b.guests;
-  if (b.status      !== undefined) row.status      = b.status;
-  if (b.total       !== undefined) row.total       = typeof b.total === 'string' ? parseFloat(b.total.replace(/[^0-9.]/g, '')) || 0 : b.total;
-  if (b.notes       !== undefined) row.notes       = b.notes;
-  if (b.source      !== undefined) row.source      = b.source;
+  if (b.id            !== undefined) row.id            = b.id;
+  if (b.guestName     !== undefined) row.guest_name    = b.guestName;
+  if (b.guest_name    !== undefined) row.guest_name    = b.guest_name;
+  if (b.guestEmail    !== undefined) row.guest_email   = b.guestEmail;
+  if (b.guest_email   !== undefined) row.guest_email   = b.guest_email;
+  if (b.guestPhone    !== undefined) row.guest_phone   = b.guestPhone;
+  if (b.guest_phone   !== undefined) row.guest_phone   = b.guest_phone;
+  if (b.checkIn       !== undefined) row.check_in      = b.checkIn;
+  if (b.check_in      !== undefined) row.check_in      = b.check_in;
+  if (b.checkOut      !== undefined) row.check_out     = b.checkOut;
+  if (b.check_out     !== undefined) row.check_out     = b.check_out;
+  if (b.guests        !== undefined) row.guests        = b.guests;
+  if (b.status        !== undefined) row.status        = b.status;
+  if (b.total         !== undefined) row.total         = typeof b.total === 'string' ? parseFloat(b.total.replace(/[^0-9.]/g, '')) || 0 : b.total;
+  if (b.notes         !== undefined) row.notes         = b.notes;
+  if (b.source        !== undefined) row.source        = b.source;
+  if (b.earlyCheckin  !== undefined) row.early_checkin = b.earlyCheckin;
+  if (b.early_checkin !== undefined) row.early_checkin = b.early_checkin;
+  if (b.lateCheckout  !== undefined) row.late_checkout = b.lateCheckout;
+  if (b.late_checkout !== undefined) row.late_checkout = b.late_checkout;
+  if (b.addonsTotal   !== undefined) row.addons_total  = typeof b.addonsTotal === 'number' ? b.addonsTotal : parseFloat(b.addonsTotal) || 0;
+  if (b.addons_total  !== undefined) row.addons_total  = typeof b.addons_total === 'number' ? b.addons_total : parseFloat(b.addons_total) || 0;
+  if (b.pricing       !== undefined) row.pricing       = b.pricing;
   return row;
 }
 
 function mapRow(r) {
   return {
-    id:         r.id,
-    guestName:  r.guest_name,
-    guestEmail: r.guest_email || '',
-    guestPhone: r.guest_phone || '',
-    checkIn:    r.check_in,
-    checkOut:   r.check_out,
-    guests:     r.guests || 1,
-    status:     r.status || 'confirmed',
-    total:      typeof r.total === 'number' ? r.total : parseFloat(r.total) || 0,
-    notes:      r.notes || '',
-    source:     r.source || 'direct',
-    createdAt:  r.created_at,
-    updatedAt:  r.updated_at,
+    id:           r.id,
+    guestName:    r.guest_name,
+    guestEmail:   r.guest_email || '',
+    guestPhone:   r.guest_phone || '',
+    checkIn:      r.check_in,
+    checkOut:     r.check_out,
+    guests:       r.guests || 1,
+    status:       r.status || 'confirmed',
+    total:        typeof r.total === 'number' ? r.total : parseFloat(r.total) || 0,
+    notes:        r.notes || '',
+    source:       r.source || 'direct',
+    earlyCheckin: r.early_checkin || false,
+    lateCheckout: r.late_checkout || false,
+    addonsTotal:  typeof r.addons_total === 'number' ? r.addons_total : parseFloat(r.addons_total) || 0,
+    pricing:      r.pricing || null,
+    createdAt:    r.created_at,
+    updatedAt:    r.updated_at,
     // Legacy aliases used by admin pages
-    name:       r.guest_name,
-    email:      r.guest_email || '',
-    checkin:    r.check_in,
-    checkout:   r.check_out,
-    ref:        r.id,
+    name:         r.guest_name,
+    email:        r.guest_email || '',
+    checkin:      r.check_in,
+    checkout:     r.check_out,
+    ref:          r.id,
   };
 }
